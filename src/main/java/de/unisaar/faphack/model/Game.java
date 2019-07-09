@@ -2,6 +2,10 @@ package de.unisaar.faphack.model;
 
 import java.util.List;
 
+import de.unisaar.faphack.model.effects.MoveEffect;
+import de.unisaar.faphack.model.map.Tile;
+import de.unisaar.faphack.model.map.World;
+
 /**
  * @author
  *
@@ -18,8 +22,8 @@ public class Game {
 	 * @param destination
 	 * @return boolean
 	 */
-	public boolean move(Character whom, Tile destination) {
-		// TODO Auto-generated method stub
+	public boolean move(Character whom, Direction direction) {
+		return false;
 	}
 
 	/**
@@ -28,8 +32,8 @@ public class Game {
 	 * @param direction
 	 * @return List<Item>
 	 */
-	public List<Item> listItems(Character who, Tile direction) {
-		// TODO Auto-generated method stub
+	public List<Item> listItems(Character who, Direction direction) {
+		return null;
 	}
 
 	/**
@@ -38,7 +42,8 @@ public class Game {
 	 * @return boolean
 	 */
 	public boolean pickUp(Character who, Item item) {
-		// TODO Auto-generated method stub
+		return false;
 	}
+
 
 }

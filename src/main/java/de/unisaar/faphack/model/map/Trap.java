@@ -1,4 +1,6 @@
-package de.unisaar.faphack.model;
+package de.unisaar.faphack.model.map;
+
+import de.unisaar.faphack.model.Fixtures;
 
 /**
  * A Trap is a special Fixture. Its effect is triggered by moving on the tile it

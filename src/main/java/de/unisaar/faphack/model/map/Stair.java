@@ -1,14 +1,12 @@
-package de.unisaar.faphack.model;
+package de.unisaar.faphack.model.map;
 
 /**
  * (NULL)
- * 
+ *
  * @author
  *
  */
-public class Stair extends Connector {
-	private StairTile fromTile;
-	private StairTile toTile;
+public class Stair extends Connector<StairTile> {
 	/**
 	 * If true, can only be used in direction from -> to
 	 */
@@ -18,4 +16,5 @@ public class Stair extends Connector {
 
 	}
 
+	public boolean onlyDown() { return oneWay; }
 }

@@ -1,4 +1,6 @@
-package de.unisaar.faphack.model;
+package de.unisaar.faphack.model.map;
+
+import de.unisaar.faphack.model.Character;
 
 /**
  * @author
@@ -7,6 +9,7 @@ package de.unisaar.faphack.model;
 public class DoorTile extends WallTile {
 	private boolean locked = false;
 	private Hallway hallway;
+
 	/**
 	 * To be opened by an item (key) the Effect of that item needs to create a m
 	 * atching ID.
@@ -17,4 +20,8 @@ public class DoorTile extends WallTile {
 
 	}
 
+	@Override
+	public Tile willTake(Character c) {
+		return null;
+	}
 }

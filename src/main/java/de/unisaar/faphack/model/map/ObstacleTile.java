@@ -1,4 +1,4 @@
-package de.unisaar.faphack.model;
+package de.unisaar.faphack.model.map;
 
 /**
  * @author

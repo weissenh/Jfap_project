@@ -1,5 +1,9 @@
 package de.unisaar.faphack.model;
 
+import de.unisaar.faphack.model.effects.ItemEffect;
+import de.unisaar.faphack.model.map.Room;
+import de.unisaar.faphack.model.map.Tile;
+
 /**
  * @author
  *
@@ -18,7 +22,7 @@ public abstract class Item {
 	/**
 	 * The Effect connected to the item.
 	 */
-	protected Effect effect;
+	protected ItemEffect effect;
 
 	public Item() {
 
