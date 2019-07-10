@@ -10,13 +10,13 @@ import de.unisaar.faphack.model.Character;
  *
  */
 public class World {
-	private Game g;
+  private Game g;
 
-	private List<Room> mapElements;
+  private List<Room> mapElements;
 
-	private List<Character> inhabitants;
+  private List<Character> inhabitants;
 
-	public World() {
+  public World() {
 
-	}
+  }
 }

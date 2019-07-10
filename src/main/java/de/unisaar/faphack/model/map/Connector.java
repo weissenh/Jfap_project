@@ -5,10 +5,14 @@ package de.unisaar.faphack.model.map;
  *
  */
 public abstract class Connector<T extends Tile> {
-	protected T fromTile;
-	protected T toTile;
+  protected T fromTile;
+  protected T toTile;
 
-	public T from() { return fromTile; }
+  public T from() {
+    return fromTile;
+  }
 
-	public T to() { return toTile; }
+  public T to() {
+    return toTile;
+  }
 }

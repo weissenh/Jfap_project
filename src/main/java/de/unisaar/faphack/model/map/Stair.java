@@ -7,14 +7,16 @@ package de.unisaar.faphack.model.map;
  *
  */
 public class Stair extends Connector<StairTile> {
-	/**
-	 * If true, can only be used in direction from -> to
-	 */
-	private boolean oneWay = false;
+  /**
+   * If true, can only be used in direction from -> to
+   */
+  private boolean oneWay = false;
 
-	public Stair() {
+  public Stair() {
 
-	}
+  }
 
-	public boolean onlyDown() { return oneWay; }
+  public boolean onlyDown() {
+    return oneWay;
+  }
 }

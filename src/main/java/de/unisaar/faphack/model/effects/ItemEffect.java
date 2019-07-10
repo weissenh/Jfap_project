@@ -11,12 +11,12 @@ import de.unisaar.faphack.model.Item;
 @FunctionalInterface
 public interface ItemEffect<R> extends Effect<Item, R> {
 
-	/**
-	 * Modifies the values the given character.
-	 *
-	 * @param on
-	 * @return void
-	 */
-	public R apply(Item i) ;
+  /**
+   * Modifies the values the given character.
+   *
+   * @param on
+   * @return void
+   */
+  public R apply(Item i);
 
 }

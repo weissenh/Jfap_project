@@ -6,8 +6,8 @@ package de.unisaar.faphack.model.map;
  */
 public class ObstacleTile extends WallTile {
 
-	public ObstacleTile() {
+  public ObstacleTile() {
 
-	}
+  }
 
 }

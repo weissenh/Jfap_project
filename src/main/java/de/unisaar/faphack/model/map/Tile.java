@@ -11,38 +11,39 @@ import de.unisaar.faphack.model.Item;
  *
  */
 public abstract class Tile {
-	protected int x;
-	protected int y;
-	/**
-	 * The room this tile is located in. This must not be null.
-	 */
-	protected Room room;
-	/**
-	 * The items placed on this tile.
-	 */
-	protected List<Item> items;
+  protected int x;
+  protected int y;
+  /**
+   * The room this tile is located in. This must not be null.
+   */
+  protected Room room;
+  /**
+   * The items placed on this tile.
+   */
+  protected List<Item> items;
 
-	public Tile() {
+  public Tile() {
 
-	}
+  }
 
-	/** Given the "vector" d, what's the tile you get in return?
-	 *  (Hint: ask the room)
-	 * @return the next tile in direction d
-	 */
-	public Tile getNextTile(Direction d) {
-		return null;
-	}
+  /**
+   * Given the "vector" d, what's the tile you get in return? (Hint: ask the room)
+   * 
+   * @return the next tile in direction d
+   */
+  public Tile getNextTile(Direction d) {
+    return null;
+  }
 
-	/**
-	 * Can c proceed onto this tile?
-	 *
-	 * @return the current tile if you can move the Character c onto this tile,
-	 * null otherwise
-	 */
-	public abstract Tile willTake(Character c);
+  /**
+   * Can c proceed onto this tile?
+   *
+   * @return the current tile if you can move the Character c onto this tile, null
+   *         otherwise
+   */
+  public abstract Tile willTake(Character c);
 
-	public List<Item> onTile() {
-		return items;
-	}
+  public List<Item> onTile() {
+    return items;
+  }
 }

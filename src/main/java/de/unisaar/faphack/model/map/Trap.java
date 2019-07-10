@@ -10,15 +10,15 @@ import de.unisaar.faphack.model.Fixtures;
  *
  */
 public class Trap extends Fixtures {
-	/**
-	 * Traps might also be placed on StairTiles. In this case, the stair is mas ked
-	 * by the Trap and thus not visible for the character, i.e. a trap door.
-	 * 
-	 */
-	protected StairTile trapDoor = null;
+  /**
+   * Traps might also be placed on StairTiles. In this case, the stair is mas ked
+   * by the Trap and thus not visible for the character, i.e. a trap door.
+   * 
+   */
+  protected StairTile trapDoor = null;
 
-	public Trap() {
+  public Trap() {
 
-	}
+  }
 
 }

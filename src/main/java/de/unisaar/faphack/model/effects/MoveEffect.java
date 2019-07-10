@@ -5,17 +5,21 @@ import de.unisaar.faphack.model.Character;
 import de.unisaar.faphack.model.map.Tile;
 
 public class MoveEffect implements Effect<Character, Boolean> {
-	private Direction dir;
+  private Direction dir;
 
-	public MoveEffect(Direction d) { dir = d; }
+  public MoveEffect(Direction d) {
+    dir = d;
+  }
 
-	/** tries to move the character into the given direction.
-	 * @param c the character to move
-	 * @param d the dirction to move the character (max one tile)
-	 * @return true if successful, false otherwise
-	 */
-	public Boolean apply(Character c) {
-		return false;
-	}
+  /**
+   * tries to move the character into the given direction.
+   * 
+   * @param c the character to move
+   * @param d the dirction to move the character (max one tile)
+   * @return true if successful, false otherwise
+   */
+  public Boolean apply(Character c) {
+    return false;
+  }
 
 }
