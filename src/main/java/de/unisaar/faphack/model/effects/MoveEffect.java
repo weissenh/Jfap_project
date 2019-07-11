@@ -19,7 +19,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
    * @return true if successful, false otherwise
    */
   public Boolean apply(Character c) {
-    return false;
+    return false; // compute next tile, check if can move it, move it
   }
 
 }

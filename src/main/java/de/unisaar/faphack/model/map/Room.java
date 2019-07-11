@@ -23,9 +23,20 @@ public class Room {
   Room(Tile[][] tiles){
     this.tiles = tiles;
   }
-
+  
+  /**
+  * Take tile and return which you reach when you follow the direction
+   * @param t Tile starting point
+   * @param d where to move
+  * */
   public Tile getNextTile(Tile t, Direction d) {
-    return null;
+    int newx = t.x + d.x;
+    int newy = t.y + d.y;
+    // todo check if indices valid
+    // tiles.length  if tiles.length > 0 : tiles[0].length  // maybe write get_room_size
+    // todo write tests, afterwards proceed to character
+    Tile desttile = tiles[newx][newy];
+    return desttile;
   }
 
 }

@@ -86,6 +86,7 @@ public class Character {
    */
   public void move(Tile destination) {
     // TODO Auto-generated method stub
+    // will move no matter if possible or not
   }
 
   /**

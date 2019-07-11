@@ -32,6 +32,7 @@ public abstract class Tile {
    * @return the next tile in direction d
    */
   public Tile getNextTile(Direction d) {
+    room.getNextTile(this, d);
     return null;
   }
 
