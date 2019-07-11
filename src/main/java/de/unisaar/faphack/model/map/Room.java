@@ -20,6 +20,10 @@ public class Room {
 
   }
 
+  Room(Tile[][] tiles){
+    this.tiles = tiles;
+  }
+
   public Tile getNextTile(Tile t, Direction d) {
     return null;
   }
