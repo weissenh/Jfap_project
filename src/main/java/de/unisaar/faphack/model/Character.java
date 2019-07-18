@@ -25,7 +25,7 @@ public class Character implements Storable {
    * The characters inventory. The amount of items in the inventory is limited by
    * the maxWeight value of a character.
    */
-  protected List<Item> items;
+  protected List<Wearable> items;
 
   /**
    * The base health of the character, which can be modified by Modifiers.
