@@ -3,13 +3,14 @@ package de.unisaar.faphack.model;
 import java.util.List;
 import java.util.Set;
 
+import de.unisaar.faphack.model.effects.MultiplicativeEffect;
 import de.unisaar.faphack.model.map.Tile;
 
 /**
  * @author
  *
  */
-public class Character {
+public class Character implements Storable {
 
   /**
    * I'm currently on this level
@@ -40,6 +41,12 @@ public class Character {
    * The base power of the character, which can be modified by Modifiers.
    */
   int power = 0;
+
+  /**
+   * This models the character's trait, i.e., how effective are the different
+   * skills of the character.
+   */
+  protected MultiplicativeEffect skills;
 
   /**
    * This might be shield / bodyarmor / etc.
@@ -85,7 +92,7 @@ public class Character {
    * @return void
    */
   public void move(Tile destination) {
-    // TODO Auto-generated method stub
+    // TODO: FILL THIS
   }
 
   /**
@@ -146,6 +153,16 @@ public class Character {
    * Apply the effects of, e.g., a poisoning, eating something, etc.
    */
   public void applyItem(CharacterModifier eff) {
+  }
+
+  @Override
+  public void marshal(MarshallingContext c) {
+    // TODO fill this
+  }
+
+  @Override
+  public void unmarshal(MarshallingContext c) {
+    // TODO fill this
   }
 
 }
