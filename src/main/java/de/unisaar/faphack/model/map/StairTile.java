@@ -51,4 +51,8 @@ public class StairTile extends Tile {
   public void unmarshal(MarshallingContext c) {
     // TODO: FILL THIS
   }
+
+  public Stair getStair(){
+    return stair;
+  }
 }

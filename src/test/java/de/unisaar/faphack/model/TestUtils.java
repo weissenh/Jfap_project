@@ -1,12 +1,16 @@
 package de.unisaar.faphack.model;
 
 import de.unisaar.faphack.model.map.*;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class TestUtils {
@@ -23,9 +27,7 @@ public class TestUtils {
       }
       f.setAccessible(true);
       f.set(modifierdObject, value);
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (NoSuchFieldException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -36,12 +38,14 @@ public class TestUtils {
 
   public static Game createGame(){
     Game game = new Game();
-    World world = createWorld(game);
+    World world = createWorld();
+    // register the world with the game and vice versa
     modifyField(game, false, "world", world);
+    modifyField(world, false, "g", game);
     return game;
   }
 
-  private static World createWorld(Game game)  {
+  private static World createWorld()  {
     World world = new World();
     List<Room> mapElements = new ArrayList<>();
     // Create the rooms
@@ -82,12 +86,18 @@ public class TestUtils {
     modifyField(sword, false, "character",  c1);
     modifyField(c1, false, "activeWeapon", sword );
     Item fountain = new Fixtures();
+    List<Item> onTile = new ArrayList<>();
+    onTile.add(fountain);
     modifyField(fountain, true, "onTile", room1.getTiles()[3][3]);
+    modifyField(room1.getTiles()[3][3], false, "items", onTile);
     Item rottenApple = new Wearable();
-    modifyField(rottenApple, true, "onTile", room3.getTiles()[3][9]);
+    onTile = new ArrayList<>();
+    onTile.add(rottenApple);
+    modifyField(rottenApple, true, "onTile", room3.getTiles()[2][8]);
+    modifyField(room3.getTiles()[2][8], false, "items", onTile);
 
-    // register the world with the game
-    modifyField(world, false, "g", game);
+
+
     return world;
   }
 
@@ -129,5 +139,59 @@ public class TestUtils {
     return character;
   }
 
+  @Test
+  public void testCreateWorld(){
+    World testObject = createWorld();
+    testDefaultWordData(testObject);
+  }
+
+
+  /**
+   * This method can be used to check whether everything in out test/default world is at its place.
+   * @param testObject the world to test.
+   */
+  public static void testDefaultWordData(World testObject){
+    assertNotNull(testObject);
+    List<Room> mapElements = testObject.getMapElements();
+    assertEquals(3, mapElements.size());
+    // Test if the rooms are instantiated and connected correctly
+    Room r1 = mapElements.get(0);
+    Room r2 = mapElements.get(1);
+    Room r3 = mapElements.get(2);
+    // r1 should be of size [8][8], have a door at [0][4]
+    assertEquals(8,r1.getTiles().length);
+    assertEquals(8,r1.getTiles()[0].length);
+    DoorTile dr1 = (DoorTile) r1.getTiles()[0][4];
+    assertEquals(DoorTile.class, dr1.getClass());
+    // r2 should be of size [7][7], have a door at [0][7/2] and stairs at [7/2][7/2]
+    assertEquals(7,r2.getTiles().length);
+    assertEquals(7,r2.getTiles()[0].length);
+    DoorTile dr2 = (DoorTile) r2.getTiles()[0][7/2];
+    StairTile sr2 = (StairTile) r2.getTiles()[7/2][7/2];
+    assertEquals(DoorTile.class, dr2.getClass());
+    // both doors are connected
+    assertEquals(dr1.getHallway(), dr2.getHallway());
+    // r3 should be of size [4][10], have a door at [0][5] and stairs at [2][5]
+    assertEquals(4,r3.getTiles().length);
+    assertEquals(10,r3.getTiles()[0].length);
+    DoorTile dr3 = (DoorTile) r3.getTiles()[0][5];
+    StairTile sr3 = (StairTile) r3.getTiles()[2][5];
+    assertEquals(DoorTile.class, dr3.getClass());
+    // both stairs are connected
+    assertEquals(sr2.getStair(), sr3.getStair());
+    // there should be a character named "Foo" in room1 carrying a sword
+    Character foo = r1.getInhabitants().get(0);
+    assertNotNull(foo);
+    assertEquals("Foo",foo.name);
+    assertNotNull(foo.activeWeapon);
+    assertEquals(2,foo.activeWeapon.weight);
+    // there should be a character named "Bar" in room3
+    Character bar = r3.getInhabitants().get(0);
+    assertNotNull(bar);
+    // there should be an item in room on tile [][]
+    assertEquals(Fixtures.class, r1.getTiles()[3][3].onTile().get(0).getClass());
+    // there should be a fixture in room on tile [][]
+    assertEquals(Wearable.class, r3.getTiles()[2][8].onTile().get(0).getClass());
+  }
 
 }
