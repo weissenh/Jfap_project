@@ -32,7 +32,7 @@ public abstract class Tile {
    * @return the next tile in direction d
    */
   public Tile getNextTile(Direction d) {
-    return room.getNextTile(this, d);
+    return this.room.getNextTile(this, d);
   }
 
   /**
@@ -47,5 +47,5 @@ public abstract class Tile {
     return items;
   }
 
-  public Room getRoom() { return room; }  // todo: maybe make copy?
+  public Room getRoom() { return this.room; }  // todo: does this make a copy or allow modification?
 }

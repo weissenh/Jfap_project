@@ -86,7 +86,7 @@ public class Character {
    */
   public void move(Tile destination) {
     // will move no matter if possible or not
-    tile = destination;
+    this.tile = destination;
   }
 
   /**
