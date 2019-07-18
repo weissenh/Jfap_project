@@ -32,8 +32,7 @@ public abstract class Tile {
    * @return the next tile in direction d
    */
   public Tile getNextTile(Direction d) {
-    room.getNextTile(this, d);
-    return null;
+    return room.getNextTile(this, d);
   }
 
   /**
@@ -47,4 +46,6 @@ public abstract class Tile {
   public List<Item> onTile() {
     return items;
   }
+
+  public Room getRoom() { return room; }  // todo: maybe make copy?
 }
