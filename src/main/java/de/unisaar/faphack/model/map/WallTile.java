@@ -22,11 +22,12 @@ public class WallTile extends Tile {
   protected int destructible;
 
   public WallTile() {
-
+    trait = WALL;
   }
 
   public WallTile(int x, int y, Room room){
     super(x, y, room);
+    trait = WALL;
   }
 
   @Override

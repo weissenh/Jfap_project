@@ -13,11 +13,12 @@ public class StairTile extends Tile {
   protected Trap trap;
 
   public StairTile() {
-
+    trait = STAIR;
   }
 
   public StairTile(int x, int y, Room room){
     super(x, y, room);
+    trait = STAIR;
   }
 
   /**

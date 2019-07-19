@@ -3,24 +3,27 @@ package de.unisaar.faphack.model.map;
 import java.util.Collections;
 import java.util.List;
 
+import de.unisaar.faphack.model.*;
 import de.unisaar.faphack.model.Character;
-import de.unisaar.faphack.model.Direction;
-import de.unisaar.faphack.model.Item;
-import de.unisaar.faphack.model.MarshallingContext;
-import de.unisaar.faphack.model.Storable;
 
 /**
  * @author
  *
  */
-public abstract class Tile implements Storable {
+public abstract class Tile implements Storable, TraitOwner {
 
   protected int x;
   protected int y;
+
   /**
    * The room this tile is located in. This must not be null.
    */
   protected Room room;
+
+  /**
+   * The trait of this item.
+   */
+  protected String trait;
 
   public Tile() {
 
@@ -64,6 +67,9 @@ public abstract class Tile implements Storable {
   public List<Item> onTile() {
     return Collections.emptyList();
   }
+
+  @Override
+  public String getTrait() { return trait; }
 
   /**
    * Most tiles have no trap

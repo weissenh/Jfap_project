@@ -9,7 +9,10 @@ import de.unisaar.faphack.model.Storable;
  *
  */
 public class DoorTile extends WallTile implements Storable {
+  private boolean open = false;
+
   private boolean locked = false;
+
   private Hallway hallway;
 
   /**
@@ -19,7 +22,6 @@ public class DoorTile extends WallTile implements Storable {
   private int keyId;
 
   public DoorTile() {
-
   }
 
   public DoorTile(int x, int y, Room room){
@@ -44,4 +46,8 @@ public class DoorTile extends WallTile implements Storable {
   public Hallway getHallway(){
     return hallway;
   }
+
+  @Override
+  public String getTrait() { return open ? OPENDOOR : DOOR; }
+
 }

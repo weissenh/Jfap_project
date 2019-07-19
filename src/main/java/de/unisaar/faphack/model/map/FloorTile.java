@@ -18,11 +18,12 @@ public class FloorTile extends Tile {
   protected List<Item> items;
 
   public FloorTile() {
-
+    trait = FLOOR;
   }
 
   public FloorTile(int x, int y, Room room){
     super(x, y, room);
+    trait = FLOOR;
   }
 
   @Override

@@ -10,7 +10,7 @@ import de.unisaar.faphack.model.map.Tile;
  * @author
  *
  */
-public class Character implements Storable {
+public class Character implements Storable, TraitOwner, TileOccupier {
 
   /**
    * I'm currently on this level
@@ -29,6 +29,8 @@ public class Character implements Storable {
 
   /**
    * The base health of the character, which can be modified by Modifiers.
+   *
+   * If health is zero, this character is dead!
    */
   int health = 100;
 
@@ -154,6 +156,9 @@ public class Character implements Storable {
    */
   public void applyItem(CharacterModifier eff) {
   }
+
+  @Override
+  public String getTrait() { return (health == 0 ? "DEAD_" : "") + role; }
 
   @Override
   public void marshal(MarshallingContext c) {
