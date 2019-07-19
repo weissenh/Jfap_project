@@ -24,4 +24,8 @@ public class DoorTile extends WallTile {
   public Tile willTake(Character c) {
     return null;
   }
+
+  public Hallway getHallway(){
+    return hallway;
+  }
 }
