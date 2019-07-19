@@ -6,7 +6,7 @@ import de.unisaar.faphack.model.map.Tile;
  * @author
  *
  */
-public abstract class Item implements Storable, TraitOwner, TileOccupier {
+public abstract class Item implements Storable, TraitedTileOccupier {
   /**
    * The Tile on which the item is placed. This is null if the Item is in the
    * inventory of a character.

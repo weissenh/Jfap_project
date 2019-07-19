@@ -10,7 +10,7 @@ import de.unisaar.faphack.model.map.Tile;
  * @author
  *
  */
-public class Character implements Storable, TraitOwner, TileOccupier {
+public class Character implements Storable, TraitedTileOccupier {
 
   /**
    * I'm currently on this level
