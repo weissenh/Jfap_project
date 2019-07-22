@@ -42,9 +42,7 @@ class CharacterTest {
     // Wearable at [1][2]: picking this up should work
     placeCharacter(testObject, tiles[1][2]);
     assertTrue(testObject.pickUp(item1));
-    // the item should have been removed from the tile and moved into the inventory of the character
     assertTrue(testObject.items.contains(item1));
-    assertTrue(!room.getTiles()[1][2].onTile().contains(item1));
     // the item is too heavy for the character
     assertFalse(testObject.pickUp(item2));
   }
