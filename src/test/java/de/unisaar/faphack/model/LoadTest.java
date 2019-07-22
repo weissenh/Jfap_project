@@ -1,14 +1,19 @@
 package de.unisaar.faphack.model;
 
-import de.unisaar.faphack.dirtyhacks.StorableRegistrator;
-import org.junit.jupiter.api.Test;
+import static de.unisaar.faphack.model.TestUtils.*;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 
-import static de.unisaar.faphack.model.TestUtils.createGame;
-import static de.unisaar.faphack.model.TestUtils.getTestResourceFile;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import de.unisaar.faphack.dirtyhacks.StorableRegistrator;
 
 class LoadTest {
 
@@ -26,7 +31,7 @@ class LoadTest {
 
 
   @Test
-  void loadSword() {
+  void loadSword() throws IOException, ParseException {
     File f = getTestResourceFile("", "sword.json");
     StorableFactory fact = new StorableFactory();
     StorableRegistrator.registerStorables(fact);
@@ -34,7 +39,14 @@ class LoadTest {
     Item sword = (Item)mc.read();
     assertNotNull(sword);
     File f2 = getTestResourceFile("", "sword_out.json");
-    mc = new JsonMarshallingContext(f2, fact);
-    mc.save(sword);
+    JSONObject orig, saved;
+    JSONParser parser = new JSONParser();
+    Reader reader = new FileReader(f);
+    orig = (JSONObject) parser.parse(reader);
+    reader.close();
+    reader = new FileReader(f2);
+    saved = (JSONObject) parser.parse(reader);
+    reader.close();
+    assertEquals(orig, saved);
   }
 }
