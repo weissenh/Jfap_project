@@ -38,8 +38,7 @@ public class StairTile extends Tile {
   /** Return non-null if this is a trap */
   @Override
   public Trap hasTrap() {
-    // TODO: FILL THIS
-    return null;
+    return trap;
   }
 
   @Override

@@ -10,7 +10,8 @@ import de.unisaar.faphack.model.map.Tile;
  * @author
  *
  */
-public class Character implements Storable, TraitedTileOccupier {
+public class Character extends AbstractObservable<TraitedTileOccupier>
+implements Storable, TraitedTileOccupier {
 
   /**
    * I'm currently on this level
@@ -61,6 +62,11 @@ public class Character implements Storable, TraitedTileOccupier {
    * value.
    */
   protected int maxWeight;
+
+  /**
+   * The currentWeight is the combined weights of armor, weapon and inventory
+   */
+  private int currentWeight = 0; // todo: marshal!
 
   /**
    * All effects that currently apply on the character, for example damage or heal
@@ -124,8 +130,37 @@ public class Character implements Storable, TraitedTileOccupier {
     return tile;
   }
 
-  public int hasForce() {
+  public int getHealth() {
+    return health;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getLevel() {
+    return level;
+  }
+
+  public int getMagic() {
+    return magic;
+  }
+
+  public int getPower() {
     return power;
+  }
+
+  public int getMaxWeight() {
+    return maxWeight;
+  }
+
+  public Wearable getActiveWeapon() {
+    return activeWeapon;
+  }
+
+  public int getWeight() {
+    // TODO: implement
+    return 0;
   }
 
   public int levelDown() {

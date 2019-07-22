@@ -1,12 +1,10 @@
 package de.unisaar.faphack.model.map;
 
+import de.unisaar.faphack.model.Character;
+import de.unisaar.faphack.model.*;
+
 import java.util.Collections;
 import java.util.List;
-
-import de.unisaar.faphack.model.*;
-import de.unisaar.faphack.model.Character;
-import de.unisaar.faphack.model.Item;
-import de.unisaar.faphack.model.MarshallingContext;
 
 /**
  * @author
@@ -96,6 +94,8 @@ public abstract class Tile implements Storable, TraitOwner {
 
   }
 
-
+  public boolean pickupItem(Wearable what){
+    return false;
+  }
   public Room getRoom() { return this.room; }  // todo: does this make a copy or allow modification?
 }

@@ -1,10 +1,10 @@
 package de.unisaar.faphack.model;
 
-import java.util.List;
-
 import de.unisaar.faphack.model.effects.MoveEffect;
 import de.unisaar.faphack.model.map.Tile;
 import de.unisaar.faphack.model.map.World;
+
+import java.util.List;
 
 /**
  * @author
@@ -12,9 +12,17 @@ import de.unisaar.faphack.model.map.World;
  */
 public class Game implements Storable {
   private World world;
+  private Character protagonist; // todo marshall
 
   public Game() {
 
+  }
+
+  /**
+  * return the protagonist of this game
+  */
+  public Character getProtagonist() {
+    return protagonist;
   }
 
   /**
@@ -23,8 +31,7 @@ public class Game implements Storable {
    * @return boolean
    */
   public boolean move(Character whom, Direction direction) {
-    // TODO: fill this
-    return false;
+    return new MoveEffect(direction).apply(whom);
   }
 
   /**
@@ -34,8 +41,9 @@ public class Game implements Storable {
    * @return List<Item>
    */
   public List<Item> listItems(Character who, Direction direction) {
-    // TODO: fill this
-    return null;
+    Tile current = who.getTile();
+    Tile next = current.getNextTile(direction);
+    return next.onTile();
   }
 
   /**

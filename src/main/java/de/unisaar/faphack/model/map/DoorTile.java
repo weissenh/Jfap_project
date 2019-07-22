@@ -1,19 +1,23 @@
 package de.unisaar.faphack.model.map;
 
 import de.unisaar.faphack.model.Character;
-import de.unisaar.faphack.model.MarshallingContext;
-import de.unisaar.faphack.model.Storable;
+import de.unisaar.faphack.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author
  *
  */
-public class DoorTile extends WallTile implements Storable {
+public class DoorTile extends WallTile implements Storable, Observable<DoorTile> {
   private boolean open = false;
 
   private boolean locked = false;
 
   private Hallway hallway;
+
+  private List<Observer<DoorTile>> observers; // todo marhsall
 
   /**
    * To be opened by an item (key) the Effect of that item needs to create a m
@@ -58,5 +62,18 @@ public class DoorTile extends WallTile implements Storable {
 
   @Override
   public String getTrait() { return open ? OPENDOOR : DOOR; }
+
+  @Override
+  public void register(Observer<DoorTile> observer) {
+    // lazy initialization
+    // TODO please implement me!
+
+  }
+
+  @Override
+  public void notifyObservers(DoorTile object) {
+    // TODO please implement me!
+  }
+
 
 }

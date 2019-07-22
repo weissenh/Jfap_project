@@ -47,4 +47,6 @@ public class WallTile extends Tile {
     super.unmarshal(c);
     c.readInt("destructible");
   }
+
+
 }

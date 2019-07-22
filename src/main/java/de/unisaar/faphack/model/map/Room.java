@@ -1,13 +1,13 @@
 package de.unisaar.faphack.model.map;
 
-import java.util.List;
-
 import de.unisaar.faphack.model.Character;
 import de.unisaar.faphack.model.Direction;
 import de.unisaar.faphack.model.MarshallingContext;
 import de.unisaar.faphack.model.Storable;
 import static java.lang.Math.max;
 import java.lang.IndexOutOfBoundsException;
+
+import java.util.List;
 
 /**
  * @author

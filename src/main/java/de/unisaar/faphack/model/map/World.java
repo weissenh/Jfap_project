@@ -6,6 +6,9 @@ import de.unisaar.faphack.model.Game;
 import de.unisaar.faphack.model.MarshallingContext;
 import de.unisaar.faphack.model.Storable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author
  *
