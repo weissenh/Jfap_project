@@ -2,7 +2,10 @@ package de.unisaar.faphack.model.map;
 
 import java.util.List;
 
+import de.unisaar.faphack.model.Character;
 import de.unisaar.faphack.model.Direction;
+import de.unisaar.faphack.model.MarshallingContext;
+import de.unisaar.faphack.model.Storable;
 import static java.lang.Math.max;
 import java.lang.IndexOutOfBoundsException;
 
@@ -10,7 +13,7 @@ import java.lang.IndexOutOfBoundsException;
  * @author
  *
  */
-public class Room {
+public class Room implements Storable {
 
   /** The world this room belongs to */
   private World w;
@@ -23,13 +26,9 @@ public class Room {
    */
   private Tile[][] tiles;
 
-  public Room() {
+  public Room(){}
 
-  }
-
-  Room(Tile[][] tiles){
-    this.tiles = tiles;
-  }
+  Room(Tile[][] tiles) { this.tiles = tiles; }
 
   /**
    *
@@ -78,4 +77,21 @@ public class Room {
     return desttile;
   }
 
+  public Tile[][] getTiles() {
+    return tiles;
+  }
+
+  public List<Character> getInhabitants() {
+    return inhabitants;
+  }
+
+  @Override
+  public void marshal(MarshallingContext c) {
+    // TODO: FILL THIS
+  }
+
+  @Override
+  public void unmarshal(MarshallingContext c) {
+    // TODO: FILL THIS
+  }
 }

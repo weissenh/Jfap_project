@@ -16,7 +16,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
 
   /**
    * tries to move the character into the given direction.
-   * 
+   *
    * @param c the character to move
    * param dir the direction to move the character (max one tile: only adjacent tile)
    * e.g.  1  2  3     if you are on 2, then  can move to 1,2,3,4,5,6
