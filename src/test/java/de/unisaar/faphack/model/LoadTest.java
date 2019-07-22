@@ -63,6 +63,10 @@ class LoadTest {
     return true;
   }
 
+  /**
+   * Creates an instance of the TestUtils default Game which is then saved to a .json file.
+   * Finally, a game is loaded from the json file and checked for correctness of all components.
+   */
   @Test
   void saveGame() {
     Game game = createGame();
@@ -78,6 +82,13 @@ class LoadTest {
   }
 
 
+  /**
+   * Tests the load and save features by loading an item instance (sword)
+   * from a .json file and writing it back to .json. 
+   * The output .json is compared to the input .json.
+   * @throws IOException
+   * @throws ParseException
+   */
   @Test
   void loadSword() throws IOException, ParseException {
     File f = getTestResourceFile("", "sword.json");
