@@ -1,5 +1,6 @@
 package de.unisaar.faphack.model;
 
+import de.unisaar.faphack.model.effects.MultiplicativeEffect;
 import de.unisaar.faphack.model.map.*;
 import org.junit.jupiter.api.Test;
 
@@ -130,6 +131,15 @@ public class TestUtils {
     //modifyField(character, false, "tile", room.getTiles()[x][y]);
   }
 
+  public static CharacterModifier createAttack(int health, int magic, int power, int howlong ) {
+    CharacterModifier attack = new CharacterModifier();
+    attack.health = health;
+    attack.magic = magic;
+    attack.power = power;
+    modifyField(attack, false, "howLong", howlong);
+    return attack;
+  }
+
   @Test
   public void testCreateWorld(){
     World testObject = createWorld();
@@ -221,6 +231,7 @@ public class TestUtils {
     modifyField(character,false, "items", new ArrayList<>());
     modifyField(character, false, "maxWeight", maxWeight);
     modifyField(character, false, "power", power);
+    modifyField(character, false, "magic", 50);
     modifyField(character, false, "role", character.WARRIOR);
     return character;
   }
@@ -242,6 +253,24 @@ public class TestUtils {
     modifyField(t1, false, "stair", connector);
     TestUtils.modifyField(t2, false, "stair", connector);
     return connector;
+  }
+
+  public static Armor createArmor(double health, double magic, double power ){
+    Armor armor = new Armor();
+    MultiplicativeEffect multiplicativeEffect = new MultiplicativeEffect();
+    modifyField(multiplicativeEffect, true, "health", health);
+    modifyField(multiplicativeEffect, true, "magic", magic);
+    modifyField(multiplicativeEffect, true, "power", power);
+    modifyField(armor, false, "modifyingEffect", multiplicativeEffect);
+    return armor;
+  }
+
+  public static void equipWeapon(Wearable wearable, Character character){
+    character.activeWeapon = wearable;
+  }
+
+  public static void equipArmor(Armor armor, Character character){
+    character.armor.add(armor);
   }
 
 }

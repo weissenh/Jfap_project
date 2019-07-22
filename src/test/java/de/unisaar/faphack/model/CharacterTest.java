@@ -52,7 +52,21 @@ class CharacterTest {
 
   @Test
   void applyAttack() {
-    fail("Please implement me");
+    // create a character without any armor
+    Character testObject = TestUtils.createBaseCharacter("Foo", 2, 2);
+    CharacterModifier characterModifier = TestUtils.createAttack(-10, -15, -1, 1);
+    testObject.applyAttack(characterModifier);
+    assertEquals(90, testObject.health);
+    assertEquals( 35, testObject.magic);
+    assertEquals(1, testObject.power);
+    // the testObject wears a armor now
+    Armor armor = TestUtils.createArmor(0.5, 0.0, 0.0);
+    TestUtils.equipArmor(armor, testObject);
+    characterModifier = TestUtils.createAttack(-10, -15, -1, 1);
+    testObject.applyAttack(characterModifier);
+    assertEquals(85, testObject.health);
+    assertEquals( 35, testObject.magic);
+    assertEquals(1, testObject.power);
   }
 
   @Test
