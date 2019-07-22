@@ -30,18 +30,35 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public void save(Storable s) {
-    // TODO Auto-generated method stub
+    // ask writechache if aleardy seen
+    // if seen: return { "id" : writechache(s) }    // eg. { 'id' : 'World@0001' }
+    // else: // not seen before
+    //   jo1 = new jsonobject()
+    //   String newid = getNewID()  // todo: write this method
+    //   writechache.put(s, newId)
+    //   stack.push(jo1)
+    //   s.marshal(this)  // maybe recursive: write, ....ask chache already seeen ....
+    //   stack.pop()
   }
 
   public Storable read() {
-    // TODO Auto-generated method stub
+    // jsonobject jo1 = parse_file(file)
+    // string classname = extract_classname("storable@00001")
+    // string id = extract_id("storable@00001")
+    // if id in chache:
+    //   return readchache(id)
+    // else:
+    // stack.push(jo1)
+    // storable o1 = factory.get_new_object_from_class(classname)
+    // o1.unmarshal(this)
+    //  [ in unmarshal:  x  = .read("attribute")   in read:  jo jo2 = jo1.get("attribute"); stack.push(o2)  ]
+    // return o1
     return null;
   }
 
   @Override
   public void write(String key, Storable object) {
-    // TODO Auto-generated method stub
-
+    // todo write this method
   }
 
   @Override
@@ -59,6 +76,9 @@ public class JsonMarshallingContext implements MarshallingContext {
   @Override
   public int readInt(String key) {
     // TODO Auto-generated method stub
+    // deque.pop
+    //
+    // deque.push
     return 0;
   }
 

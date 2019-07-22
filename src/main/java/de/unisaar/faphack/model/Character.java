@@ -68,7 +68,7 @@ implements Storable, TraitedTileOccupier {
   /**
    * The currentWeight is the combined weights of armor, weapon and inventory
    */
-  private int currentWeight = 0; // todo: marshal!
+  private int currentWeight = 0;
 
   /**
    * All effects that currently apply on the character, for example damage or heal
@@ -208,6 +208,7 @@ implements Storable, TraitedTileOccupier {
     c.write("power", this.power);
     c.write("skills", this.skills);
     c.write("armor", this.armor);
+    c.write("currentWeight", this.currentWeight);
     c.write("maxWeight", this.maxWeight);
     c.write("activeEffects", this.activeEffects);
     c.write("name", this.name);
@@ -225,6 +226,7 @@ implements Storable, TraitedTileOccupier {
     this.power = c.readInt("power");
     this.skills = c.read("skills");
     c.readAll("armor", this.armor);
+    this.currentWeight = c.readInt("currentWeight");
     this.maxWeight = c.readInt("maxWeight");
     c.readAll("activeEffects", this.activeEffects);
     this.name = c.readString("name");
