@@ -23,10 +23,12 @@ public class Trap extends Fixtures {
   }
 
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.marshal(c);
+    c.write("trapDoor", this.trapDoor); // todo: what if null?
   }
 
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.unmarshal(c);
+    this.trapDoor = c.read("trapDoor"); // todo: what if null?
   }
 }

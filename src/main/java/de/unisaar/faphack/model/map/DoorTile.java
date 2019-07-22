@@ -36,12 +36,20 @@ public class DoorTile extends WallTile implements Storable {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.marshal(c);
+    c.write("open", this.open ? 1 : 0);
+    c.write("locked", this.locked ? 1 : 0);
+    c.write("hallway", this.hallway);
+    c.write("keyId", this.keyId);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.unmarshal(c);
+    this.open = c.readInt("open") == 1;
+    this.locked = c.readInt("locked") == 1;
+    this.hallway = c.read("hallway");
+    this.keyId = c.readInt("keyId");
   }
 
   public Hallway getHallway(){

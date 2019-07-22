@@ -31,11 +31,17 @@ public class CharacterModifier implements Storable {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO fill this
+    c.write("health", this.health);
+    c.write("magic", this.magic);
+    c.write("power", this.power);
+    c.write("howLong", this.howLong);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO fill this
+    this.health = c.readInt("health");
+    this.magic = c.readInt("magic");
+    this.power = c.readInt("power");
+    this.howLong = c.readInt("howLong");
   }
 }

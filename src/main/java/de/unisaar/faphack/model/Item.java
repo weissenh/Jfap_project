@@ -28,11 +28,15 @@ public abstract class Item implements Storable, TraitedTileOccupier {
   }
 
   public void marshal(MarshallingContext c) {
-    // TODO FILL THIS
+    c.write("onTile", this.onTile);
+    c.write("trait", this.trait);
+    c.write("effect", this.effect);
   }
 
   public void unmarshal(MarshallingContext c) {
-    // TODO FILL THIS
+    this.onTile = c.read("onTile");
+    this.trait = c.readString("trait");
+    this.effect = c.read("effect");
   }
 
   @Override

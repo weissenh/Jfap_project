@@ -163,12 +163,36 @@ public class Character implements Storable, TraitedTileOccupier {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO fill this
+    c.write("level", this.level);
+    c.write("tile", this.tile);
+    c.write("items", this.items);
+    c.write("health", this.health);
+    c.write("magic", this.magic);
+    c.write("power", this.power);
+    c.write("skills", this.skills);
+    c.write("armor", this.armor);
+    c.write("maxWeight", this.maxWeight);
+    c.write("activeEffects", this.activeEffects);
+    c.write("name", this.name);
+    c.write("role", this.role);
+    c.write("activeWeapon", this.activeWeapon);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO fill this
+    this.level = c.readInt("level");
+    this.tile = c.read("tile");
+    c.readAll("items", this.items);
+    this.health = c.readInt("health");
+    this.magic = c.readInt("magic");
+    this.power = c.readInt("power");
+    this.skills = c.read("skills");
+    c.readAll("armor", this.armor);
+    this.maxWeight = c.readInt("maxWeight");
+    c.readAll("activeEffects", this.activeEffects);
+    this.name = c.readString("name");
+    this.role = c.readString("role");
+    this.activeWeapon = c.read("activeWeapon");
   }
 
 }

@@ -87,11 +87,16 @@ public class Room implements Storable {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    c.write("world", this.w);
+    c.write("inhabitants", this.inhabitants);
+    c.write("tiles", this.tiles);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    this.w = c.read("world");
+    c.readAll("inhabitants", this.inhabitants); // todo: ?
+    this.tiles = c.readBoard("tiles");
+
   }
 }

@@ -50,12 +50,12 @@ public class Game implements Storable {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: fill this
+    c.write("world", this.world);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: fill this
+    this.world = c.read("world");
   }
 
 }

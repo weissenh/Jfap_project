@@ -12,15 +12,14 @@ public class ObstacleTile extends WallTile {
     trait = BOULDER;
   }
 
-  @Override
+  /* @Override
   public void marshal(MarshallingContext c) {
-    marshal(c);
-    c.write("trait", trait);
+    super.marshal(c);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    unmarshal(c);
-    trait = c.readString("trait");
+    super.unmarshal(c);
   }
+  */
 }

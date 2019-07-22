@@ -24,11 +24,13 @@ public class Stair extends Connector<StairTile> {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.marshal(c);
+    c.write("oneWay", this.oneWay ? 1 : 0);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.unmarshal(c);
+    this.oneWay = c.readInt("oneWay") == 1;
   }
 }

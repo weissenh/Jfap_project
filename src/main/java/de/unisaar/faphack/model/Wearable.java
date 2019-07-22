@@ -30,12 +30,18 @@ public class Wearable extends Item {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.marshal(c);
+    c.write("weight", this.weight);
+    c.write("isWeapon", this.isWeapon ? 1 : 0);
+    c.write("character", this.character);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.unmarshal(c);
+    this.weight = c.readInt("weight");
+    this.isWeapon = c.readInt("isWeapon") == 1;
+    this.character = c.read("character");
   }
 
 }

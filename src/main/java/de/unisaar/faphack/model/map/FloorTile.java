@@ -38,12 +38,14 @@ public class FloorTile extends Tile {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.marshal(c);
+    c.write("items", this.items);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.unmarshal(c);
+    c.readAll("items", this.items);
   }
 
   @Override

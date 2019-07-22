@@ -38,11 +38,13 @@ public class WallTile extends Tile {
 
   @Override
   public void marshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.marshal(c);
+    c.write("destructible", this.destructible);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
-    // TODO: FILL THIS
+    super.unmarshal(c);
+    c.readInt("destructible");
   }
 }
