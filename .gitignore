@@ -33,3 +33,8 @@ target/
 
 .iml
 *.iml
+
+*.so
+
+src/test/resources/game.json
+src/test/resources/sword_out.json

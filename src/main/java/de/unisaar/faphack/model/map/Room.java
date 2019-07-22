@@ -7,6 +7,7 @@ import de.unisaar.faphack.model.Storable;
 import static java.lang.Math.max;
 import java.lang.IndexOutOfBoundsException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class Room implements Storable {
   private World w;
 
   /** The Characters that currently are in this room */
-  private List<Character> inhabitants;
+  private List<Character> inhabitants = new ArrayList<>();
 
   /**
    * A 2-dimensional Array defining the layout of the tiles in the room.

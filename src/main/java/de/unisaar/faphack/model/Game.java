@@ -66,4 +66,7 @@ public class Game implements Storable {
     this.world = c.read("world");
   }
 
+  public World getWorld() {
+    return world;
+  }
 }

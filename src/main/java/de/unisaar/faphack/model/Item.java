@@ -22,7 +22,7 @@ implements Storable, TraitedTileOccupier {
   /**
    * The Effect connected to the item.
    */
-  protected CharacterModifier effect;
+  private  CharacterModifier effect;
 
   public Item() {
 
@@ -45,4 +45,8 @@ implements Storable, TraitedTileOccupier {
 
   @Override
   public String getTrait() { return trait; }
+
+  public CharacterModifier getCharacterModifier(){
+    return effect;
+  }
 }
