@@ -225,6 +225,13 @@ public class TestUtils {
     assertEquals(Wearable.class, r3.getTiles()[2][8].onTile().get(0).getClass());
   }
 
+  /**
+   * Place items at the specified position in the room
+   * @param room the room in which the items should appear
+   * @param x the x coordinate
+   * @param y the y coordinate
+   * @param items the items to be added
+   */
   public static void placeItemsInRoom(Room room, int x, int y, Wearable... items) {
     List<Wearable> onTile = new ArrayList<>(Arrays.asList(items));
     for(Wearable wearable : onTile){
@@ -233,10 +240,21 @@ public class TestUtils {
     modifyField(room.getTiles()[x][y], false, "items", onTile);
   }
 
+  /**
+   * Place the character on the given tile.
+   * @param testObject
+   * @param tile
+   */
   public static void placeCharacter(Character testObject, Tile tile) {
     modifyField(testObject, false, "tile", tile);
   }
 
+  /**
+   * Create a simple instance of Wearable
+   * @param weight the weight of the wearable
+   * @param isWeapon boolean determining whether the wearable is a weapon
+   * @return the new wearable
+   */
   public static Wearable createWearable(int weight, boolean isWeapon) {
     Wearable item = new Wearable();
     modifyField(item, false, "weight", weight);
@@ -244,6 +262,12 @@ public class TestUtils {
     return item;
   }
 
+  /**
+   * create a doortile with the given properties
+   * @param destructible 0 if the door is indestructible, else power needed to force door open
+   * @param isLocked true if the door is locked, otherwise false
+   * @return
+   */
   public static DoorTile createDoorTile(int destructible, boolean isLocked) {
     DoorTile doorTile = new DoorTile();
     modifyField(doorTile, false, "locked", isLocked);
@@ -251,12 +275,24 @@ public class TestUtils {
     return doorTile;
   }
 
+  /**
+   * create a walltile with the given properties
+   * @param destructible 0 if the door is indestructible, else power needed to force door open
+   * @return
+   */
   public static WallTile createWallTile(int destructible){
     WallTile wallTile = new WallTile();
     modifyField(wallTile, false, "destructible", destructible);
     return wallTile;
   }
 
+  /**
+   * Create a default character, specified by it name, power, and the max weight he can carry
+   * @param name the name of the character
+   * @param power the character's power
+   * @param maxWeight the max weight the character can carry
+   * @return the default character
+   */
   public static Character createBaseCharacter(String name, int power, int maxWeight ){
     Character character = new Character();
     modifyField(character, false, "name", name);
@@ -269,6 +305,12 @@ public class TestUtils {
   }
 
 
+  /**
+   * connect two doorTiles with a hallway
+   * @param t1 the "start" doorTile
+   * @param t2 the "end" doorTile
+   * @return a new instance of Hallway
+   */
   public static Hallway connectTiles(DoorTile t1, DoorTile t2) {
     Hallway connector = new Hallway();
     modifyField(connector,true,"fromTile", t1);
@@ -278,6 +320,12 @@ public class TestUtils {
     return connector;
   }
 
+  /**
+   * connect two stairtiles with a stairs
+   * @param t1 the "start" doorTile
+   * @param t2 the "end" doorTile
+   * @return a new instance of stair
+   */
   public static Stair connectTiles(StairTile t1, StairTile t2) {
     Stair connector = new Stair();
     modifyField(connector,true,"fromTile", t1);
@@ -287,6 +335,13 @@ public class TestUtils {
     return connector;
   }
 
+  /**
+   * creates an armor
+   * @param health double defining by how much the armor protects the characters health
+   * @param magic double defining by how much the armor protects the characters magic
+   * @param power double defining by how much the armor protects the characters power
+   * @return
+   */
   public static Armor createArmor(double health, double magic, double power ){
     Armor armor = new Armor();
     MultiplicativeEffect multiplicativeEffect = new MultiplicativeEffect();
@@ -297,10 +352,20 @@ public class TestUtils {
     return armor;
   }
 
+  /**
+   * equip the given wearable as the active weapon of the character
+   * @param wearable the weapon
+   * @param character the character that will carry it
+   */
   public static void equipWeapon(Wearable wearable, Character character){
     character.activeWeapon = wearable;
   }
 
+  /**
+   * equip the given armor as the armor of the character
+   * @param armor the armor, and
+   * @param character the character that will carry it
+   */
   public static void equipArmor(Armor armor, Character character){
     character.armor.add(armor);
   }
