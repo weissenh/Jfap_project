@@ -39,8 +39,10 @@ class LoadTest {
     Item sword = (Item)mc.read();
     assertNotNull(sword);
     File f2 = getTestResourceFile("", "sword_out.json");
-    JSONObject orig, saved;
+    mc = new JsonMarshallingContext(f2, fact);
+    mc.save(sword);
     JSONParser parser = new JSONParser();
+    JSONObject orig, saved;
     Reader reader = new FileReader(f);
     orig = (JSONObject) parser.parse(reader);
     reader.close();
