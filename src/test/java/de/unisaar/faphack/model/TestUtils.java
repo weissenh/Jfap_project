@@ -41,6 +41,11 @@ public class TestUtils {
     return new File(new File(testResourceDir, subdir), name);
   }
 
+
+  /**
+   * Create a default game, the default world ( three rooms, connected by stairs and hallways, two characters and some items)
+   * @return an instance of the default game
+   */
   public static Game createGame(){
     Game game = new Game();
     World world = createWorld();
@@ -50,6 +55,11 @@ public class TestUtils {
     return game;
   }
 
+
+  /**
+   * the default world ( three rooms, connected by stairs and hallways, two characters and some items)
+   * @return an instance of the default world
+   */
   public static World createWorld()  {
     World world = new World();
     List<Room> mapElements = new ArrayList<>();
@@ -96,6 +106,14 @@ public class TestUtils {
     return world;
   }
 
+
+  /**
+   * Creates a simple room of the size x,y ... the room number can be used to identify the room when debugging
+   * @param x the 1 dimension of the room
+   * @param y the 2 dimension of the room
+   * @param roomNo the room number
+   * @return a simple room
+   */
   public static Room createSimpleRoom(int x, int y, int roomNo){
     Room r = new Room();
     Tile[][] tiles = createTiles(x, y, r, roomNo);
@@ -103,6 +121,14 @@ public class TestUtils {
     return r;
   }
 
+  /**
+   * create the tiles used to create a room
+   * @param x the 1 dimension of the room
+   * @param y the 2 dimension of the room
+   * @param room the room the tiles belong to
+   * @param roomNo the room's number
+   * @return a Tile[][] used in the room
+   */
   private static Tile[][] createTiles(int x, int y, Room room, int roomNo){
     Tile[][] result = new Tile[x][y];
     for(int i = 0; i < x; i++){
@@ -122,7 +148,13 @@ public class TestUtils {
   }
 
 
-
+  /**
+   * Add the given Character to the room at the given position
+   * @param room the room the character should be added to
+   * @param x the x position
+   * @param y 
+   * @param character
+   */
   public static void addCharacter(Room room, int x, int y, Character character){
     List<Character> inhabitants = new ArrayList<>();
     inhabitants.add(character);
