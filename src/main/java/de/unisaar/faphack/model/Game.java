@@ -98,4 +98,10 @@ public class Game implements Storable {
   public void setProtagonist(Character prot) {
     // TODO: fill here
   }
+
+  /** get the game's protagonist */
+  public Character getProtagonist(Character prot) {
+    // TODO: fill here
+    return null;
+  }
 }

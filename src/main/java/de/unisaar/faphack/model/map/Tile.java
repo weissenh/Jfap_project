@@ -93,4 +93,11 @@ public abstract class Tile implements Storable, TraitOwner {
   public boolean addItem(Wearable what){
     return false;
   }
+
+  /**
+   *  Almost all tiles can not be occupied by a character.
+   */
+  public boolean isOccupied(){
+    return false;
+  }
 }
