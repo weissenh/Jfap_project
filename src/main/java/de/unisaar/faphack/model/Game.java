@@ -93,4 +93,9 @@ public class Game implements Storable {
   public World getWorld() {
     return world;
   }
+
+  /** Add the game's protagonist to a random floor tile in the first room */
+  public void setProtagonist(Character prot) {
+    // TODO: fill here
+  }
 }
