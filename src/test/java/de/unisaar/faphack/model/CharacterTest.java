@@ -1,6 +1,5 @@
 package de.unisaar.faphack.model;
 
-import de.unisaar.faphack.model.effects.MoveEffect;
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
 import org.junit.jupiter.api.Test;
@@ -70,7 +69,7 @@ class CharacterTest {
   void applyAttack() {
     // create a character without any armor
     Character testObject = TestUtils.createBaseCharacter("Foo", 2, 2);
-    CharacterModifier characterModifier = TestUtils.createAttack(-10, -15, -1, 1);
+    CharacterModifier characterModifier = TestUtils.createCharacterModifier(-10, -15, -1, 1);
     testObject.applyAttack(characterModifier);
     assertEquals(90, testObject.health);
     assertEquals( 35, testObject.magic);
@@ -78,7 +77,7 @@ class CharacterTest {
     // the testObject wears a armor now
     Armor armor = TestUtils.createArmor(0.5, 0.0, 0.0);
     TestUtils.equipArmor(armor, testObject);
-    characterModifier = TestUtils.createAttack(-10, -15, -1, 1);
+    characterModifier = TestUtils.createCharacterModifier(-10, -15, -1, 1);
     testObject.applyAttack(characterModifier);
     assertEquals(85, testObject.health);
     assertEquals( 35, testObject.magic);
@@ -86,10 +85,30 @@ class CharacterTest {
   }
 
   /**
-   * This method will be implemented on Tuesday ;-)
+   * Test whether items, mor specific, the <code>CharacterModifier</code>s connected to them,
+   * are correctly applied to our test subject (100 health, 50 magic and 2 power)
    */
   @Test
   void applyItem() {
-    fail("@Christian Please implement me");
+    // create our test subject
+    Character testObject = TestUtils.createBaseCharacter("Foo", 2, 2);
+    // some poison
+    CharacterModifier characterModifier = TestUtils.createCharacterModifier(-10, -15, -1, 1);
+    testObject.applyAttack(characterModifier);
+    assertEquals(90, testObject.health);
+    assertEquals( 35, testObject.magic);
+    assertEquals(1, testObject.power);
+    // some healing potion
+    characterModifier = TestUtils.createCharacterModifier(10, 15, 1, 1);
+    testObject.applyAttack(characterModifier);
+    assertEquals(100, testObject.health);
+    assertEquals( 50, testObject.magic);
+    assertEquals(2, testObject.power);
+    // some food providing extra power
+    characterModifier = TestUtils.createCharacterModifier(0, 0, 40, 1);
+    testObject.applyAttack(characterModifier);
+    assertEquals(100, testObject.health);
+    assertEquals( 50, testObject.magic);
+    assertEquals(42, testObject.power);
   }
 }
