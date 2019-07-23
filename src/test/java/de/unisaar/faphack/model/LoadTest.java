@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import de.unisaar.faphack.model.effects.AdditiveEffect;
+import de.unisaar.faphack.model.map.World;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -65,6 +67,30 @@ class LoadTest {
   }
 
   @Test
+  void saveAdditiveEffect() {
+    AdditiveEffect ae = new AdditiveEffect(0, 1, -1);
+    File f = getTestResourceFile("", "bla.json");
+    assertTrue(f.canRead());
+    StorableFactory fact = new StorableFactory();
+    StorableRegistrator.registerStorables(fact);
+    MarshallingContext mc = new JsonMarshallingContext(f, fact);
+    mc.save(ae);
+    assertTrue(f.canRead());
+  }
+
+  @Test
+  void saveWorld() {
+    World w = new World();
+    File f = getTestResourceFile("", "bla.json");
+    assertTrue(f.canRead());
+    StorableFactory fact = new StorableFactory();
+    StorableRegistrator.registerStorables(fact);
+    MarshallingContext mc = new JsonMarshallingContext(f, fact);
+    mc.save(w);
+    assertTrue(f.canRead());
+  }
+
+  @Test
   void saveGame() {
     Game game = createGame();
     File f = getTestResourceFile("", "game.json");
@@ -73,9 +99,9 @@ class LoadTest {
     MarshallingContext mc = new JsonMarshallingContext(f, fact);
     mc.save(game);
     assertTrue(f.canRead());
-//    mc = new JsonMarshallingContext(f, fact);
-//    Game game2 = (Game)mc.read();
-//    testDefaultWordData(game2.getWorld());
+    // mc = new JsonMarshallingContext(f, fact); // todo uncomment if read finished!
+    // Game game2 = (Game)mc.read();
+    // testDefaultWordData(game2.getWorld());
   }
 
 

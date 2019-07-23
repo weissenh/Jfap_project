@@ -25,7 +25,11 @@ public class JsonMarshallingContext implements MarshallingContext {
   private int idGenerator = 1;
 
   public JsonMarshallingContext(File f, StorableFactory fact) {
-    file = f;
+      file = f;
+      writecache = new IdentityHashMap<>();
+      readcache = new IdentityHashMap<>();
+      stack = new ArrayDeque<>();
+      factory = fact; // todo: do input validation!
   }
 
   private String getNewId() {
@@ -38,8 +42,18 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   private String getClassNamePlusID(Storable s) {
     String id = this.getNewId();  // e.g. 000001
-    String classname = s.getClass().getName();  // e.g. World  or Item  or ...
+    // getSimpleName will return "" for anonymous inner class
+    String classname = s.getClass().getSimpleName();  // e.g. World  or Item  or ...
     return classname + "@" + id; // World@00001
+  }
+
+  private Storable extractClassFromString(String str) {
+    // str = "World@0001"
+    String[] parts = str.split("@");
+    assert parts.length == 2;   // todo turn this into if statement
+    String classname = parts[0];
+    Storable c = factory.newInstance(classname);
+    return c; // todo: can be null!
   }
 
   @Override
@@ -47,7 +61,8 @@ public class JsonMarshallingContext implements MarshallingContext {
     JSONObject jo = getJOforStorable(s);
     try {
       FileWriter fw = new FileWriter(this.file);
-      fw.write(jo.toJSONString());
+      // fw.write(jo.toJSONString());
+      fw.write(jo.toString());  // writejsonstring???
       fw.flush();
       fw.close();
     }
@@ -62,24 +77,54 @@ public class JsonMarshallingContext implements MarshallingContext {
   }
 
   public Storable read() {
-    // jsonobject jo1 = parse_file(file)
-    // string id = extract_id("storable@00001")
-    // if id in chache:
-    //   return readchache(id)
-    // else:
-    // string classname = extract_classname("storable@00001")
-    // stack.push(jo1)
-    // storable o1 = factory.get_new_object_from_class(classname)
-    // reachchache(id -> o1)
-    // o1.unmarshal(this)
-    //  [ in unmarshal:  x  = .read("attribute")   in read:  jo jo2 = jo1.get("attribute"); stack.push(o2)  ]
-    // stack.pop() ?
-    // return o1
+    JSONParser parser = new JSONParser();
+    try {
+      // jsonobject jo1 = parse_file(file)
+      FileReader reader = new FileReader(file);
+      Object obj = parser.parse(reader);
+      JSONObject jobj = (JSONObject) obj;
+      // get id field and ask readchache if object already seen
+      String id = (String) jobj.get("id");  // id = "World@000001":
+      if (id == null) { throw new ParseException(42); }
+      Storable s = this.readcache.get(id);
+      if (s != null) { // already seen this object, just return it!
+        // todo: maybe check if matched other fields if any?
+        return s;
+      }
+      // if not seen (s == null), need to read in:
+      stack.push(jobj);
+      // string classname = extract_classname("storable@00001")
+      // storable o1 = factory.get_new_object_from_class(classname)
+      s = this.extractClassFromString(id);
+      // assert (id, s) not in readcache
+      // put new storable s in cache
+      this.readcache.put(id, s);
+      s.unmarshal(this);
+      stack.pop();
+      // o1.unmarshal(this)
+      //  [ in unmarshal:  x  = .read("attribute")   in read:  jo jo2 = jo1.get("attribute"); stack.push(o2)  ]
+      return s;
+    }
+    catch (ParseException pe) {
+      System.out.println("position: " + pe.getPosition());
+      System.out.println(pe);
+    }
+    catch (FileNotFoundException e) {
+      System.out.println("File not found: " + file.toString());
+      e.printStackTrace();
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+
     return null;
   }
 
   private JSONObject getJOforStorable(Storable s) {
     JSONObject jo = new JSONObject();
+    if (s == null) { // todo ? here or somewhere else?
+        return null;
+    }
     String id = this.writecache.get(s);
     if (id != null) { // seen before!
       // want jo to be just  { id : classname@uniquenumber }
@@ -111,7 +156,8 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public <T extends Storable> T read(String key) {
-    // TODO Auto-generated method stub
+    // TODO do this next
+    // make it mirror write(String key, Storable object)
     return null;
   }
 
@@ -126,11 +172,16 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public int readInt(String key) {
-    // TODO Auto-generated method stub
-    // deque.pop
-    //
-    // deque.push
-    return 0;
+    // this.x = c.readInt("x");
+    assert stack.size() > 0;
+    JSONObject jobj = stack.pop();
+    Object o = jobj.get(key);
+    int result = (int) o;
+    // convert to int, and return that int
+    // todo can throw classcasexpection?
+    // todo can throw NullPointerException
+    stack.push(jobj);
+    return result;
   }
 
   @Override
@@ -144,8 +195,15 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public double readDouble(String key) {
-    // TODO Auto-generated method stub
-    return 0;
+    assert stack.size() > 0;
+    JSONObject jobj = stack.pop();
+    Object o = jobj.get(key);
+    double result = (double) o;
+    // convert to int, and return that int
+    // todo can throw classcasexpection?
+    // todo can throw NullPointerException
+    stack.push(jobj);
+    return result;
   }
 
   @Override
@@ -160,8 +218,15 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public String readString(String key) {
-    // TODO Auto-generated method stub
-    return null;
+    assert stack.size() > 0;
+    JSONObject jobj = stack.pop();
+    Object o = jobj.get(key);
+    String result = (String) o;
+    // convert to int, and return that int
+    // todo can throw classcasexpection?
+    // todo can throw NullPointerException
+    stack.push(jobj);
+    return result;
   }
 
   @Override
@@ -192,7 +257,6 @@ public class JsonMarshallingContext implements MarshallingContext {
     }
     // todo: assert that jarray has same size as collection
     jo.put(key, jarray);  // "key" : [ { <item 1> }, { <item 2> }, ...]
-    // jo.put(key, object);
     this.stack.push(jo);
   }
 

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Game implements Storable {
   private World world;
-  private Character protagonist; // todo marshall
+  private Character protagonist;
 
   public Game() {
 
@@ -59,6 +59,7 @@ public class Game implements Storable {
   @Override
   public void marshal(MarshallingContext c) {
     c.write("world", this.world);
+    c.write("protagonist", this.protagonist);
   }
 
   @Override
