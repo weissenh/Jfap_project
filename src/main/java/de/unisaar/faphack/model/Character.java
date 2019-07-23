@@ -197,6 +197,26 @@ implements Storable, TraitedTileOccupier {
   public void applyItem(CharacterModifier eff) {
   }
 
+  /**
+   * removes the given Item from the characters inventory
+   * @param item the item to be removed
+   * @return <code>true</code> if the action was successful, <code>false</code> otherwise
+   */
+  public boolean dropItem(Item item){
+    // TODO please implement me!
+    return false;
+  }
+
+  /**
+   * Equips the given Wearable as active Weapon or armor depending
+   * @param wearable the item to be equipped
+   * @return <code>true</code> the action was successful, <code>false</code> otherwise
+   */
+  public boolean equipItem(Wearable wearable){
+    // TODO please implement me!
+    return false;
+  }
+
   @Override
   public String getTrait() { return (health == 0 ? "DEAD_" : "") + role; }
 

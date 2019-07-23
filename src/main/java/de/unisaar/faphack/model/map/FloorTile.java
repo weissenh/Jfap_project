@@ -43,6 +43,11 @@ public class FloorTile extends Tile {
   }
 
   @Override
+  public boolean addItem(Wearable what) {
+    return items.add(what);
+  }
+
+  @Override
   public void marshal(MarshallingContext c) {
     // TODO please implement me!
   }
