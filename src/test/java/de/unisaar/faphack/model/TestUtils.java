@@ -163,7 +163,7 @@ public class TestUtils {
     //modifyField(character, false, "tile", room.getTiles()[x][y]);
   }
 
-  public static CharacterModifier createAttack(int health, int magic, int power, int howlong ) {
+  public static CharacterModifier createCharacterModifier(int health, int magic, int power, int howlong ) {
     CharacterModifier attack = new CharacterModifier();
     attack.health = health;
     attack.magic = magic;
