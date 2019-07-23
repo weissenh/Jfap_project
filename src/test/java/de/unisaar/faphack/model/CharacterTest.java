@@ -18,21 +18,15 @@ class CharacterTest {
    * 4. Direction (0,2) exception expected as only directions with values from -1 to 1 are allowed in MoveEffects
    */
   @Test
-  void moveTo() {
+  void move() {
     Room room = TestUtils.createSimpleRoom(4,4,1);
     Tile[][] tiles = room.getTiles();
     Character testObject = createBaseCharacter("Foo", 2, 2);
     addCharacter(room, 1, 1, testObject);
-    MoveEffect moveEffect = new MoveEffect(new Direction(0,1));
-    moveEffect.apply(testObject);
+    testObject.move(room.getNextTile(testObject.tile, new Direction(0,1 )));
     assertEquals(tiles[1][2], testObject.tile);
-    moveEffect = new MoveEffect(new Direction(0,-1));
-    moveEffect.apply(testObject);
+    testObject.move(room.getNextTile(testObject.tile, new Direction(0,-1 )));
     assertEquals(tiles[1][1], testObject.tile);
-    moveEffect = new MoveEffect(new Direction(-1,0));
-    moveEffect.apply(testObject);
-    assertEquals(tiles[1][1], testObject.tile);
-    assertThrows(IllegalArgumentException.class, () ->  new MoveEffect(new Direction(0, 2)));
   }
 
 
