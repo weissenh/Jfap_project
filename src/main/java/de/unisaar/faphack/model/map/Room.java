@@ -30,9 +30,10 @@ public class Room implements Storable {
   public Room(){}
 
   /**
+   /**
    * This method returns a tile determined by the specified tile <code> t </ code> and the <code> direction </ code> d.
    * If the path between the specified tile and the derived tile is blocked by a wall,
-   * the wall is returned.
+   * the wall tile is returned.
    *
    * HINT: use the computeDDA to compute the path
    *
