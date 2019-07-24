@@ -1,12 +1,13 @@
 package de.unisaar.faphack.model;
 
-import de.unisaar.faphack.model.effects.MultiplicativeEffect;
-import de.unisaar.faphack.model.map.Tile;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import de.unisaar.faphack.model.effects.MultiplicativeEffect;
+import de.unisaar.faphack.model.map.Room;
+import de.unisaar.faphack.model.map.Tile;
 
 /**
  * @author
@@ -132,6 +133,10 @@ implements Storable, TraitedTileOccupier {
 
   public Tile getTile() {
     return tile;
+  }
+
+  public Room getRoom() {
+    return tile.getRoom();
   }
 
   public int getHealth() {
