@@ -32,7 +32,9 @@ class GameTest {
     assertTrue(!room.getTiles()[1][2].onTile().contains(item1));
     assertEquals(testObject, item1.character);
     assertNull(item1.onTile);
-
+    Fixtures fountain = new Fixtures();
+    placeItemsInRoom(room, 1,2, fountain);
+    assertFalse(game.pickUp(testObject, fountain));
   }
 
   /**
@@ -44,6 +46,7 @@ class GameTest {
     Game game = TestUtils.createGame();
     Room room = game.getWorld().getMapElements().get(0);
     Character testObject = room.getInhabitants().get(0);
+    System.out.println(testObject.name);
     assertTrue(game.move(testObject, new Direction(-1, 0)));
     assertTrue(game.move(testObject, new Direction(0, -1)));
     assertTrue(game.move(testObject, new Direction(1, 0)));
