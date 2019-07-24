@@ -43,6 +43,10 @@ public abstract class Tile implements Storable, TraitOwner {
     return y;
   }
 
+  public Room getRoom() {
+    return room;
+  }
+
   /**
    * Given the "vector" d, what's the tile you get in return? (Hint: ask the room)
    *
@@ -94,7 +98,18 @@ public abstract class Tile implements Storable, TraitOwner {
 
   }
 
-  public boolean pickupItem(Wearable what){
+  public boolean removeItem(Wearable what) {
+    return false;
+  }
+
+  public boolean addItem(Wearable what){
+    return false;
+  }
+
+  /**
+   *  Almost all tiles can not be occupied by a character.
+   */
+  public boolean isOccupied(){
     return false;
   }
   public Room getRoom() { return this.room; }  // todo: does this make a copy or allow modification?

@@ -1,12 +1,13 @@
 package de.unisaar.faphack.model;
 
-import de.unisaar.faphack.model.effects.MultiplicativeEffect;
-import de.unisaar.faphack.model.map.Tile;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import de.unisaar.faphack.model.effects.MultiplicativeEffect;
+import de.unisaar.faphack.model.map.Room;
+import de.unisaar.faphack.model.map.Tile;
 
 /**
  * @author
@@ -56,7 +57,7 @@ implements Storable, TraitedTileOccupier {
   /**
    * This might be shield / bodyarmor / etc.
    */
-  protected List<Wearable> armor = new ArrayList<>();
+  protected List<Armor> armor = new ArrayList<>();
 
   /**
    * The maximal amount of weight the character can carry. The sum of the weight
@@ -108,9 +109,12 @@ implements Storable, TraitedTileOccupier {
 
   /**
    * Pick up the given Wearable. Returns true if the action is possible.
+   * The character can only pickup an item if it is
+   * 1. on the same tile
+   * 2. the current weight of all items the character carries + the weight of the item is less then maxWeight
    *
-   * @param what
-   * @return boolean
+   * @param what the item to be picked up
+   * @return  boolean <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean pickUp(Wearable what) {
     // TODO Auto-generated method stub
@@ -124,12 +128,16 @@ implements Storable, TraitedTileOccupier {
     // TODO Auto-generated method stub
   }
 
-  public Item activeWeapon() {
+  public Wearable activeWeapon() {
     return activeWeapon;
   }
 
   public Tile getTile() {
     return tile;
+  }
+
+  public Room getRoom() {
+    return tile.getRoom();
   }
 
   public int getHealth() {
@@ -195,6 +203,26 @@ implements Storable, TraitedTileOccupier {
   public void applyItem(CharacterModifier eff) {
   }
 
+  /**
+   * removes the given Item from the characters inventory
+   * @param item the item to be removed
+   * @return <code>true</code> if the action was successful, <code>false</code> otherwise
+   */
+  public boolean dropItem(Wearable item){
+    // TODO please implement me!
+    return false;
+  }
+
+  /**
+   * Equips the given Wearable as active Weapon or armor depending
+   * @param wearable the item to be equipped
+   * @return <code>true</code> the action was successful, <code>false</code> otherwise
+   */
+  public boolean equipItem(Wearable wearable){
+    // TODO please implement me!
+    return false;
+  }
+
   @Override
   public String getTrait() { return (health == 0 ? "DEAD_" : "") + role; }
 
@@ -234,4 +262,7 @@ implements Storable, TraitedTileOccupier {
     this.activeWeapon = c.read("activeWeapon");
   }
 
+  public void rest() {
+    this.power += 5;
+  }
 }
