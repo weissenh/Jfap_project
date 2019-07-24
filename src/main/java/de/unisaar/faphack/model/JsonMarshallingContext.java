@@ -76,33 +76,38 @@ public class JsonMarshallingContext implements MarshallingContext {
     // return;
   }
 
+  private Storable getStorableFromJsonObject(JSONObject jobj) {
+    // ask for id  //parse exception?
+    String id = (String) jobj.get("id");  // id = "World@000001":
+    if (id == null) { return null; }
+    // ask readchache if id seen
+    Storable s = this.readcache.get(id);
+    // if yes, return readchache(id)
+    if (s != null) { // already seen this object, just return it!
+      // todo: maybe check if matched other fields if any?
+      return s;
+    }
+    // if no: we haven't object yet
+    // push on stack, put in chache, unmarshal, pop form stack
+    // if not seen (s == null), need to read in:
+    stack.push(jobj);
+    s = this.extractClassFromString(id);
+    // assert (id, s) not in readcache
+    // put new storable s in cache
+    this.readcache.put(id, s);
+    s.unmarshal(this);
+    stack.pop();
+    return s;
+  }
+
   public Storable read() {
     JSONParser parser = new JSONParser();
     try {
       // jsonobject jo1 = parse_file(file)
       FileReader reader = new FileReader(file);
       Object obj = parser.parse(reader);
-      JSONObject jobj = (JSONObject) obj;
-      // get id field and ask readchache if object already seen
-      String id = (String) jobj.get("id");  // id = "World@000001":
-      if (id == null) { throw new ParseException(42); }
-      Storable s = this.readcache.get(id);
-      if (s != null) { // already seen this object, just return it!
-        // todo: maybe check if matched other fields if any?
-        return s;
-      }
-      // if not seen (s == null), need to read in:
-      stack.push(jobj);
-      // string classname = extract_classname("storable@00001")
-      // storable o1 = factory.get_new_object_from_class(classname)
-      s = this.extractClassFromString(id);
-      // assert (id, s) not in readcache
-      // put new storable s in cache
-      this.readcache.put(id, s);
-      s.unmarshal(this);
-      stack.pop();
-      // o1.unmarshal(this)
-      //  [ in unmarshal:  x  = .read("attribute")   in read:  jo jo2 = jo1.get("attribute"); stack.push(o2)  ]
+      JSONObject jobj = (JSONObject) obj; // ask getstorablefromjsonobject
+      Storable s = getStorableFromJsonObject(jobj);
       return s;
     }
     catch (ParseException pe) {
@@ -156,9 +161,21 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public <T extends Storable> T read(String key) {
-    // TODO do this next
     // make it mirror write(String key, Storable object)
-    return null;
+    // todo: change method to look less ugly
+    assert stack.size() > 0;
+    JSONObject jobj = this.stack.pop();
+    Object o = jobj.get(key);
+    // if key not in json object,
+    if (o == null) {
+      stack.push(jobj);
+      return null;
+    }
+    JSONObject value = (JSONObject) o;
+    // if key in json object, cast to jsonobject
+    T t = (T) getStorableFromJsonObject(value); // can be null
+    stack.push(jobj);
+    return t;
   }
 
   @Override
@@ -260,10 +277,31 @@ public class JsonMarshallingContext implements MarshallingContext {
     this.stack.push(jo);
   }
 
+  private <T extends Storable> void convertJArray2Collection(JSONArray jarray, Collection<T> coll) {
+    // then we convert each item in the value(an array?) to a storable
+    for (Object item : jarray) {
+      // cast to json object
+      JSONObject jitem = (JSONObject) item;
+      // convert to storable
+      Storable s = getStorableFromJsonObject(jitem);
+      // add to collection
+      coll.add((T) s);
+    }
+  }
+
   @Override
   public void readAll(String key, Collection<? extends Storable> coll) {
-    // TODO Auto-generated method stub
-
+    // we ask the current json object for the value of key
+    assert stack.size() > 0;
+    JSONObject jobj = stack.pop();
+    Object o = jobj.get(key);
+    if (o == null) {
+      stack.push(jobj);
+      return;  // 'return collection unchanged' todo maybe empty collection?
+    }
+    JSONArray jarray = (JSONArray) o;
+    convertJArray2Collection(jarray, coll);
+    stack.push(jobj);
   }
 
   @Override
@@ -297,8 +335,24 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public Tile[][] readBoard(String key) {
-    // TODO Auto-generated method stub
-    return null;
+    assert stack.size() > 0;
+    JSONObject jobj = stack.pop();
+    Object value = jobj.get(key);
+    if (value == null) {
+      stack.push(jobj);
+      return null;
+    }
+    JSONArray jarray = (JSONArray) value;
+    Collection<Tile[]> tilematrix = new ArrayList<>();
+    Collection<Tile> tilerow = new ArrayList<>();
+    for (Object innerarray: jarray) {
+      JSONArray innerjarray = (JSONArray) innerarray;  // todo what happens if cast not possible?
+      convertJArray2Collection(innerjarray, tilerow);
+      Tile[] tilerowarray = tilerow.toArray(new Tile[0]);
+      tilematrix.add(tilerowarray);
+    }
+    Tile[][] tiles = tilematrix.toArray(new Tile[0][0]);
+    stack.push(jobj);
+    return tiles;
   }
-
 }

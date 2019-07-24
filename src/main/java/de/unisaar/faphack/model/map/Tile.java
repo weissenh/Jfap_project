@@ -112,5 +112,5 @@ public abstract class Tile implements Storable, TraitOwner {
   public boolean isOccupied(){
     return false;
   }
-  public Room getRoom() { return this.room; }  // todo: does this make a copy or allow modification?
+
 }
