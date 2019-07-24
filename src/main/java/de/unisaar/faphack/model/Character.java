@@ -93,7 +93,11 @@ implements Storable, TraitedTileOccupier {
   protected Wearable activeWeapon;
 
   public Character() {
-
+    /*
+    this.items = new ArrayList<>();
+    this.armor = new ArrayList<>();
+    this.activeEffects = new HashSet<>();
+     */
   }
 
   /**

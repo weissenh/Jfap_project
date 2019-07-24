@@ -300,28 +300,15 @@ public class JsonMarshallingContext implements MarshallingContext {
   @Override
   public void readAll(String key, Collection<? extends Storable> coll) {
     // we ask the current json object for the value of key
-    // coll can be null, but maybe we want
-    // to change it in case the json file contains a json array instead of null
+    // todo what if null?
     assert stack.size() > 0;
     JSONObject jobj = stack.pop();
     Object o = jobj.get(key);
     if (o == null) {
-      // either the key is not in the json object,
-      // or it is but its value is null
-      // for both, don't do json array...
-      // todo: maybe signal if key wasn't present?
-      if (jobj.containsKey(key)) {
-        coll = null;
-      }
       stack.push(jobj);
       return;
     }
     JSONArray jarray = (JSONArray) o;
-    if (jarray != null && coll == null) {
-      // in case the file contains an array (not null), but the collection in null,
-      // we have to create an (empty) collection!
-      coll = new ArrayList<Storable>(); // todo: don't depend on concrete impl!!!!!!!
-    }
     convertJArray2Collection(jarray, coll);
     stack.push(jobj);
   }

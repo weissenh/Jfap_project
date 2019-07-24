@@ -18,7 +18,9 @@ public class World implements Storable {
 
   private List<Room> mapElements;
 
-  public World() {}
+  public World() {
+    this.mapElements = new ArrayList<>();
+  }
 
   @Override
   public void marshal(MarshallingContext c) {
