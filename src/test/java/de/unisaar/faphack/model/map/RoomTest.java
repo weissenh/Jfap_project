@@ -21,18 +21,18 @@ class RoomTest {
     // right
     assertEquals(tiles[2][2], room.getNextTile(tiles[2][1],new Direction(0,1)));
     // left
-    assertEquals(tiles[2][1], room.getNextTile(tiles[2][1],new Direction(0,-1)));
+    assertEquals(tiles[2][0], room.getNextTile(tiles[2][1],new Direction(0,-1)));
     // up
     assertEquals(tiles[3][1], room.getNextTile(tiles[2][1],new Direction(1,0)));
     // down left
-    assertEquals(tiles[2][1], room.getNextTile(tiles[2][1],new Direction(-1,-1)));
+    assertEquals(tiles[1][0], room.getNextTile(tiles[2][1],new Direction(-1,-1)));
     // down right
     assertEquals(tiles[1][2], room.getNextTile(tiles[2][1],new Direction(-1,1)));
     // up left
-    assertEquals(tiles[2][1], room.getNextTile(tiles[2][1],new Direction(1,-1)));
+    assertEquals(tiles[3][0], room.getNextTile(tiles[2][1],new Direction(1,-1)));
     // up right
     assertEquals(tiles[3][2], room.getNextTile(tiles[2][1],new Direction(1,1)));
     // test corner cases (What happens if we use a direction with x and/or y coordinates that are beyond the rooms borders
-    assertEquals(tiles[6][6], room.getNextTile(tiles[1][1], new Direction(9,9)));
+    assertEquals(tiles[7][7], room.getNextTile(tiles[1][1], new Direction(9,9)));
   }
 }
