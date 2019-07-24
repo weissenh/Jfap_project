@@ -101,6 +101,7 @@ public class Game implements Storable {
   @Override
   public void unmarshal(MarshallingContext c) {
     this.world = c.read("world");
+    this.protagonist = c.read("protagonist");
   }
 
   public World getWorld() {

@@ -27,7 +27,7 @@ public class JsonMarshallingContext implements MarshallingContext {
   public JsonMarshallingContext(File f, StorableFactory fact) {
       file = f;
       writecache = new IdentityHashMap<>();
-      readcache = new IdentityHashMap<>();
+      readcache = new HashMap<>();
       stack = new ArrayDeque<>();
       factory = fact; // todo: do input validation!
   }
@@ -87,6 +87,8 @@ public class JsonMarshallingContext implements MarshallingContext {
       // todo: maybe check if matched other fields if any?
       return s;
     }
+    assert s == null;
+    assert !this.readcache.containsKey(id);
     // if no: we haven't object yet
     // push on stack, put in chache, unmarshal, pop form stack
     // if not seen (s == null), need to read in:
@@ -192,8 +194,9 @@ public class JsonMarshallingContext implements MarshallingContext {
     // this.x = c.readInt("x");
     assert stack.size() > 0;
     JSONObject jobj = stack.pop();
-    Object o = jobj.get(key);
-    int result = (int) o;
+    Object o = jobj.get(key); // todo what if key not present?
+    Long lo = (Long) o;
+    int result = lo.intValue();
     // convert to int, and return that int
     // todo can throw classcasexpection?
     // todo can throw NullPointerException
@@ -268,6 +271,11 @@ public class JsonMarshallingContext implements MarshallingContext {
     // for each element in the collection, write it (either id if written before or complete object)
     JSONArray jarray = new JSONArray();
     // for each item (storable!) in the collection coll: get its json object
+    if (coll == null) {
+      jo.put(key, null);
+      stack.push(jo);
+      return;
+    }
     for (Storable item : coll) {
       JSONObject joitem = getJOforStorable(item);
       jarray.add(joitem);
@@ -292,14 +300,28 @@ public class JsonMarshallingContext implements MarshallingContext {
   @Override
   public void readAll(String key, Collection<? extends Storable> coll) {
     // we ask the current json object for the value of key
+    // coll can be null, but maybe we want
+    // to change it in case the json file contains a json array instead of null
     assert stack.size() > 0;
     JSONObject jobj = stack.pop();
     Object o = jobj.get(key);
     if (o == null) {
+      // either the key is not in the json object,
+      // or it is but its value is null
+      // for both, don't do json array...
+      // todo: maybe signal if key wasn't present?
+      if (jobj.containsKey(key)) {
+        coll = null;
+      }
       stack.push(jobj);
-      return;  // 'return collection unchanged' todo maybe empty collection?
+      return;
     }
     JSONArray jarray = (JSONArray) o;
+    if (jarray != null && coll == null) {
+      // in case the file contains an array (not null), but the collection in null,
+      // we have to create an (empty) collection!
+      coll = new ArrayList<Storable>(); // todo: don't depend on concrete impl!!!!!!!
+    }
     convertJArray2Collection(jarray, coll);
     stack.push(jobj);
   }
@@ -317,6 +339,11 @@ public class JsonMarshallingContext implements MarshallingContext {
     assert stack.size() > 0;
     JSONObject jo = this.stack.pop();
     JSONArray outerjsonarray = new JSONArray();
+    if (coll == null) {
+      jo.put(key, null);
+      stack.push(jo);
+      return;
+    }
     for (Tile[] innerarray : coll) {
       // start array for innerlist
       JSONArray innerjsonarray = new JSONArray();
