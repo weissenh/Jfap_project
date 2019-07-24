@@ -22,7 +22,12 @@ public class CharacterModifier implements Storable {
    */
   public boolean applyTo(Character c) {
     // TODO fill this
-    return false;
+    if (this.howLong == 0) {
+      return false;}
+    c.health = this.health;
+    c.magic = this.magic;
+    c.power = this.power;
+    return true;
   }
 
   public int howLong() {

@@ -26,7 +26,8 @@ public class MultiplicativeEffect extends ModifyingEffect {
    */
   public CharacterModifier apply(CharacterModifier c) {
     // TODO: FILL THIS
-    return null;
+
+    return c;
   }
 
 }
