@@ -53,4 +53,8 @@ public class Wearable extends Item {
   public void drop(Tile t) {
     // TODO please implement me!
   }
+
+  public int getWeight(){
+    return this.weight;
+  }
 }
