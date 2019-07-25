@@ -10,6 +10,14 @@ import java.util.List;
  * @author
  *
  */
+
+//// Tiles
+//static final String FLOOR = "floor";
+//static final String DOOR = "door";
+//static final String OPENDOOR = "open_door";
+//static final String WALL = "wall";
+//static final String STAIR = "stair";
+
 public abstract class Tile implements Storable, TraitOwner {
 
   protected int x;
@@ -62,6 +70,11 @@ public abstract class Tile implements Storable, TraitOwner {
    * @return the current tile if you can move the Character c onto this tile, null
    *         otherwise
    */
+  // check if it is a tile you can move to (~wall)
+  // If it is a wall, check if it is destructed or not
+
+  // this is abstract, we define for each tile
+
   public abstract Tile willTake(Character c);
 
   /**

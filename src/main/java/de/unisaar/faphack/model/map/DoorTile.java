@@ -49,12 +49,12 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     } else if (!this.locked) {
       return hallway.toTile; //return the toTile;
     } else {
-      // check if the character has a key
-
-
-      // check if the IDs match
-      // if match, can enter the door
-
+      // check if the character has the key
+      Key k = new Key(this.keyId);
+      if (c.owns(k)) {
+        this.locked = false;
+        return hallway.toTile;
+      }
     }
 
     return null;
