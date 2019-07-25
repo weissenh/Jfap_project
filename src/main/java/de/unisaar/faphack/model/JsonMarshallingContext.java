@@ -358,8 +358,8 @@ public class JsonMarshallingContext implements MarshallingContext {
     }
     JSONArray jarray = (JSONArray) value;
     Collection<Tile[]> tilematrix = new ArrayList<>();
-    Collection<Tile> tilerow = new ArrayList<>();
     for (Object innerarray: jarray) {
+      Collection<Tile> tilerow = new ArrayList<>();
       JSONArray innerjarray = (JSONArray) innerarray;  // todo what happens if cast not possible?
       convertJArray2Collection(innerjarray, tilerow);
       Tile[] tilerowarray = tilerow.toArray(new Tile[0]);
