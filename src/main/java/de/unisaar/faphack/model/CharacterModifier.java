@@ -1,5 +1,8 @@
 package de.unisaar.faphack.model;
 
+import de.unisaar.faphack.model.effects.AdditiveEffect;
+import de.unisaar.faphack.model.effects.ModifyingEffect;
+
 public class CharacterModifier implements Storable {
   // what this modifier does to the various aspects of a character
   public int health;
@@ -21,12 +24,11 @@ public class CharacterModifier implements Storable {
    * Apply the changes of this modifier to c, but only if howLong is not zero
    */
   public boolean applyTo(Character c) {
-    // TODO fill this
-    if (this.howLong == 0) {
+    if (this.howLong() == 0) {
       return false;}
-    c.health = this.health;
-    c.magic = this.magic;
-    c.power = this.power;
+    c.health += this.health;
+    c.magic += this.magic;
+    c.power += this.power;
     return true;
   }
 

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.unisaar.faphack.model.effects.ModifyingEffect;
 import de.unisaar.faphack.model.effects.MultiplicativeEffect;
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
@@ -198,13 +199,24 @@ implements Storable, TraitedTileOccupier {
      * stamina, quality of different armors, possibly even in the different
      * dimensions.
      */
-
+    if (this.armor.isEmpty()) {
+      eff.applyTo(this);
+    } else {
+      for (int i = 0; i < this.armor.size(); i++) {
+        ModifyingEffect effect = armor.get(i).getModifyingEffect();
+        effect.apply(eff);
+      }
+      eff.applyTo(this);
+    }
   }
 
   /**
    * Apply the effects of, e.g., a poisoning, eating something, etc.
    */
   public void applyItem(CharacterModifier eff) {
+
+    eff.applyTo(this);
+
   }
 
   /**

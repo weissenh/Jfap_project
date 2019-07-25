@@ -21,19 +21,19 @@ public class Armor extends Wearable {
     return null;
   }
 
-  public  ModifyingEffect getModifyingEffect(){
+  public ModifyingEffect getModifyingEffect(){
     return modifyingEffect;
   }
 
   @Override
   public void marshal(MarshallingContext c) {
     super.marshal(c);
-    c.write("modifyingEffect", character);
+    c.write("modifyingEffect", modifyingEffect);
   }
 
   @Override
   public void unmarshal(MarshallingContext c) {
     super.unmarshal(c);
-    character = c.read("modifyingEffect");
+    this.modifyingEffect = c.read("modifyingEffect");
   }
 }
