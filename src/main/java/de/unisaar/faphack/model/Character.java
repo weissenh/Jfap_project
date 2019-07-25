@@ -122,15 +122,22 @@ implements Storable, TraitedTileOccupier {
    * @return  boolean <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean pickUp(Wearable what) {
-    // TODO Auto-generated method stub
+    if (this.getTile() == what.getTile()) {
+      if ((this.currentWeight + what.getWeight()) <= this.maxWeight) { //less or equal instead of less
+          return true;
+      }
+    }
     return false;
+
   }
+
 
   /**
    * @return void
    */
   public void interact() {
     // TODO Auto-generated method stub
+    // todo: fabz
   }
 
   public Wearable activeWeapon() {
@@ -201,7 +208,8 @@ implements Storable, TraitedTileOccupier {
      */
     if (this.armor.isEmpty()) {
       eff.applyTo(this);
-    } else {
+    }
+    else {
       for (int i = 0; i < this.armor.size(); i++) {
         ModifyingEffect effect = armor.get(i).getModifyingEffect();
         effect.apply(eff);
@@ -223,9 +231,21 @@ implements Storable, TraitedTileOccupier {
    * removes the given Item from the characters inventory
    * @param item the item to be removed
    * @return <code>true</code> if the action was successful, <code>false</code> otherwise
+   *
    */
   public boolean dropItem(Wearable item){
-    // TODO please implement me!
+      if (this.items.contains(item)){
+        this.items.remove(item);
+        //todo: what happens if you have an active item equiped that equals another item in items that is not the active weapon
+        //is the active weapon dropped?
+        //Item is equiped as active weapon
+        if(this.activeWeapon.equals(item)){
+          this.activeWeapon = null;
+        }
+
+        item.drop(this.getTile());
+        return true;
+    }
     return false;
   }
 
@@ -235,9 +255,22 @@ implements Storable, TraitedTileOccupier {
    * @return <code>true</code> the action was successful, <code>false</code> otherwise
    */
   public boolean equipItem(Wearable wearable){
-    // TODO please implement me!
-    return false;
-  }
+    // check if the wearable item is in the items inventory
+    if (this.items.contains(wearable)) {
+      // if in inventory, check if the wearable item is a weapon
+      if (wearable.isWeapon) {
+        // if weapon, equip character with the wearable item as active weapon
+        this.activeWeapon = wearable;
+        return true;
+      } else {
+        // if not a weapon, equip character with the wearable item as armor
+        this.armor.add((Armor) wearable);
+        return true;
+      }
+    }
+    // if not in inventory, return false
+     return false;
+    }
 
   @Override
   public String getTrait() { return (health == 0 ? "DEAD_" : "") + role; }

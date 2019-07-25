@@ -1,10 +1,14 @@
 package de.unisaar.faphack.model;
 
 import de.unisaar.faphack.model.effects.MoveEffect;
+import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
 import de.unisaar.faphack.model.map.World;
+import sun.font.TrueTypeFont;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author
@@ -32,7 +36,10 @@ public class Game implements Storable {
    * @return boolean
    */
   public boolean move(Character whom, Direction direction) {
-    // TODO please implement me!
+    if (whom != null) {
+      MoveEffect moveEffect = new MoveEffect(direction);
+      return moveEffect.apply(whom);
+    }
     return false;
   }
 
@@ -40,8 +47,19 @@ public class Game implements Storable {
    * The character rests, i.e. it moves with direction (0,0) and its power increases by 5
   */
   public boolean rest(Character whom){
-    // TODO please implement me!
-    return true;
+    // get the power value and position of the character before resting
+    int prev_power = whom.getPower();
+    Tile prev_tile = whom.tile;
+    // let character rest
+    whom.rest();
+    // get new power value and position after resting
+    int new_power = whom.getPower();
+    Tile new_tile = whom.tile;
+    // check that the new power value is the old one + 5 and new position is the old position
+    if (new_power == (prev_power + 5) && new_tile.equals(prev_tile)) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -63,7 +81,13 @@ public class Game implements Storable {
    * @return boolean <code>true</code> if the character managed to pickup the item, <code>false</code> otherwise
    */
   public boolean pickUp(Character who, Item item) {
-    // TODO: fill this
+    if (who != null) {
+      if (item instanceof Wearable) {
+        Wearable what = (Wearable) item;
+        return who.pickUp(what);
+      }
+      return false;
+    }
     return false;
   }
 
@@ -74,8 +98,7 @@ public class Game implements Storable {
    * @return <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean drop(Character who, Wearable what){
-    // TODO please implement me!
-    return false;
+    return who.dropItem(what);
   }
 
   /**
@@ -86,8 +109,7 @@ public class Game implements Storable {
    * @return <code>true</code> the action was successful, <code>false</code> otherwise
    */
   public boolean equip(Character who, Wearable what){
-    // TODO please implement me!
-    return false;
+    return (who.equipItem(what));
   }
 
   @Override
@@ -108,7 +130,30 @@ public class Game implements Storable {
 
   /** Add the game's protagonist to a random floor tile in the first room */
   public void setProtagonist(Character prot) {
-    // TODO: fill here
+    // Get the list of rooms in the world and get the first room
+    List<Room> rooms = this.world.getMapElements();
+    Room first_room = rooms.get(0);
+    // Get the tiles in the first room
+    Tile[][] first_room_tiles = first_room.getTiles();
+    // Generate a random tile in the room until we find one that will take the prot
+    Boolean found = false;
+    while (found == false) {
+      // Generate a random tile in the room
+      Tile random_tile = generateRandomTile(first_room_tiles);
+      // Check if tile will take prot
+      if (random_tile.willTake(prot) != null) {
+        found = true;
+        // If yes, set prots position to tile, add prot to inhabitants of the room?
+        prot.tile = random_tile;
+      }
+    }
+  }
+
+  public Tile generateRandomTile(Tile[][] room_tiles) {
+    int x_pos = new Random().nextInt(room_tiles[0].length + 1);
+    int y_pos = new Random().nextInt(room_tiles[1].length + 1);
+    Tile random_tile = room_tiles[x_pos][y_pos];
+    return random_tile;
   }
 
   /** get the game's protagonist */
