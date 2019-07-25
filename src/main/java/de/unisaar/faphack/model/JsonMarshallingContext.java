@@ -24,12 +24,14 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   private int idGenerator = 1;
 
+  private static final String NAMEIDSEPARATOR = "@";
+
   public JsonMarshallingContext(File f, StorableFactory fact) {
       file = f;
       writecache = new IdentityHashMap<>();
       readcache = new HashMap<>();
       stack = new ArrayDeque<>();
-      factory = fact; // todo: do input validation!
+      factory = fact; // todo: input validation?
   }
 
   private String getNewId() {
@@ -40,20 +42,39 @@ public class JsonMarshallingContext implements MarshallingContext {
     return idstr;
   }
 
+  /**
+   * Get unique string for a storable object containing classname and some unique number
+   *
+   * @param s Storable for which we would like to get an id
+   * @return String like World@00001 if s is a World object
+   */
   private String getClassNamePlusID(Storable s) {
+    assert !this.writecache.containsKey(s); // only get string for things we haven't seen before
     String id = this.getNewId();  // e.g. 000001
     // getSimpleName will return "" for anonymous inner class
     String classname = s.getClass().getSimpleName();  // e.g. World  or Item  or ...
-    return classname + "@" + id; // World@00001
+    return classname + NAMEIDSEPARATOR + id; // World@00001
   }
 
+  /**
+   * Get a new instance of class mentioned at beginning of str
+   *
+   * e.g. str = "World@0001"  -> get World object!
+   * @param str string consisting of classname, Nameidseparator, unique id
+   * @return new instance of the class
+   */
   private Storable extractClassFromString(String str) {
-    // str = "World@0001"
-    String[] parts = str.split("@");
-    assert parts.length == 2;   // todo turn this into if statement
+    String[] parts = str.split(NAMEIDSEPARATOR);
+    if (parts.length != 2) {
+      // wellformed input has only one @
+      // (assume neither class name nor id can contain '@')
+      // but this str wasn't wellformed
+      return null;
+    }
+    // assert parts.length == 2;
     String classname = parts[0];
     Storable c = factory.newInstance(classname);
-    return c; // todo: can be null!
+    return c; // note: can be null!
   }
 
   @Override
@@ -61,94 +82,93 @@ public class JsonMarshallingContext implements MarshallingContext {
     JSONObject jo = getJOforStorable(s);
     try {
       FileWriter fw = new FileWriter(this.file);
+      // enhancement: how to write *formatted* JSON?
       // fw.write(jo.toJSONString());
-      fw.write(jo.toString());  // writejsonstring???
+      fw.write(jo.toString());
       fw.flush();
       fw.close();
     }
     catch (java.io.IOException e) {
+      System.err.println("Writing to file not possible: " + file.toString());
       e.printStackTrace();
-    }
-//    finally {
-//      fw.flush();
-//      fw.close();
-//    }
-    // return;
+    } // todo: what's the best way to open a file? (always close?)
   }
 
   private Storable getStorableFromJsonObject(JSONObject jobj) {
-    // ask for id  //parse exception?
-    String id = (String) jobj.get("id");  // id = "World@000001":
-    if (id == null) { return null; }
-    // ask readchache if id seen
-    Storable s = this.readcache.get(id);
-    // if yes, return readchache(id)
+    // used while reading
+    assert jobj != null;
+    // ask json object for id
+    String id = (String) jobj.get("id");  // e.g. id = "World@000001":
+    if (id == null) {
+      // jobj had no 'id' key or value of id is null
+      return null;
+    }
+    Storable s = this.readcache.get(id); // ask readcache if id seen
     if (s != null) { // already seen this object, just return it!
-      // todo: maybe check if matched other fields if any?
+      // enhancement: maybe check if matched other fields if any?
       return s;
     }
+    // haven't seen object before, so let's read it in from jobj
     assert s == null;
     assert !this.readcache.containsKey(id);
-    // if no: we haven't object yet
-    // push on stack, put in chache, unmarshal, pop form stack
-    // if not seen (s == null), need to read in:
-    stack.push(jobj);
-    s = this.extractClassFromString(id);
-    // assert (id, s) not in readcache
-    // put new storable s in cache
+    stack.push(jobj);  // current jobj needs to be read in
+    s = this.extractClassFromString(id); // get new (uninitialized) Storable
+    // todo: input validation: what if s is null (couldn't extract class name)
+    // put new storable s in cache (now we have seen the storable!)
     this.readcache.put(id, s);
+    // unmarshal: fill instance variables using the values of jobj
     s.unmarshal(this);
-    stack.pop();
+    stack.pop(); // finished reading in from json object
     return s;
   }
 
   public Storable read() {
     JSONParser parser = new JSONParser();
     try {
-      // jsonobject jo1 = parse_file(file)
       FileReader reader = new FileReader(file);
       Object obj = parser.parse(reader);
-      JSONObject jobj = (JSONObject) obj; // ask getstorablefromjsonobject
+      JSONObject jobj = (JSONObject) obj;
       Storable s = getStorableFromJsonObject(jobj);
       return s;
     }
     catch (ParseException pe) {
-      System.out.println("position: " + pe.getPosition());
-      System.out.println(pe);
+      System.err.println("position: " + pe.getPosition());
+      System.err.println(pe);
     }
     catch (FileNotFoundException e) {
-      System.out.println("File not found: " + file.toString());
+      System.err.println("File not found: " + file.toString());
       e.printStackTrace();
     }
     catch (IOException e) {
+      System.err.println("File error for file: " + file.toString());
       e.printStackTrace();
     }
-
     return null;
   }
 
   private JSONObject getJOforStorable(Storable s) {
-    JSONObject jo = new JSONObject();
-    if (s == null) { // todo ? here or somewhere else?
+    // used while writing
+    JSONObject jobj = new JSONObject();
+    if (s == null) { // cannot create json object for null
         return null;
     }
     String id = this.writecache.get(s);
     if (id != null) { // seen before!
-      // want jo to be just  { id : classname@uniquenumber }
-      jo.put("id", id);
-      return jo;
+      // want jobj to be just  { id : classname@uniquenumber }
+      jobj.put("id", id);
+      return jobj;
     }
     else { // not seen before! add to cache and marshall object
       String classnameplusid = this.getClassNamePlusID(s);
       this.writecache.put(s, classnameplusid);
-      jo.put("id", classnameplusid);
+      jobj.put("id", classnameplusid);
       // json object still empty, pop from stack if completely filled with all instance variables
-      stack.push(jo);
+      stack.push(jobj);
       s.marshal(this); // add all attributes of s to the json object
       // note: marshal calls write and write can access stack, writechache for inner objects
       assert stack.size() > 0;
-      jo = stack.pop(); // jo completely processed
-      return jo;
+      jobj = stack.pop(); // jobj completely processed
+      return jobj;
     }
   }
 
@@ -163,89 +183,76 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   @Override
   public <T extends Storable> T read(String key) {
-    // make it mirror write(String key, Storable object)
+    // should mirror write(String key, Storable object)
     // todo: change method to look less ugly
     assert stack.size() > 0;
-    JSONObject jobj = this.stack.pop();
+    JSONObject jobj = stack.pop();
     Object o = jobj.get(key);
-    // if key not in json object,
-    if (o == null) {
+    if (o == null) { // key not in jobj or value is null
       stack.push(jobj);
       return null;
     }
     JSONObject value = (JSONObject) o;
-    // if key in json object, cast to jsonobject
-    T t = (T) getStorableFromJsonObject(value); // can be null
+    T t = (T) getStorableFromJsonObject(value); // todo: input validation: cast not possible?
     stack.push(jobj);
     return t;
   }
 
   @Override
   public void write(String key, int object) {
-    // json object on stack, would like to add a "key": object  pair to it
     assert stack.size() > 0;
-    JSONObject jo = this.stack.pop();
+    JSONObject jo = stack.peek();
     jo.put(key, object);
-    this.stack.push(jo);
   }
 
   @Override
   public int readInt(String key) {
-    // this.x = c.readInt("x");
     assert stack.size() > 0;
-    JSONObject jobj = stack.pop();
-    Object o = jobj.get(key); // todo what if key not present?
+    JSONObject jobj = stack.peek();
+    Object o = jobj.get(key);
+    // todo: input validation: what if key not present?
+    // todo: input validation: can throw NullPointerException
     Long lo = (Long) o;
     int result = lo.intValue();
-    // convert to int, and return that int
-    // todo can throw classcasexpection?
-    // todo can throw NullPointerException
-    stack.push(jobj);
+    // todo: input validation: can throw classcastexpection?
     return result;
   }
 
   @Override
   public void write(String key, double object) {
-    // json object on stack, would like to add a "key": object  pair to it
     assert stack.size() > 0;
-    JSONObject jo = this.stack.pop();
+    JSONObject jo = this.stack.peek();
     jo.put(key, object);
-    this.stack.push(jo);
   }
 
   @Override
   public double readDouble(String key) {
     assert stack.size() > 0;
-    JSONObject jobj = stack.pop();
+    JSONObject jobj = stack.peek();
     Object o = jobj.get(key);
+    // todo: input validation: what if key not present?
+    // todo: input validation: can throw NullPointerException
     double result = (double) o;
-    // convert to int, and return that int
-    // todo can throw classcasexpection?
-    // todo can throw NullPointerException
-    stack.push(jobj);
+    // todo: input validation: can throw classcastexpection?
     return result;
   }
 
   @Override
   public void write(String key, String object) {
-    // json object on stack, would like to add a "key": "object"  pair to it
-    // if (this.stack.size() == 0) raise Error? shouldnt happen
     assert stack.size() > 0;
-    JSONObject jo = this.stack.pop();
+    JSONObject jo = this.stack.peek();
     jo.put(key, object);
-    this.stack.push(jo);
   }
 
   @Override
   public String readString(String key) {
     assert stack.size() > 0;
-    JSONObject jobj = stack.pop();
+    JSONObject jobj = stack.peek();
     Object o = jobj.get(key);
+    // todo: input validation: what if key not present?
+    // todo: input validation: can throw NullPointerException
     String result = (String) o;
-    // convert to int, and return that int
-    // todo can throw classcasexpection?
-    // todo can throw NullPointerException
-    stack.push(jobj);
+    // todo: input validation: can throw classcasexpection?
     return result;
   }
 
@@ -286,13 +293,13 @@ public class JsonMarshallingContext implements MarshallingContext {
   }
 
   private <T extends Storable> void convertJArray2Collection(JSONArray jarray, Collection<T> coll) {
-    // then we convert each item in the value(an array?) to a storable
+    assert coll != null;  // cannot add things to a null object
     for (Object item : jarray) {
-      // cast to json object
+      // convert each object in the jarray into a storable
+      // and then add it to the collection
+      // todo: input validation: what if casts fail?
       JSONObject jitem = (JSONObject) item;
-      // convert to storable
       Storable s = getStorableFromJsonObject(jitem);
-      // add to collection
       coll.add((T) s);
     }
   }
@@ -300,11 +307,15 @@ public class JsonMarshallingContext implements MarshallingContext {
   @Override
   public void readAll(String key, Collection<? extends Storable> coll) {
     // we ask the current json object for the value of key
-    // todo what if null?
+    // this value should be a json array which
+    // elements should be converted to Storables and then added to coll
+    // todo what if coll null?
     assert stack.size() > 0;
+    // peek: retrieve topmost stack element, without removing it
+    // we would like to keep it on the stack for further read in
     JSONObject jobj = stack.pop();
     Object o = jobj.get(key);
-    if (o == null) {
+    if (o == null) { // json object doesn't have this key
       stack.push(jobj);
       return;
     }
@@ -352,18 +363,18 @@ public class JsonMarshallingContext implements MarshallingContext {
     assert stack.size() > 0;
     JSONObject jobj = stack.pop();
     Object value = jobj.get(key);
-    if (value == null) {
+    if (value == null) {  // json object didn't have that key or value was null
       stack.push(jobj);
       return null;
     }
-    JSONArray jarray = (JSONArray) value;
+    JSONArray outerjarray = (JSONArray) value; // todo: input validation! (cast possible?)
     Collection<Tile[]> tilematrix = new ArrayList<>();
-    Collection<Tile> tilerow = new ArrayList<>();
-    for (Object innerarray: jarray) {
-      JSONArray innerjarray = (JSONArray) innerarray;  // todo what happens if cast not possible?
-      convertJArray2Collection(innerjarray, tilerow);
-      Tile[] tilerowarray = tilerow.toArray(new Tile[0]);
-      tilematrix.add(tilerowarray);
+    for (Object innerarray: outerjarray) {
+      Collection<Tile> tileaccumulator = new ArrayList<>();
+      JSONArray innerjarray = (JSONArray) innerarray;  // todo: input validation! (cast possible?)
+      convertJArray2Collection(innerjarray, tileaccumulator);
+      Tile[] tilerow = tileaccumulator.toArray(new Tile[0]);
+      tilematrix.add(tilerow);
     }
     Tile[][] tiles = tilematrix.toArray(new Tile[0][0]);
     stack.push(jobj);

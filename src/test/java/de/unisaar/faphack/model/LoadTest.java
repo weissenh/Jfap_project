@@ -103,6 +103,7 @@ class LoadTest {
     MarshallingContext mc = new JsonMarshallingContext(f, fact);
     mc.save(game);
     assertTrue(f.canRead());
+    // testDefaultWordData(game.getWorld());
     mc = new JsonMarshallingContext(f, fact);
     Game game2 = (Game)mc.read();
     testDefaultWordData(game2.getWorld());
