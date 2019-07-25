@@ -1,6 +1,7 @@
 package de.unisaar.faphack.model.map;
 
 import de.unisaar.faphack.model.Character;
+import de.unisaar.faphack.model.CharacterModifier;
 import de.unisaar.faphack.model.MarshallingContext;
 
 /**
@@ -18,7 +19,7 @@ import de.unisaar.faphack.model.MarshallingContext;
  *
  */
 public class WallTile extends Tile {
-  /** 0 means infinitely strong, > 0 means: must apply at least this force */
+  /** -1 means infinitely strong, 0 means destroyed, f must apply at least force f*/
   protected int destructible;
 
   public WallTile() {
@@ -33,6 +34,22 @@ public class WallTile extends Tile {
   @Override
   public Tile willTake(Character c) {
     // TODO: FILL THIS
+
+    if (this.destructible == 0){
+      return this;
+    }
+    else if(this.destructible <= c.getPower()){
+      this.destructible = 0;
+
+      int p = - this.destructible;
+      int h = 0;
+      int m = 0;
+      int hl = 1; //how long is the change applied
+      CharacterModifier characterModifier = new CharacterModifier(h, m, p, hl);
+      c.applyItem(characterModifier);
+      return this;
+    }
+
     return null;
   }
 
