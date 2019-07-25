@@ -1,5 +1,7 @@
 package de.unisaar.faphack.model;
 
+import java.util.ArrayList;
+
 public interface TraitOwner {
 
   /** The list of trait constants, for all characters, there exists a non-listed

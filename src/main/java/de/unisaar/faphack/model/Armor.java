@@ -1,6 +1,7 @@
 package de.unisaar.faphack.model;
 
 import de.unisaar.faphack.model.effects.ModifyingEffect;
+import de.unisaar.faphack.model.map.Tile;
 
 public class Armor extends Wearable {
 
@@ -9,7 +10,13 @@ public class Armor extends Wearable {
 
 
   public Armor(){
+    // super.isWeapon = true; // todo ???
+  }
 
+  public Armor(Tile where, String trait, CharacterModifier effect, Character c) {
+    super(where, trait, effect, c);
+    // todo input validation: possible trait?
+    // todo modifiyng effect missing!
   }
 
   /**
