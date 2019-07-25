@@ -83,7 +83,10 @@ public class Game implements Storable {
    * @return <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean drop(Character who, Wearable what){
-    return who.dropItem(what);
+    if (who != null) {
+      return who.dropItem(what);
+    }
+    return false;
   }
 
   /**
