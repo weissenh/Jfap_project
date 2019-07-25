@@ -5,6 +5,7 @@ import de.unisaar.faphack.model.Direction;
 import de.unisaar.faphack.model.TestUtils;
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
+import de.unisaar.faphack.model.map.WallTile;
 import org.junit.jupiter.api.Test;
 
 import static de.unisaar.faphack.model.TestUtils.addCharacter;
@@ -22,7 +23,7 @@ class MoveEffectTest {
    * 5. move actions are not allowed when the character's power is 0
    *
    * Possible further tests:
-   * todo: 6. destructible wall move*
+   * todo: 6. destructible wall move: test whether moving onto a destructible wall removes power
    */
   @Test
   void apply() {
@@ -50,5 +51,17 @@ class MoveEffectTest {
     moveEffect = new MoveEffect(new Direction(1,1));
     moveEffect.apply(testObject2);
     assertEquals(tiles[2][2], testObject2.getTile());
+
+    /*todo: figure out how to change the type of a room after creation
+    //6. Test of loss of power by moving onto a destructible wal
+    int char_power = 5;
+    int wall_destructible = 3;
+    Character testObject3 = createBaseCharacter("Potato", char_power, 2);
+    addCharacter(room, 2,2, testObject2);
+    tiles[3][2] = new WallTile(3,2,room,wall_destructible);
+    moveEffect = new MoveEffect(new Direction(1,0));
+    moveEffect.apply(testObject3);
+    assertEquals(char_power-wall_destructible, testObject3.getPower());
+    */
   }
 }

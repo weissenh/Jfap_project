@@ -26,25 +26,43 @@ public class WallTile extends Tile {
     trait = WALL;
   }
 
+  public WallTile(int x, int y, Room room, int destructible){
+    super(x, y, room);
+    trait = WALL;
+    destructible = destructible;
+  }
+
+  //todo: change back to standard
   public WallTile(int x, int y, Room room){
     super(x, y, room);
     trait = WALL;
+    //this(x,y,room,-1);
   }
+
+
 
   @Override
   public Tile willTake(Character c) {
-    // TODO: FILL THIS
-
+    //todo: delete this;
+    this.destructible = -1;
+    //Wall tile already destroyed
     if (this.destructible == 0){
       return this;
     }
+
+    //Wall tile undestroyable
+    else if (this.destructible == -1){
+      return null;
+    }
+
+    //Wall is destructed if character has sufficient power
     else if(this.destructible <= c.getPower()){
       this.destructible = 0;
 
       int p = - this.destructible;
       int h = 0;
       int m = 0;
-      int hl = 1; //how long is the change applied
+      int hl = 1;
       CharacterModifier characterModifier = new CharacterModifier(h, m, p, hl);
       c.applyItem(characterModifier);
       return this;

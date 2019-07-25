@@ -114,7 +114,4 @@ public class Wearable extends Item {
     return;
   }
 
-  public int getWeight(){
-    return this.weight;
-  }
 }
