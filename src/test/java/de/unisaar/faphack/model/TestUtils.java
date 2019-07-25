@@ -398,9 +398,11 @@ public class TestUtils {
     return character;
   }
 
-  public static void placeTrapOnStair(Trap trap, StairTile tile){
+  public static void placeTrapOnTile(Trap trap, Tile tile){
     trap.onTile = tile;
-    modifyField(trap, false, "trapDoor", tile);
-    modifyField(tile, false, "trap", trap);
+    if (tile instanceof  StairTile) {
+      modifyField(trap, false, "trapDoor", tile);
+      modifyField(tile, false, "trap", trap);
+    }
   }
 }
