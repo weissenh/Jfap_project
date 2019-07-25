@@ -33,6 +33,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
   public Boolean apply(Character c) {
     // todo: check whether we only move one tile
     // todo: question: what if destination tile contains a trap?
+    // todo: check that no other character is on that tile
 
     Tile cpos = c.getTile(); // current tile: starting point of character
     // ask the room the tile is in where we will end up if we move in the direction

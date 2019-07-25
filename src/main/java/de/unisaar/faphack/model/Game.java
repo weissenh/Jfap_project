@@ -36,7 +36,10 @@ public class Game implements Storable {
    * @return boolean
    */
   public boolean move(Character whom, Direction direction) {
-    // TODO please implement me!
+    if (whom != null) {
+      MoveEffect moveEffect = new MoveEffect(direction);
+      return moveEffect.apply(whom);
+    }
     return false;
   }
 
@@ -78,7 +81,13 @@ public class Game implements Storable {
    * @return boolean <code>true</code> if the character managed to pickup the item, <code>false</code> otherwise
    */
   public boolean pickUp(Character who, Item item) {
-    // TODO: fill this
+    if (who != null) {
+      if (item instanceof Wearable) {
+        Wearable what = (Wearable) item;
+        return who.pickUp(what);
+      }
+      return false;
+    }
     return false;
   }
 
@@ -89,8 +98,7 @@ public class Game implements Storable {
    * @return <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean drop(Character who, Wearable what){
-    // TODO please implement me!
-    return false;
+    return who.dropItem(what);
   }
 
   /**

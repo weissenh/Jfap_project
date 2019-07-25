@@ -122,15 +122,22 @@ implements Storable, TraitedTileOccupier {
    * @return  boolean <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean pickUp(Wearable what) {
-    // TODO Auto-generated method stub
+    if (this.getTile() == what.getTile()) {
+      if ((this.currentWeight + what.getWeight()) <= this.maxWeight) { //less or equal instead of less
+          return true;
+      }
+    }
     return false;
+
   }
+
 
   /**
    * @return void
    */
   public void interact() {
     // TODO Auto-generated method stub
+    // todo: fabz
   }
 
   public Wearable activeWeapon() {
@@ -224,9 +231,21 @@ implements Storable, TraitedTileOccupier {
    * removes the given Item from the characters inventory
    * @param item the item to be removed
    * @return <code>true</code> if the action was successful, <code>false</code> otherwise
+   *
    */
   public boolean dropItem(Wearable item){
-    // TODO please implement me!
+      if (this.items.contains(item)){
+        this.items.remove(item);
+        //todo: what happens if you have an active item equiped that equals another item in items that is not the active weapon
+        //is the active weapon dropped?
+        //Item is equiped as active weapon
+        if(this.activeWeapon.equals(item)){
+          this.activeWeapon = null;
+        }
+
+        item.drop(this.getTile());
+        return true;
+    }
     return false;
   }
 
