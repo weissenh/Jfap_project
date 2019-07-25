@@ -10,6 +10,14 @@ import java.util.List;
  * @author
  *
  */
+
+//// Tiles
+//static final String FLOOR = "floor";
+//static final String DOOR = "door";
+//static final String OPENDOOR = "open_door";
+//static final String WALL = "wall";
+//static final String STAIR = "stair";
+
 public abstract class Tile implements Storable, TraitOwner {
 
   protected int x;
@@ -62,11 +70,17 @@ public abstract class Tile implements Storable, TraitOwner {
    * @return the current tile if you can move the Character c onto this tile, null
    *         otherwise
    */
+  // check if it is a tile you can move to (~wall)
+  // If it is a wall, check if it is destructed or not
+
+  // this is abstract, we define for each tile
+
   public abstract Tile willTake(Character c);
 
   /**
    *  Almost all tiles can not have items on them.
    */
+  // what tiles can have items? FLOOR, STAIR? check items on tiles
   public List<Item> onTile() {
     return Collections.emptyList();
   }
@@ -77,6 +91,7 @@ public abstract class Tile implements Storable, TraitOwner {
   /**
    * Most tiles have no trap
    */
+  // which ones do? ask getTrap
   public Trap hasTrap() {
     return null;
   }
@@ -101,14 +116,17 @@ public abstract class Tile implements Storable, TraitOwner {
   public boolean removeItem(Wearable what) {
     return false;
   }
+  // only for tiles that can have items
 
   public boolean addItem(Wearable what){
     return false;
   }
+  // only for tiles that can have items
 
   /**
    *  Almost all tiles can not be occupied by a character.
    */
+  // for FLOOR tiles and STAIR tiles
   public boolean isOccupied(){
     return false;
   }

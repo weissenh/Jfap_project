@@ -25,6 +25,8 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
    */
   private int keyId;
 
+
+
   public DoorTile() {
   }
 
@@ -35,6 +37,26 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
   @Override
   public Tile willTake(Character c) {
     // TODO: FILL THIS
+
+    // check if the door is open
+    // if the door is closed, is it locked? NO
+    // open and closed but not locked doors are the same
+
+    // check if the door is open:
+    if (c == null) return null;
+    if (this.open) {
+      return hallway.toTile; // return the toTile;
+    } else if (!this.locked) {
+      return hallway.toTile; //return the toTile;
+    } else {
+      // check if the character has the key
+      Key k = new Key(this.keyId);
+      if (c.owns(k)) {
+        this.locked = false;
+        return hallway.toTile;
+      }
+    }
+
     return null;
   }
 

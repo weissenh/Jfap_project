@@ -28,6 +28,12 @@ implements Storable, TraitedTileOccupier {
 
   }
 
+  public Item(Tile where, String trait, CharacterModifier effect) {
+    this.onTile = where;
+    this.trait = trait; // todo input validation: check if valid trait string!
+    this.effect = effect;
+  }
+
   public void marshal(MarshallingContext c) {
     c.write("onTile", this.onTile);
     c.write("trait", this.trait);
