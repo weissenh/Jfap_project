@@ -71,7 +71,7 @@ public class FloorTile extends Tile {
    * @return true if the tile is occupied by a character
    */
   @Override
-  public boolean isOccupied(){
+  public boolean isOccupied(Character character){
     // TODO please implement me!
     return false;
   }
