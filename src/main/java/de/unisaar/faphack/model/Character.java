@@ -281,4 +281,12 @@ implements Storable, TraitedTileOccupier {
   public void rest() {
     this.power += 5;
   }
+
+  public boolean owns(Item item) {
+    // return items.contains(item); test for equality or identity?
+    for (Item item2 : items) {
+      if (item2.equals(item)) return true;
+    }
+    return false;
+  }
 }

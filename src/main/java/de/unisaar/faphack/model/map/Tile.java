@@ -67,6 +67,7 @@ public abstract class Tile implements Storable, TraitOwner {
   /**
    *  Almost all tiles can not have items on them.
    */
+  // what tiles can have items? FLOOR, STAIR? check items on tiles
   public List<Item> onTile() {
     return Collections.emptyList();
   }
@@ -77,6 +78,7 @@ public abstract class Tile implements Storable, TraitOwner {
   /**
    * Most tiles have no trap
    */
+  // which ones do? ask getTrap
   public Trap hasTrap() {
     return null;
   }
@@ -101,14 +103,17 @@ public abstract class Tile implements Storable, TraitOwner {
   public boolean removeItem(Wearable what) {
     return false;
   }
+  // only for tiles that can have items
 
   public boolean addItem(Wearable what){
     return false;
   }
+  // only for tiles that can have items
 
   /**
    *  Almost all tiles can not be occupied by a character.
    */
+  // for FLOOR tiles and STAIR tiles
   public boolean isOccupied(){
     return false;
   }

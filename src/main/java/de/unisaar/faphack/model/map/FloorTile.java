@@ -38,6 +38,7 @@ public class FloorTile extends Tile {
    */
   @Override
   public Tile willTake(Character c) {
+    // we can normally go on a floor tile. If there is an Item, can we still?
     return this;
   }
 
