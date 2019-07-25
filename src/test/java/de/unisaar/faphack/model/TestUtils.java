@@ -397,4 +397,10 @@ public class TestUtils {
     modifyField(character, false, "role", character.WARRIOR);
     return character;
   }
+
+  public static void placeTrapOnStair(Trap trap, StairTile tile){
+    trap.onTile = tile;
+    modifyField(trap, false, "trapDoor", tile);
+    modifyField(tile, false, "trap", trap);
+  }
 }
