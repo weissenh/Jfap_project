@@ -22,13 +22,10 @@ public class WallTile extends Tile {
   /** -1 means infinitely strong, 0 means destroyed, f must apply at least force f*/
   protected int destructible;
 
-  public WallTile() {
-    trait = WALL;
-  }
+  public WallTile() { }
 
   public WallTile(int x, int y, Room room){
     super(x, y, room);
-    trait = WALL;
   }
 
   @Override
@@ -65,5 +62,6 @@ public class WallTile extends Tile {
     c.readInt("destructible");
   }
 
-
+  @Override
+  public String getTrait() { return destructible < 0 ? DESTROYED_WALL : WALL; }
 }
