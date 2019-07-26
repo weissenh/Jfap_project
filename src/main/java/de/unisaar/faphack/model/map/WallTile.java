@@ -21,8 +21,8 @@ import de.unisaar.faphack.model.MarshallingContext;
 public class WallTile extends Tile {
   /** -1 means destroyed, 0 means indestructible, destructible >= 0 must apply at least force f*/
   protected int destructible;
-  private final static int INDESTRUCTIBLE = 0;
-  private final static int DESTROYED = -1;
+  protected final static int INDESTRUCTIBLE = 0;
+  protected final static int DESTROYED = -1;
 
   public WallTile() {
     trait = WALL;
