@@ -38,22 +38,49 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
   public Tile willTake(Character c) {
     // TODO: FILL THIS
 
-    // check if the door is open
-    // if the door is closed, is it locked? NO
-    // open and closed but not locked doors are the same
-
-    // check if the door is open:
+    // check if we have a real character
     if (c == null) return null;
+
+    // we need to check from which side we come and what is our goal tile.
+    // default goal tile is the toTile
+    Tile goalTile = hallway.toTile;
+
+    // if we want to step on the toTile, then our goal tile is fromTile
+    if (this == hallway.toTile) {
+      goalTile = hallway.fromTile;
+    }
+
+    // if the door is open, we can directly go to the goal tile
     if (this.open) {
-      return hallway.toTile; // return the toTile;
-    } else if (!this.locked) {
-      return hallway.toTile; //return the toTile;
-    } else {
-      // check if the character has the key
+      return goalTile;
+    }
+
+    // if the door is closed, but not locked, we can still go through
+    else if (!this.locked) {
+      return goalTile;
+    }
+
+    // if the door is locked, we can either open it using a key, or we can open it with force
+    else {
+      // if the door is closed, we can open with a key (if we have the correct key)
       Key k = new Key(this.keyId);
       if (c.owns(k)) {
-        this.locked = false;
-        return hallway.toTile;
+        this.locked = false; // we open the door and leave it open
+        return goalTile;
+      }
+      else if (this.destructible == 0) {return goalTile;}
+
+      else if (this.destructible <= c.getPower() & this.destructible > 0) {
+        this.locked = false; // we want to unlock the door
+        this.open = true; // and keep it open
+        this.destructible = 0;
+        int p = - this.destructible;
+        int h = 0;
+        int m = 0;
+        int hl = 1;
+        CharacterModifier characterModifier = new CharacterModifier(h, m, p, hl);
+        c.applyItem(characterModifier);
+        return goalTile;
       }
     }
 
@@ -80,6 +107,10 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
 
   public Hallway getHallway(){
     return hallway;
+  }
+
+  public void setKeyId(int kid) {
+    this.keyId = kid;
   }
 
   @Override

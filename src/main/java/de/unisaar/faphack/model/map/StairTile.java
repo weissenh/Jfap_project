@@ -32,33 +32,32 @@ public class StairTile extends Tile {
   @Override
   public Tile willTake(Character c) {
     // TODO: FILL THIS
-    if (c == null) {
-      return null;
-    } // what to return
+    // check if we have a real character
+    if (c == null) {return null;}
+
+    // define the default goal tile
+    Tile goalTile = stair.toTile;
+
     // check if the stair is one-way or two-ways
     if (this.stair.onlyDown()) {
-
       // only down: 'from' -> 'to'
       // doesn't go: 'to' -> 'from'
       // if the character stands on the 'to' tile: return null
-
-      // the character can not stand on a stair. The stair leads directly to another room (portal)
-
-      if (c.getTile() == this.stair.toTile) {
+      if (this == stair.toTile) {
         return null;
       } else {
         c.levelDown();
-        return this.stair.toTile;
       }
     }
-    // check to and from
-    if (c.getTile() == this.stair.toTile) {
+
+//    if we want to take the toTile, our goal tile is fromTile
+    if (this == stair.toTile) {
       c.levelUp();
-      return this.stair.fromTile;
-    } else {
+      goalTile = stair.fromTile;
+    } else if (this == stair.fromTile){
       c.levelDown();
-      return this.stair.toTile;
     }
+    return goalTile;
   }
 
   /** Return non-null if this is a trap */

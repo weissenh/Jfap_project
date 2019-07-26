@@ -38,7 +38,17 @@ public class FloorTile extends Tile {
    */
   @Override
   public Tile willTake(Character c) {
-    // we can normally go on a floor tile. If there is an Item, can we still?
+    // check if we have a real character
+    if (c == null) {return null;}
+
+    // we can't go on the tile if it's already occupied
+    // search for inhabitants in the room & check if the character is our character itself
+    for (Character character : room.getInhabitants()) {
+      if (this.isOccupied(character) & character != c) {return null;}
+      else if (this.isOccupied(c)) {return this;}
+    }
+
+    // we can normally go on a floor tile
     return this;
   }
 
@@ -76,7 +86,8 @@ public class FloorTile extends Tile {
   @Override
   public boolean isOccupied(Character character){
     // TODO please implement me!
-    return false;
+    if (character == null) {return false;}
+    return character.getTile() == this;
   }
 
 }
