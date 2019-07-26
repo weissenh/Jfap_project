@@ -81,11 +81,12 @@ public class Wearable extends Item {
     }
     */
 
-    boolean pickuppossible = c.pickUp(this);
-    if (pickuppossible) {
-      character = c;
-      onTile = null;
-    }
+    // boolean pickuppossible = c.pickUp(this);
+    // if (pickuppossible) {
+    // todo: this is probably not we want to do:
+    character = c;
+    onTile = null;
+    // }
   }
 
   public void drop(Tile t) {
