@@ -68,7 +68,41 @@ public class TestUtils {
     return game;
   }
 
+  /*
+  //Test what happens if room has no or little occupiable floor tiles
+  public static World createToyGame(){
+    Game game = new Game();
+    World world = new World();
+    List<Room> mapElements = new ArrayList<>();
+    Room room1 = createSimpleRoom(1,2,  1);
+    mapElements.add(room1);
 
+    // add protagonist
+    addProtagonist(game, "The guy");
+
+    //First Tile holds a fountain
+    Item fountain = new Fixtures();
+    List<Item> onTile = new ArrayList<>();
+    onTile.add(fountain);
+    modifyField(fountain, true, "onTile", room1.getTiles()[0][0]);
+    modifyField(room1.getTiles()[0][0], false, "items", onTile);
+
+    //Second Tile holds a key
+    int kid = 7;
+    Key key = new Key(room1.getTiles()[0][1], null, null, null, kid);
+    placeItemsInRoom(room1, 0, 1, key);
+
+    //Test 1 Set Protagonist
+
+
+    //Test 2 Key
+
+
+
+
+
+  }
+  */
   /**
    * the default world ( three rooms, connected by stairs and hallways, two characters and some items)
    * @return an instance of the default world

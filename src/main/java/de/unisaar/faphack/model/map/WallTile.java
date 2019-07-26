@@ -43,8 +43,6 @@ public class WallTile extends Tile {
 
   @Override
   public Tile willTake(Character c) {
-    //todo: delete this;
-    this.destructible = -1;
     //Wall tile already destroyed
     if (this.destructible == 0){
       return this;
@@ -56,7 +54,7 @@ public class WallTile extends Tile {
     }
 
     //Wall is destructed if character has sufficient power
-    else if(this.destructible <= c.getPower()){
+    else if(this.destructible <= c.getPower() ){
       this.destructible = 0;
 
       int p = - this.destructible;
@@ -69,6 +67,20 @@ public class WallTile extends Tile {
     }
 
     return null;
+  }
+  @Override
+  public boolean isOccupied(Character character){
+    //Illegal Arguemnt
+    if (character == null) {
+      throw new IllegalArgumentException("character cannot be null");
+    }
+    //Wall Tile is indestructible
+    if (destructible == -1){
+      return false;
+    }
+    //Character might be on tile
+    Tile characterTile = character.getTile();
+    return characterTile == this;
   }
 
   @Override
