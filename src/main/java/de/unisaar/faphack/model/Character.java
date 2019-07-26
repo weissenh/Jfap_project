@@ -241,15 +241,22 @@ implements Storable, TraitedTileOccupier {
    *
    */
   public boolean dropItem(Wearable item){
-      if (this.items.contains(item)){
+    if (item == null) {
+      return false;
+    }
+    if (this.items.contains(item)){
         this.items.remove(item);
+        String tr = item.getTrait();
+        if (item instanceof Armor) {
+          this.armor.remove(item);
+        }
         //todo: what happens if you have an active item equiped that equals another item in items that is not the active weapon
         //is the active weapon dropped?
         //Item is equiped as active weapon
-        if(this.activeWeapon.equals(item)){
+        if(this.activeWeapon == null || this.activeWeapon.equals(item)){
           this.activeWeapon = null;
         }
-
+        this.currentWeight -= item.getWeight();
         item.drop(this.getTile());
         return true;
     }

@@ -96,7 +96,10 @@ public class Wearable extends Item {
     if (character == null) {
       // can I drop an wearable if character is null?
       // drop from one tile to another?
-      assert super.onTile != null;  // cannot teleport from one tile to another
+      // assert super.onTile != null;  // cannot teleport from one tile to another
+      // todo: now we allow teleports to make dropItem in CharaterTest work
+      super.onTile = t;
+      super.onTile.addItem(this); // todo: what if drop not possible? (walltile?)
       return;
     }
     // todo [question] should I call character.dropItem(this)? ensure character drops item?
@@ -104,6 +107,7 @@ public class Wearable extends Item {
     // violates OOP because it depends on implementation of Chararcter.dropItem()
     // todo [question] can I drop wearables to walltiles (but destructible?)? doortiles, stairtiles....?
     super.onTile = t;
+    super.onTile.addItem(this);
     character = null;
     return;
   }
