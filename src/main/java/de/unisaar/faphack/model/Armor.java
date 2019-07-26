@@ -5,7 +5,7 @@ import de.unisaar.faphack.model.effects.ModifyingEffect;
 import de.unisaar.faphack.model.map.Tile;
 
 /**
- * Class for defensive weapons like shields, certain spells
+ * Class for defensive items like armor, shields, certain spells
  * @author weissenh
  */
 public class Armor extends Wearable {

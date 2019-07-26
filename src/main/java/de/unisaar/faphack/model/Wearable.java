@@ -34,7 +34,7 @@ public class Wearable extends Item {
     super(where, trait, effect);
     this.character = c;
     this.isWeapon = false;
-    String[] weapons = {POTION, SWORD, SHIELD, PIKE, BOW, ARROW, ARMOR}; // todo this is dangerous, don't do this
+    String[] weapons = {POTION, SWORD, PIKE, BOW, ARROW}; // todo this is dangerous, don't do this? SHIELD?
     for (String weapon: weapons) {
       if (trait.equals(weapon)) this.isWeapon = true;
     } // todo: do this?
