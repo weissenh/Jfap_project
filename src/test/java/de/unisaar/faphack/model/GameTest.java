@@ -149,7 +149,36 @@ class GameTest {
     Tile protTile = testProt.getTile();
     assertTrue(protTile instanceof FloorTile);
 
+  }
 
+  @Test
+  void keyInteraction(){
+    //Create Game
+    Game game = TestUtils.createToyGame();
+
+    //Place Character
+    Character protagonist = game.getProtagonist();
+    List<Room> rooms = game.getWorld().getMapElements();
+    Room first_room = rooms.get(0);
+    Tile[][] first_room_tiles = first_room.getTiles();
+    protagonist.tile = first_room_tiles[0][1];
+    List<Character> inhabitants = first_room.getInhabitants();
+    inhabitants.add(protagonist);
+
+    //Move to tile that holds key
+    MoveEffect moveEffectRight = new MoveEffect(new Direction(0,1));
+    moveEffectRight.apply(protagonist);
+
+    //Pickup Key
+    Key foundKey = (Key) first_room_tiles[0][1].onTile().get(0);
+    foundKey.pickUp(protagonist);
+
+    //Move to first door and try to open door, first door is locked and character lacks power to open it
+    moveEffectRight.apply(protagonist);
+    assert(protagonist.getTile().willTake(protagonist) == null);
+
+    //Move to second door and try to open door, this time it should work and you should get the second room
+    moveEffectRight.apply(protagonist);
+    assert(protagonist.getTile().willTake(protagonist).getRoom() == rooms.get(1));
 
   }
-}
