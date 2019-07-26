@@ -51,7 +51,7 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     }
 
     // if the door is open, we can directly go to the goal tile
-    if (this.open || this.destructible == DESTROYED) {
+    if (this.open) {
       return goalTile;
     }
 
