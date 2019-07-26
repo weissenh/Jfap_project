@@ -51,12 +51,12 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     }
 
     // if the door is open, we can directly go to the goal tile
-    if (this.open) {
+    if (this.open || this.destructible == DESTROYED) {
       return goalTile;
     }
 
     // if the door is closed, but not locked, we can still go through
-    else if (!this.locked) {
+    if (!this.locked) {
       return goalTile;
     }
     /*
@@ -68,12 +68,13 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
         this.locked = false; // we open the door and leave it open
         return goalTile;
       }
-      else if (this.destructible == 0) {return goalTile;}
 
-      else if (this.destructible <= c.getPower() & this.destructible > 0) {
-        this.locked = false; // we want to unlock the door
-        this.open = true; // and keep it open
-        this.destructible = 0;
+     */
+
+    if (this.destructible == DESTROYED) {return goalTile;}
+    if (this.destructible == INDESTRUCTIBLE) {return null;}
+    if (this.destructible <= c.getPower()) {
+        this.destructible = DESTROYED;
         int p = - this.destructible;
         int h = 0;
         int m = 0;
@@ -83,8 +84,6 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
         return goalTile;
       }
 
-    }
-*/
     return null;
   }
 
