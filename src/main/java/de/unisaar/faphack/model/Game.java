@@ -149,6 +149,8 @@ public class Game implements Storable {
         found = true;
         // If yes, set prots position to tile, add prot to inhabitants of the room?
         prot.tile = random_tile;
+        List<Character> inhabitants = first_room.getInhabitants();
+        inhabitants.add(prot);
       }
     }
   }
