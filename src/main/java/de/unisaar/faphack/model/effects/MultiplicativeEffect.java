@@ -26,7 +26,8 @@ public class MultiplicativeEffect extends ModifyingEffect {
    */
   public CharacterModifier apply(CharacterModifier c) {
     if (c == null) {
-      return null;}
+      throw new IllegalArgumentException("Charactermodifier is nulll");
+    }
     c.health *= this.health;
     c.magic *= this.magic;
     c.power *= this.power;
