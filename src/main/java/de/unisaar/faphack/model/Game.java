@@ -46,6 +46,7 @@ public class Game implements Storable {
   /**
    * The character rests, i.e. it moves with direction (0,0) and its power increases by 5
   */
+  //todo: fab isn't rest already implemented on a lower level, presumably in moveEffect
   public boolean rest(Character whom){
     // get the power value and position of the character before resting
     int prev_power = whom.getPower();
@@ -148,20 +149,18 @@ public class Game implements Storable {
         found = true;
         // If yes, set prots position to tile, add prot to inhabitants of the room?
         prot.tile = random_tile;
+        List<Character> inhabitants = first_room.getInhabitants();
+        inhabitants.add(prot);
       }
     }
   }
 
+  //todo: Fab removed +1 on new Random because out of bounds exception was thrown, verify Friday
   public Tile generateRandomTile(Tile[][] room_tiles) {
-    int x_pos = new Random().nextInt(room_tiles[0].length + 1);
-    int y_pos = new Random().nextInt(room_tiles[1].length + 1);
+    int x_pos = new Random().nextInt(room_tiles[0].length); //+1
+    int y_pos = new Random().nextInt(room_tiles[1].length); //+1
     Tile random_tile = room_tiles[x_pos][y_pos];
     return random_tile;
   }
 
-  /** get the game's protagonist */
-  public Character getProtagonist(Character prot) {
-    // TODO: fill here
-    return null;
-  }
 }

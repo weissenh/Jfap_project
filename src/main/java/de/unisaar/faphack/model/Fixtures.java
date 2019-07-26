@@ -11,7 +11,7 @@ package de.unisaar.faphack.model;
 public class Fixtures extends Item {
 
   public Fixtures() {
-
+    // chest, fountain trait
   }
 
 }

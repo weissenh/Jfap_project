@@ -133,4 +133,22 @@ class GameTest {
     Wearable item = createWearable(1, true);
     assertFalse(game.equip(character,item));
   }
+
+  @Test
+  void setProtagonist(){
+    // Create new game, game includes the sketchy protagonist "the guy"
+    Game game = TestUtils.createGame();
+    Character protagonist = game.getProtagonist();
+
+    // set protagonist
+    game.setProtagonist(protagonist);
+    assertTrue(protagonist.getTile() != null);
+
+    //todo: fab verify that mulitple runs will yield different tiles
+    //todo: sleep
+
+
+
+
+  }
 }
