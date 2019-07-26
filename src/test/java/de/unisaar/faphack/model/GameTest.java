@@ -1,5 +1,6 @@
 package de.unisaar.faphack.model;
 
+import de.unisaar.faphack.model.map.FloorTile;
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
 import de.unisaar.faphack.model.map.World;
@@ -26,7 +27,7 @@ class GameTest {
     Character testObject = createBaseCharacter("Foo", 2, 2);
     addCharacter(room, 1, 2, testObject);
     Wearable item1 = createWearable(2, false);
-    placeItemsInRoom(room, 1,2,item1);
+    placeItemsInRoom(room, 1, 2, item1);
     assertTrue(game.pickUp(testObject, item1));
     // the item should have been removed from the tile and moved into the inventory of the character
     assertTrue(testObject.items.contains(item1));
@@ -34,7 +35,7 @@ class GameTest {
     assertEquals(testObject, item1.character);
     assertNull(item1.onTile);
     Fixtures fountain = new Fixtures();
-    placeItemsInRoom(room, 1,2, fountain);
+    placeItemsInRoom(room, 1, 2, fountain);
     assertFalse(game.pickUp(testObject, fountain));
   }
 
@@ -55,9 +56,9 @@ class GameTest {
 
   /**
    * The game.listItems() method returns a list of all Items on a tile, which is determined by
-   *  a character and a direction.
-   *  1. get all items on the tile which is left of the character
-   *  2. get all items on the tile of the character
+   * a character and a direction.
+   * 1. get all items on the tile which is left of the character
+   * 2. get all items on the tile of the character
    */
   @Test
   void listItems() {
@@ -66,10 +67,10 @@ class GameTest {
     Character testObject = room.getInhabitants().get(0);
     Wearable item1 = createWearable(2, false);
     Wearable item2 = createWearable(2, false);
-    placeItemsInRoom(room, 1,2,item1, item2);
+    placeItemsInRoom(room, 1, 2, item1, item2);
     ArrayList<Item> expected = new ArrayList<>(Arrays.asList(new Item[]{item1, item2}));
     List<Item> actual = game.listItems(testObject, new Direction(-1, 0));
-    for(Item item : actual){
+    for (Item item : actual) {
       assertTrue(expected.contains(item));
       expected.remove(item);
     }
@@ -77,7 +78,7 @@ class GameTest {
     placeCharacter(testObject, room.getNextTile(testObject.tile, new Direction(-1, 0)));
     expected = new ArrayList<>(Arrays.asList(new Item[]{item1, item2}));
     actual = game.listItems(testObject, new Direction(0, 0));
-    for(Item item : actual){
+    for (Item item : actual) {
       assertTrue(expected.contains(item));
       expected.remove(item);
     }
@@ -101,7 +102,7 @@ class GameTest {
     Game game = createGame();
     // this character has only one wearable in its inventory, which is also the character's active weapon
     Character character = game.getWorld().getMapElements().get(0).getInhabitants().get(0);
-    Armor armor = createArmor(1,1,1);
+    Armor armor = createArmor(1, 1, 1);
     equipArmor(armor, character);
     Wearable sword = character.getActiveWeapon();
     assertTrue(game.drop(character, sword));
@@ -109,7 +110,7 @@ class GameTest {
     // now remove the armor from the inventory
     assertTrue(character.dropItem(armor));
     // try to remove an item which is not part of the inventory : returns false
-    Wearable w = createWearable(1,false);
+    Wearable w = createWearable(1, false);
     assertFalse(game.drop(character, w));
   }
 
@@ -120,7 +121,7 @@ class GameTest {
     Character character = game.getWorld().getMapElements().get(0).getInhabitants().get(0);
 
     // Equip an armor
-    Armor armor = createArmor(1,1,1);
+    Armor armor = createArmor(1, 1, 1);
     character.items.add(armor);
     // the armor should be in the character's armor list
     assertTrue(game.equip(character, armor));
@@ -128,41 +129,27 @@ class GameTest {
     // Equip a weapon
     Wearable weapon = createWearable(1, true);
     character.items.add(weapon);
-    assertTrue(game.equip(character,weapon));
+    assertTrue(game.equip(character, weapon));
 
     // Illegal equip ( item not in inventory)
     Wearable item = createWearable(1, true);
-    assertFalse(game.equip(character,item));
+    assertFalse(game.equip(character, item));
   }
 
-  /*
+
   @Test
   void setProtagonist() {
     // Create new game, game includes the sketchy protagonist "the guy"
     Game game = TestUtils.createGame();
-    Character protagonist = game.getProtagonist();
-    World world = createWorld();
 
     // set protagonist
-    game.setProtagonist(protagonist);
-    assertTrue(protagonist.getTile() != null);
+    Character testProt = game.getProtagonist();
 
-    //Game with only one occupiable tile
-    Game game = TestUtils.createGame();
-    Character protagonist = game.getProtagonist();
-
-
-    //todo: fab verify that if there is only one available tile that it sets the character there
-    //todo: sleep
-  }
-
-  @Test
-  void keyInteraction(){
-
+    game.setProtagonist(testProt);
+    Tile protTile = testProt.getTile();
+    assertTrue(protTile instanceof FloorTile);
 
 
 
   }
-  */
-
 }

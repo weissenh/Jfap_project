@@ -68,41 +68,47 @@ public class TestUtils {
     return game;
   }
 
-  /*
+
   //Test what happens if room has no or little occupiable floor tiles
-  public static World createToyGame(){
+  public static Game createToyGame(){
     Game game = new Game();
     World world = new World();
     List<Room> mapElements = new ArrayList<>();
-    Room room1 = createSimpleRoom(1,2,  1);
+    //First room is the initial rooom
+    Room room1 = createSimpleRoom(1,4,  1);
     mapElements.add(room1);
+    //Second room is just a dummy for connection with door to room 1
+    Room room2 = createSimpleRoom(7,7, 2);
+    modifyField(room2, false,"w", world);
+    mapElements.add(room2);
 
     // add protagonist
     addProtagonist(game, "The guy");
 
-    //First Tile holds a fountain
+    //First Tile is a wall
+
+    //Second Tile holds a fountain
     Item fountain = new Fixtures();
     List<Item> onTile = new ArrayList<>();
     onTile.add(fountain);
     modifyField(fountain, true, "onTile", room1.getTiles()[0][0]);
-    modifyField(room1.getTiles()[0][0], false, "items", onTile);
+    modifyField(room1.getTiles()[0][1], false, "items", onTile);
 
-    //Second Tile holds a key
+    //Third Tile holds a key
     int kid = 7;
-    Key key = new Key(room1.getTiles()[0][1], null, null, null, kid);
-    placeItemsInRoom(room1, 0, 1, key);
+    Key key = new Key(room1.getTiles()[0][2], null, null, kid);
+    placeItemsInRoom(room1, 0, 2, key);
 
-    //Test 1 Set Protagonist
+    //Fourth Tile is a door to second room
+    DoorTile doorTile1 = (DoorTile) room1.getTiles()[0][3]; //locked door
+    DoorTile doorTile2 = (DoorTile) room1.getTiles()[0][4]; //locked door
+    DoorTile doorTile3 = (DoorTile) room2.getTiles()[0][0];
+    connectTiles(doorTile1, doorTile3);
+    connectTiles(doorTile2, doorTile3);
 
-
-    //Test 2 Key
-
-
-
-
-
+    return game;
   }
-  */
+
   /**
    * the default world ( three rooms, connected by stairs and hallways, two characters and some items)
    * @return an instance of the default world
