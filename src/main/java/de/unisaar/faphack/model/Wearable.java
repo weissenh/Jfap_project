@@ -84,6 +84,7 @@ public class Wearable extends Item {
     // boolean pickuppossible = c.pickUp(this);
     // if (pickuppossible) {
     // todo: this is probably not we want to do:
+    if (onTile != null) onTile.removeItem(this);
     character = c;
     onTile = null;
     // }
