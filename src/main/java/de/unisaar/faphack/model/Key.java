@@ -9,8 +9,8 @@ public class Key extends Wearable implements Storable {
   private int keyID;
 
   //todo: Fab better method to get trait into the constructor
-  public Key(Tile where, String trait, CharacterModifier effect, Character c, int kid) {
-    super(where, trait=KEY, effect, c);
+  public Key(Tile where, CharacterModifier effect, Character c, int kid) {
+    super(where, KEY, effect, c);
     keyID = kid;
 
   }

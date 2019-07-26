@@ -59,7 +59,7 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     else if (!this.locked) {
       return goalTile;
     }
-
+    /*
     // if the door is locked, we can either open it using a key, or we can open it with force
     else {
       // if the door is closed, we can open with a key (if we have the correct key)
@@ -82,8 +82,9 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
         c.applyItem(characterModifier);
         return goalTile;
       }
-    }
 
+    }
+*/
     return null;
   }
 

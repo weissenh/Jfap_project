@@ -1,10 +1,10 @@
 package de.unisaar.faphack.model;
 
 import de.unisaar.faphack.model.effects.MoveEffect;
+import de.unisaar.faphack.model.map.FloorTile;
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
 import de.unisaar.faphack.model.map.World;
-import sun.font.TrueTypeFont;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +134,10 @@ public class Game implements Storable {
 
   /** Add the game's protagonist to a random floor tile in the first room */
   public void setProtagonist(Character prot) {
+    //First check if prot is not null
+    if (prot == null) {
+      throw new IllegalArgumentException("Protagonist is null");
+    }
     // Get the list of rooms in the world and get the first room
     List<Room> rooms = this.world.getMapElements();
     Room first_room = rooms.get(0);
@@ -141,11 +145,18 @@ public class Game implements Storable {
     Tile[][] first_room_tiles = first_room.getTiles();
     // Generate a random tile in the room until we find one that will take the prot
     Boolean found = false;
+    int attempt = 1;
     while (found == false) {
+      //check if we are under 10 attempts, otherwise throw runtime exception
+      if (attempt > 10) {
+        RuntimeException e = new RuntimeException();
+        throw e;
+      }
       // Generate a random tile in the room
       Tile random_tile = generateRandomTile(first_room_tiles);
-      // Check if tile will take prot
-      if (random_tile.willTake(prot) != null) {
+      attempt += 1;
+      // Check if tile will take prot and if it is a floor tile
+      if ((random_tile.willTake(prot) != null) && (random_tile instanceof FloorTile)) {
         found = true;
         // If yes, set prots position to tile, add prot to inhabitants of the room?
         prot.tile = random_tile;
@@ -157,8 +168,8 @@ public class Game implements Storable {
 
   //todo: Fab removed +1 on new Random because out of bounds exception was thrown, verify Friday
   public Tile generateRandomTile(Tile[][] room_tiles) {
-    int x_pos = new Random().nextInt(room_tiles[0].length); //+1
-    int y_pos = new Random().nextInt(room_tiles[1].length); //+1
+    int x_pos = new Random().nextInt(room_tiles[0].length );
+    int y_pos = new Random().nextInt(room_tiles[1].length );
     Tile random_tile = room_tiles[x_pos][y_pos];
     return random_tile;
   }
