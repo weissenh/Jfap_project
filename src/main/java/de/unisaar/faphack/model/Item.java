@@ -3,8 +3,10 @@ package de.unisaar.faphack.model;
 import de.unisaar.faphack.model.map.Tile;
 
 /**
- * @author
+ * Items are things that can be placed on a tile or - in case of wearables,
+ * carried around by a character. Items can have character modifier effects.
  *
+ * @author weissenh
  */
 public abstract class Item extends AbstractObservable<TraitedTileOccupier>
 implements Storable, TraitedTileOccupier {
