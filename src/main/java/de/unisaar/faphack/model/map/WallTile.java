@@ -19,10 +19,10 @@ import de.unisaar.faphack.model.MarshallingContext;
  *
  */
 public class WallTile extends Tile {
-  /** -1 means destroyed, 0 means undestructible, f >= 0 must apply at least force f*/
+  /** -1 means destroyed, 0 means indestructible, destructible >= 0 must apply at least force f*/
   protected int destructible;
-  private final static int NUNDESTRUCTIBLE = -1;
-  private final static int DESTROYED = 0;
+  private final static int INDESTRUCTIBLE = 0;
+  private final static int DESTROYED = -1;
 
   public WallTile() {
     trait = WALL;
@@ -36,7 +36,7 @@ public class WallTile extends Tile {
 
   //todo: change back to standard
   public WallTile(int x, int y, Room room){
-    this(x,y,room,-1);
+    this(x,y,room,INDESTRUCTIBLE);
     // super(x, y, room);
     // trait = WALL
   }
@@ -46,12 +46,12 @@ public class WallTile extends Tile {
   @Override
   public Tile willTake(Character c) {
     //Wall tile already destroyed
-    if (this.destructible == 0){
+    if (this.destructible == DESTROYED){
       return this;
     }
 
     //Wall tile undestroyable
-    else if (this.destructible == -1){
+    else if (this.destructible == INDESTRUCTIBLE){
       return null;
     }
 
