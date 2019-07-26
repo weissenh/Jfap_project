@@ -19,8 +19,10 @@ import de.unisaar.faphack.model.MarshallingContext;
  *
  */
 public class WallTile extends Tile {
-  /** -1 means infinitely strong, 0 means destroyed, f must apply at least force f*/
+  /** -1 means destroyed, 0 means undestructible, f >= 0 must apply at least force f*/
   protected int destructible;
+  private final static int NUNDESTRUCTIBLE = -1;
+  private final static int DESTROYED = 0;
 
   public WallTile() {
     trait = WALL;
@@ -29,14 +31,14 @@ public class WallTile extends Tile {
   public WallTile(int x, int y, Room room, int destructible){
     super(x, y, room);
     trait = WALL;
-    destructible = destructible;
+    this.destructible = destructible;
   }
 
   //todo: change back to standard
   public WallTile(int x, int y, Room room){
-    super(x, y, room);
-    trait = WALL;
-    //this(x,y,room,-1);
+    this(x,y,room,-1);
+    // super(x, y, room);
+    // trait = WALL
   }
 
 
