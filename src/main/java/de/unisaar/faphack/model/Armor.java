@@ -1,6 +1,5 @@
 package de.unisaar.faphack.model;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import de.unisaar.faphack.model.effects.ModifyingEffect;
 import de.unisaar.faphack.model.map.Tile;
 
