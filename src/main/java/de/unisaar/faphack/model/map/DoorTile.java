@@ -88,19 +88,16 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
   @Override
   public void register(Observer<DoorTile> observer) {
     // lazy initialization
-    // copied from abstractObservable
-    if (observers == null) {
-      observers = new ArrayList<>();
-    }
-    observers.add(observer);
+    // TODO please implement me!
+    observer.update(this);
+
+
   }
 
   @Override
   public void notifyObservers(DoorTile object) {
-    // copied from abstractObservable
-    if (observers != null)
-      for(Observer<DoorTile> o: observers) { o.update(object); }
+    // TODO please implement me!
   }
-  // todo: is occupied et al overrride?
+
 
 }

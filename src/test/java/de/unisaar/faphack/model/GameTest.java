@@ -2,6 +2,7 @@ package de.unisaar.faphack.model;
 
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
+import de.unisaar.faphack.model.map.World;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -140,12 +141,22 @@ class GameTest {
     Game game = TestUtils.createGame();
     Character protagonist = game.getProtagonist();
 
+    Game game = new Test.Utils.Game();
+    World world = createWorld();
+
     // set protagonist
     game.setProtagonist(protagonist);
     assertTrue(protagonist.getTile() != null);
 
-    //todo: fab verify that mulitple runs will yield different tiles
+    //Game with only one occupiable tile
+    Game game = TestUtils.createGame();
+    Character protagonist = game.getProtagonist();
+
+
+    //todo: fab verify that if there is only one available tile that it sets the character there
     //todo: sleep
+
+
 
 
 
