@@ -4,7 +4,7 @@ import de.unisaar.faphack.model.effects.ModifyingEffect;
 import de.unisaar.faphack.model.map.Tile;
 
 public class Armor extends Wearable {
-
+  // defensive weapon, modifiying effect tells us to what extent an attack is weakend
   private ModifyingEffect modifyingEffect;
 
 
@@ -13,11 +13,11 @@ public class Armor extends Wearable {
     // super.isWeapon = true; // todo ???
   }
 
-  public Armor(Tile where, String trait, CharacterModifier effect, Character c) {
+  /* public Armor(Tile where, String trait, CharacterModifier effect, Character c) {
     super(where, trait, effect, c);
     // todo input validation: possible trait?
     // todo modifiyng effect missing!
-  }
+  } */
 
   /**
    * The Effect connected to the item is always NULL.
