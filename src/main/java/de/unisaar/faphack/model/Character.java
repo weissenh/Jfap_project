@@ -126,11 +126,11 @@ implements Storable, TraitedTileOccupier {
    * @return  boolean <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean pickUp(Wearable what) {
-    if (this.getTile() == what.getTile()) {
-      if ((this.currentWeight + what.getWeight()) <= this.maxWeight) { //less or equal instead of less
-          return true;
-      }
+    // if (this.getTile() == what.getTile()) { // todo: allow character to pick up items that are not on the same tile?
+    if ((this.currentWeight + what.getWeight()) <= this.maxWeight) { //less or equal instead of less
+        return true;
     }
+    //
     return false;
 
   }
