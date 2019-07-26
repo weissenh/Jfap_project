@@ -63,7 +63,7 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     // if the door is locked, we can either open it using a key, or we can open it with force
     else {
       // if the door is closed, we can open with a key (if we have the correct key)
-      Key k = new Key(this.keyId);
+      Key k = new Key(new DoorTile(), "key", null, null, this.keyId); // changed just for compiling
       if (c.owns(k)) {
         this.locked = false; // we open the door and leave it open
         return goalTile;
