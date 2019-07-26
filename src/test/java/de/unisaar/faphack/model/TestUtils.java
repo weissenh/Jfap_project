@@ -68,6 +68,7 @@ public class TestUtils {
     return game;
   }
 
+  /*
   //Test what happens if room has no or little occupiable floor tiles
   public static World createToyGame(){
     Game game = new Game();
@@ -88,14 +89,20 @@ public class TestUtils {
 
     //Second Tile holds a key
     int kid = 7;
-    Key key = new Key(room1.getTiles()[0][1], trait=null, effect=null, character=null, kid);
+    Key key = new Key(room1.getTiles()[0][1], null, null, null, kid);
+    placeItemsInRoom(room1, 0, 1, key);
+
+    //Test 1 Set Protagonist
+
+
+    //Test 2 Key
 
 
 
 
 
   }
-
+  */
   /**
    * the default world ( three rooms, connected by stairs and hallways, two characters and some items)
    * @return an instance of the default world
