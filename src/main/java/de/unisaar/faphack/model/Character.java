@@ -94,11 +94,7 @@ implements Storable, TraitedTileOccupier {
   protected Wearable activeWeapon;
 
   public Character() {
-    /*
-    this.items = new ArrayList<>();
-    this.armor = new ArrayList<>();
-    this.activeEffects = new HashSet<>();
-     */
+
   }
 
   /**
@@ -108,8 +104,16 @@ implements Storable, TraitedTileOccupier {
    * @return void
    */
   public void move(Tile destination) {
-    // will move no matter if possible or not
-    this.tile = destination;
+    if (tile != null) {
+      Room current = tile.getRoom();
+      if (destination.getRoom() != current) {
+        current.getInhabitants().remove(this);
+        destination.getRoom().getInhabitants().add(this);
+      }
+    } else {
+      destination.getRoom().getInhabitants().add(this);
+    }
+    tile = destination;
   }
 
   /**
