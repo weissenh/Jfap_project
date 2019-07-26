@@ -31,9 +31,9 @@ public class MoveEffect implements Effect<Character, Boolean> {
    * @return true if successful, false otherwise
    */
   public Boolean apply(Character c) {
-    // todo: check whether we only move one tile
-    // todo: question: what if destination tile contains a trap? Fab: will take would be positive then right?
-    // todo: check that no other character is on that tile
+    if (c == null) {
+      return false;
+    }
 
     Tile cpos = c.getTile(); // current tile: starting point of character
 
