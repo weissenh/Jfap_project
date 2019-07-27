@@ -197,9 +197,19 @@ class GameTest {
     fullCharacterCoordinats(protagonist, rooms);
     RIGHT.apply(protagonist); //should move onto door
     fullCharacterCoordinats(protagonist, rooms);
-    RIGHT.apply(protagonist); //should move onto door
+
+    // Come back from room 2 to room 1
     LEFT.apply(protagonist);
     fullCharacterCoordinats(protagonist, rooms);
+
+    // Move onto stairtile
+    fullCharacterCoordinats(protagonist, rooms);
+    //todo: Downleft returns 2 3 instead of 2 0
+    DOWN.apply(protagonist);
+    System.out.println(protagonist.getTile().getTrait());
+    //DOWN.apply(protagonist);
+    fullCharacterCoordinats(protagonist, rooms);
+
     // todo: using the door does not cost any power
 
     // todo: 2. third room

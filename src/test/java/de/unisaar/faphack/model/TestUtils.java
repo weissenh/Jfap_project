@@ -111,7 +111,7 @@ public class TestUtils {
     //First room containts obstacles, e.g. fountain and destroyable rock
     Room room1 = createSimpleRoom(4,4,  1);
 
-    //Second room containts wearables e.g. weapons
+    //Second room containts nothing (could implement a trap here)
     Room room2 = createSimpleRoom(4,4, 2);
 
     //Third room todo: holds weapons and wearables with effect
@@ -120,22 +120,20 @@ public class TestUtils {
     //Fourth room todo: specify e.g. holds other characters that can be attacked
     Room room4 = createSimpleRoom(4,4, 4);
 
-
-
-    //First room (obstacles)
-    //Tile[1][1] holds a fountain
+    //1. First room (obstacles)
+    //Tile[1][1] holds a fixture
     Item mirrorOfHell = new Fixtures();
     List<Item> onTile = new ArrayList<>();
     onTile.add(mirrorOfHell);
     modifyField(mirrorOfHell, true, "onTile", room1.getTiles()[1][1]);
     modifyField(room1.getTiles()[1][1], false, "items", onTile);
 
-    //Tile[2][1] contains a destructible wall
+    // Tile[2][1] contains a destructible wall
     Tile[][] tiles = room1.getTiles();
-    tiles[2][1] = new WallTile(2, 1 , room1, 2); //alternatively createWallTile(2)
+    tiles[2][1] = new WallTile(2, 1 , room1, 2);
     modifyField(room1, false,"tiles", tiles);
 
-    //Tile[3][1] contains a door, connects to second room
+    // Tile[3][1] contains a door, connects to second room
     Tile[][] tiles_r1_door_mod = room1.getTiles();
     tiles_r1_door_mod[3][1] = new DoorTile(3, 1 , room1); //
     modifyField(room1, false,"tiles", tiles_r1_door_mod); //no door provided so room1 had to be modified
@@ -143,9 +141,25 @@ public class TestUtils {
     DoorTile doorTile2 = (DoorTile) room2.getTiles()[0][2]; //door was already provided by simple room method
     connectTiles(doorTile1, doorTile2);
 
+    // Tile[2][0] contains a stairway, connects to the third room
+    // room 1
+    Tile[][] tiles_r1_stair_mod = room1.getTiles();
+    tiles_r1_door_mod[2][0] = new StairTile(3, 1 , room1); //
+    modifyField(room1, false,"tiles", tiles_r1_door_mod);
+    // room 3 [2][3]
+    Tile[][] tiles_r3_stair_mod = room3.getTiles();
+    tiles_r3_stair_mod[2][3] = new StairTile(2, 3 , room1); //
+    modifyField(room3, false,"tiles", tiles_r3_stair_mod);
+    // connect room 1 and room 3
+    StairTile stairTile1 = (StairTile) room1.getTiles()[2][0];
+    StairTile stairTile2 = (StairTile) room3.getTiles()[2][3];
+    connectStairTiles(stairTile1, stairTile2,false);
+
+
+
     //Third room Weapons and Items with effect
     Wearable spear = createWearable(2, true);
-    //todo: solve field exception
+    //todo: fab zsolve field exception
     //Armor mightyWristwatch = createArmor(2, 1, 3);
 
     Wearable poison = createWearable(1, false);
