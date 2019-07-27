@@ -152,82 +152,60 @@ class GameTest {
 
   @Test
   void toyGameInteraction() {
-    //Create Game
-    Game game = TestUtils.createToyGame();
+      //Create Game
+      Game game = TestUtils.createToyGame();
 
-    //Place Character
-    Character protagonist = game.getProtagonist();
-    List<Room> rooms = game.getWorld().getMapElements();
-    Room first_room = rooms.get(0);
-    Tile[][] first_room_tiles = first_room.getTiles();
-    protagonist.tile = first_room_tiles[1][2];
-    List<Character> inhabitants = first_room.getInhabitants();
-    inhabitants.add(protagonist);
+      //Place Character
+      Character protagonist = game.getProtagonist();
+      List<Room> rooms = game.getWorld().getMapElements();
+      Room first_room = rooms.get(0);
+      Tile[][] first_room_tiles = first_room.getTiles();
+      protagonist.tile = first_room_tiles[1][2];
+      List<Character> inhabitants = first_room.getInhabitants();
+      inhabitants.add(protagonist);
 
-    // Create different move effects
-    // horizontal and vertical moves
-    MoveEffect UP = new MoveEffect(new Direction(0, 1));
-    MoveEffect RIGHT = new MoveEffect(new Direction(1, 0));
-    MoveEffect LEFT = new MoveEffect(new Direction(-1, 0));
-    MoveEffect DOWN = new MoveEffect(new Direction(0, -1));
-    // Diagonal moves
-    MoveEffect UPLEFT = new MoveEffect(new Direction(-1, 1));
-    MoveEffect UPRIGHT = new MoveEffect(new Direction(1, 1));
-    MoveEffect DOWNLEFT = new MoveEffect(new Direction(-1, -1));
-    MoveEffect DOWNRIGHT = new MoveEffect(new Direction(1, -1));
-    // Stay, if Power == 0 then automatically rest
-    MoveEffect STAY = new MoveEffect(new Direction(0, 0));
-
-
-    // 1. First room (obstacles), moves and first door interaction to second room
-    DOWN.apply(protagonist); //not possible as rest is needed first
-    STAY.apply(protagonist);
-    UP.apply(protagonist); //not possible as indestructible wall
-    DOWN.apply(protagonist); //stays on same tile as fixture mirror, mirror does not block move
-    fullCharacterCoordinats(protagonist, rooms);
-
-    // Test if wall tile is destroyed (added a get-function in WallTile)
-    WallTile testWall = (WallTile) protagonist.getRoom().getTiles()[2][1];
-    assertEquals(testWall.getDestructible(), 2);
-    RIGHT.apply(protagonist); //should destroy wall and should loose power
-    WallTile testWallAfterMove = (WallTile) protagonist.getRoom().getTiles()[2][1];
-    assertEquals(testWall.getDestructible(), 0);
-
-    // Test the door from the first room into the second room
-    fullCharacterCoordinats(protagonist, rooms);
-    RIGHT.apply(protagonist); //should move onto door
-    fullCharacterCoordinats(protagonist, rooms);
-
-    // Come back from room 2 to room 1
-    LEFT.apply(protagonist);
-    fullCharacterCoordinats(protagonist, rooms);
-
-    // Move onto stairtile
-    fullCharacterCoordinats(protagonist, rooms);
-    //todo: Downleft returns 2 3 instead of 2 0
-    DOWNLEFT.apply(protagonist);
-    System.out.println(protagonist.getTile().getTrait());
-    //DOWN.apply(protagonist);
-    fullCharacterCoordinats(protagonist, rooms);
-
-    // todo: using the door does not cost any power
-
-    // todo: 2. third room
-    // todo: move into second room via a stairway to be build (pick up wearables and items)
+      // Create different move effects
+      // horizontal and vertical moves
+      MoveEffect UP = new MoveEffect(new Direction(0, 1));
+      MoveEffect RIGHT = new MoveEffect(new Direction(1, 0));
+      MoveEffect LEFT = new MoveEffect(new Direction(-1, 0));
+      MoveEffect DOWN = new MoveEffect(new Direction(0, -1));
+      // Diagonal moves
+      MoveEffect UPLEFT = new MoveEffect(new Direction(-1, 1));
+      MoveEffect UPRIGHT = new MoveEffect(new Direction(1, 1));
+      MoveEffect DOWNLEFT = new MoveEffect(new Direction(-1, -1));
+      MoveEffect DOWNRIGHT = new MoveEffect(new Direction(1, -1));
+      // Stay, if Power == 0 then automatically rest
+      MoveEffect STAY = new MoveEffect(new Direction(0, 0));
 
 
+      // 1. First room (obstacles), moves and first door interaction to second room
+      DOWN.apply(protagonist); //not possible as rest is needed first
+      STAY.apply(protagonist);
+      UP.apply(protagonist); //not possible as indestructible wall
+      DOWN.apply(protagonist); //stays on same tile as fixture mirror, mirror does not block move
+
+      // Test if wall tile is destroyed (added a get-function in WallTile)
+      WallTile testWall = (WallTile) protagonist.getRoom().getTiles()[2][1];
+      assertEquals(testWall.getDestructible(), 2);
+      RIGHT.apply(protagonist); //should destroy wall and should loose power
+      WallTile testWallAfterMove = (WallTile) protagonist.getRoom().getTiles()[2][1];
+      assertEquals(testWall.getDestructible(), -1);
+
+      // Test the door from the first room into the second room
+      RIGHT.apply(protagonist); //should move onto door
+
+      // Come back from room 2 to room 1
+      LEFT.apply(protagonist);
+
+      // Move onto stairtile and enter room3
+      DOWNLEFT.apply(protagonist);
 
 
-  }
+      // todo: 2. third room
+      // todo: move into second room via a stairway to be build (pick up wearables and items)
 
-  //Prints out the current coordinates, too much hassle to return a tuple
-  public void fullCharacterCoordinats(Character c, List<Room> rooms){
-    int x = c.getTile().getX();
-    int y = c.getTile().getY();
-    int room_index = rooms.indexOf(c.getRoom()) + 1;
-    int power = c.getPower();
-    System.out.printf("x:%d y:%d room:%d power:%d \n", x, y, room_index, power);
-  };
 
+    }
   }
 
