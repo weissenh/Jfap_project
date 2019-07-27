@@ -164,39 +164,60 @@ class GameTest {
     List<Character> inhabitants = first_room.getInhabitants();
     inhabitants.add(protagonist);
 
-    //Create different move effects
-    //horizontal and vertical moves
+    // Create different move effects
+    // horizontal and vertical moves
     MoveEffect UP = new MoveEffect(new Direction(0, 1));
     MoveEffect RIGHT = new MoveEffect(new Direction(1, 0));
     MoveEffect LEFT = new MoveEffect(new Direction(-1, 0));
     MoveEffect DOWN = new MoveEffect(new Direction(0, -1));
-    //Diagonal moves
+    // Diagonal moves
     MoveEffect UPLEFT = new MoveEffect(new Direction(-1, 1));
     MoveEffect UPRIGHT = new MoveEffect(new Direction(1, 1));
     MoveEffect DOWNLEFT = new MoveEffect(new Direction(-1, -1));
     MoveEffect DOWNRIGHT = new MoveEffect(new Direction(1, -1));
-    //Stay, if Power == 0 then automatically rest
+    // Stay, if Power == 0 then automatically rest
     MoveEffect STAY = new MoveEffect(new Direction(0, 0));
 
 
-    //First room (obstacles), moves and first door interaction
+    // 1. First room (obstacles), moves and first door interaction to second room
     DOWN.apply(protagonist); //not possible as rest is needed first
     STAY.apply(protagonist);
     UP.apply(protagonist); //not possible as indestructible wall
     DOWN.apply(protagonist); //stays on same tile as fixture mirror, mirror does not block move
+    fullCharacterCoordinats(protagonist, rooms);
 
-    //Test wall tile:
+    // Test if wall tile is destroyed (added a get-function in WallTile)
     WallTile testWall = (WallTile) protagonist.getRoom().getTiles()[2][1];
     assertEquals(testWall.getDestructible(), 2);
     RIGHT.apply(protagonist); //should destroy wall and should loose power
     WallTile testWallAfterMove = (WallTile) protagonist.getRoom().getTiles()[2][1];
     assertEquals(testWall.getDestructible(), 0);
 
+    // Test the door from the first room into the second room
+    fullCharacterCoordinats(protagonist, rooms);
     RIGHT.apply(protagonist); //should move onto door
-    //todo: other room is not entered when door is accessed
+    fullCharacterCoordinats(protagonist, rooms);
+    RIGHT.apply(protagonist); //should move onto door
+    LEFT.apply(protagonist);
+    fullCharacterCoordinats(protagonist, rooms);
+    // todo: using the door does not cost any power
+
+    // todo: 2. third room
+    // todo: move into second room via a stairway to be build (pick up wearables and items)
+
+
+
 
   }
 
+  //Prints out the current coordinates, too much hassle to return a tuple
+  public void fullCharacterCoordinats(Character c, List<Room> rooms){
+    int x = c.getTile().getX();
+    int y = c.getTile().getY();
+    int room_index = rooms.indexOf(c.getRoom()) + 1;
+    int power = c.getPower();
+    System.out.printf("x:%d y:%d room:%d power:%d \n", x, y, room_index, power);
+  };
 
   }
 
