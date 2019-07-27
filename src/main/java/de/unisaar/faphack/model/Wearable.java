@@ -66,6 +66,9 @@ public class Wearable extends Item {
   }
 
   public void pickUp(Character c) {
+
+//    todo AK: test for the list on Tile
+
     if (c == null) {
       return;
     }
