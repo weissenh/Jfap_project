@@ -57,14 +57,14 @@ public class WallTile extends Tile {
 
     //Wall is destructed if character has sufficient power
     else if(this.destructible <= c.getPower() ){
-      this.destructible = 0;
-
-      int p = - this.destructible;
+      int p = -this.destructible;
       int h = 0;
       int m = 0;
       int hl = 1;
       CharacterModifier characterModifier = new CharacterModifier(h, m, p, hl);
       c.applyItem(characterModifier);
+
+      this.destructible = 0;
       return this;
     }
 
@@ -74,7 +74,7 @@ public class WallTile extends Tile {
   public boolean isOccupied(Character character){
     //Illegal Arguemnt
     if (character == null) {
-      throw new IllegalArgumentException("character cannot be null");
+      return false;
     }
     //Wall Tile is indestructible
     if (destructible == -1){
@@ -97,5 +97,7 @@ public class WallTile extends Tile {
     c.readInt("destructible");
   }
 
-
+  public int getDestructible() {
+    return destructible;
+  }
 }

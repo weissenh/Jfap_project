@@ -30,8 +30,16 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
   public DoorTile() {
   }
 
+  //todo: Fab should a door tile also have destructible value e.g. 0 or 1, see below
+  public DoorTile(int x, int y, Room room, int destructible){
+    super(x, y, room, destructible);
+  }
+
+
   public DoorTile(int x, int y, Room room){
-    super(x, y, room);
+    this(x, y, room, 1);
+    //super(x, y, room);
+
   }
 
   @Override
@@ -74,13 +82,14 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     if (this.destructible == DESTROYED) {return goalTile;}
     if (this.destructible == INDESTRUCTIBLE) {return null;}
     if (this.destructible <= c.getPower()) {
-        this.destructible = DESTROYED;
         int p = - this.destructible;
         int h = 0;
         int m = 0;
         int hl = 1;
         CharacterModifier characterModifier = new CharacterModifier(h, m, p, hl);
         c.applyItem(characterModifier);
+        this.destructible = DESTROYED;
+
         return goalTile;
       }
 

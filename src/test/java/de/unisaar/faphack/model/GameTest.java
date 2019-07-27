@@ -1,9 +1,8 @@
 package de.unisaar.faphack.model;
 
-import de.unisaar.faphack.model.map.FloorTile;
-import de.unisaar.faphack.model.map.Room;
-import de.unisaar.faphack.model.map.Tile;
-import de.unisaar.faphack.model.map.World;
+import com.jme3.math.Ring;
+import de.unisaar.faphack.model.effects.MoveEffect;
+import de.unisaar.faphack.model.map.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -152,7 +151,7 @@ class GameTest {
   }
 
   @Test
-  void keyInteraction(){
+  void toyGameInteraction() {
     //Create Game
     Game game = TestUtils.createToyGame();
 
@@ -161,24 +160,43 @@ class GameTest {
     List<Room> rooms = game.getWorld().getMapElements();
     Room first_room = rooms.get(0);
     Tile[][] first_room_tiles = first_room.getTiles();
-    protagonist.tile = first_room_tiles[0][1];
+    protagonist.tile = first_room_tiles[1][2];
     List<Character> inhabitants = first_room.getInhabitants();
     inhabitants.add(protagonist);
 
-    //Move to tile that holds key
-    MoveEffect moveEffectRight = new MoveEffect(new Direction(0,1));
-    moveEffectRight.apply(protagonist);
+    //Create different move effects
+    //horizontal and vertical moves
+    MoveEffect UP = new MoveEffect(new Direction(0, 1));
+    MoveEffect RIGHT = new MoveEffect(new Direction(1, 0));
+    MoveEffect LEFT = new MoveEffect(new Direction(-1, 0));
+    MoveEffect DOWN = new MoveEffect(new Direction(0, -1));
+    //Diagonal moves
+    MoveEffect UPLEFT = new MoveEffect(new Direction(-1, 1));
+    MoveEffect UPRIGHT = new MoveEffect(new Direction(1, 1));
+    MoveEffect DOWNLEFT = new MoveEffect(new Direction(-1, -1));
+    MoveEffect DOWNRIGHT = new MoveEffect(new Direction(1, -1));
+    //Stay, if Power == 0 then automatically rest
+    MoveEffect STAY = new MoveEffect(new Direction(0, 0));
 
-    //Pickup Key
-    Key foundKey = (Key) first_room_tiles[0][1].onTile().get(0);
-    foundKey.pickUp(protagonist);
 
-    //Move to first door and try to open door, first door is locked and character lacks power to open it
-    moveEffectRight.apply(protagonist);
-    assert(protagonist.getTile().willTake(protagonist) == null);
+    //First room (obstacles), moves and first door interaction
+    DOWN.apply(protagonist); //not possible as rest is needed first
+    STAY.apply(protagonist);
+    UP.apply(protagonist); //not possible as indestructible wall
+    DOWN.apply(protagonist); //stays on same tile as fixture mirror, mirror does not block move
 
-    //Move to second door and try to open door, this time it should work and you should get the second room
-    moveEffectRight.apply(protagonist);
-    assert(protagonist.getTile().willTake(protagonist).getRoom() == rooms.get(1));
+    //Test wall tile:
+    WallTile testWall = (WallTile) protagonist.getRoom().getTiles()[2][1];
+    assertEquals(testWall.getDestructible(), 2);
+    RIGHT.apply(protagonist); //should destroy wall and should loose power
+    WallTile testWallAfterMove = (WallTile) protagonist.getRoom().getTiles()[2][1];
+    assertEquals(testWall.getDestructible(), 0);
+
+    RIGHT.apply(protagonist); //should move onto door
+    //todo: other room is not entered when door is accessed
 
   }
+
+
+  }
+

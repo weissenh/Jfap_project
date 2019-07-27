@@ -3,6 +3,7 @@ package de.unisaar.faphack.model;
 import de.unisaar.faphack.model.effects.MultiplicativeEffect;
 import de.unisaar.faphack.model.map.*;
 import org.junit.jupiter.api.Test;
+import org.lwjgl.Sys;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -68,44 +69,114 @@ public class TestUtils {
     return game;
   }
 
+  /**   CreateToyGame
+   *
+   *    # = Wall indestructible
+   *    % = Wall destructible
+   *    . = Wall destroyed
+   *    c = Character initial
+   *    F = Fixture
+   *    K = Key
+   *    T = Trap
+   *    S = Stairway
+   *    w = Wearable //not capitalized because it is not stationary
+   *
+   *
+   *    This is the final plan, only room 1 is fully implemented yet
+   *    Room 1:    Room 2
+   *    ####       ####
+   *    #c #      =D  #
+   *    #F%D====== #  #
+   *    ##S#       ####
+   *      |
+   *    ##S#       ####
+   *    #ww#       #  #
+   *    #wwD=======D  #
+   *    ####       ####
+   *    Room 3     Room 4
+   *
+   *
+   * @return Game
+   */
 
   //Test what happens if room has no or little occupiable floor tiles
   public static Game createToyGame(){
     Game game = new Game();
     World world = new World();
     List<Room> mapElements = new ArrayList<>();
-    //First room is the initial rooom
-    Room room1 = createSimpleRoom(1,4,  1);
-    mapElements.add(room1);
-    //Second room is just a dummy for connection with door to room 1
-    Room room2 = createSimpleRoom(7,7, 2);
-    modifyField(room2, false,"w", world);
-    mapElements.add(room2);
 
     // add protagonist
-    addProtagonist(game, "The guy");
+    addProtagonist(game, "The walking potato");
 
-    //First Tile is a wall
+    //First room containts obstacles, e.g. fountain and destroyable rock
+    Room room1 = createSimpleRoom(4,4,  1);
 
-    //Second Tile holds a fountain
-    Item fountain = new Fixtures();
+    //Second room containts wearables e.g. weapons
+    Room room2 = createSimpleRoom(4,4, 2);
+
+    //Third room todo: holds weapons and wearables with effect
+    Room room3 = createSimpleRoom(4,4, 3);
+
+    //Fourth room todo: specify e.g. holds other characters that can be attacked
+    Room room4 = createSimpleRoom(4,4, 4);
+
+
+
+    //First room (obstacles)
+    //Tile[1][1] holds a fountain
+    Item mirrorOfHell = new Fixtures();
     List<Item> onTile = new ArrayList<>();
-    onTile.add(fountain);
-    modifyField(fountain, true, "onTile", room1.getTiles()[0][0]);
-    modifyField(room1.getTiles()[0][1], false, "items", onTile);
+    onTile.add(mirrorOfHell);
+    modifyField(mirrorOfHell, true, "onTile", room1.getTiles()[1][1]);
+    modifyField(room1.getTiles()[1][1], false, "items", onTile);
 
-    //Third Tile holds a key
-    int kid = 7;
-    Key key = new Key(room1.getTiles()[0][2], null, null, kid);
-    placeItemsInRoom(room1, 0, 2, key);
+    //Tile[2][1] contains a destructible wall
+    Tile[][] tiles = room1.getTiles();
+    tiles[2][1] = new WallTile(2, 1 , room1, 2); //alternatively createWallTile(2)
+    modifyField(room1, false,"tiles", tiles);
 
-    //Fourth Tile is a door to second room
-    DoorTile doorTile1 = (DoorTile) room1.getTiles()[0][3]; //locked door
-    DoorTile doorTile2 = (DoorTile) room1.getTiles()[0][4]; //locked door
-    DoorTile doorTile3 = (DoorTile) room2.getTiles()[0][0];
-    connectTiles(doorTile1, doorTile3);
-    connectTiles(doorTile2, doorTile3);
+    //Tile[3][1] contains a door, connects to second room
+    Tile[][] tiles_r1_door_mod = room1.getTiles();
+    tiles_r1_door_mod[3][1] = new DoorTile(3, 1 , room1); //
+    modifyField(room1, false,"tiles", tiles_r1_door_mod); //no door provided so room1 had to be modified
+    DoorTile doorTile1 = (DoorTile) room1.getTiles()[3][1];
+    DoorTile doorTile2 = (DoorTile) room2.getTiles()[0][2]; //door was already provided by simple room method
+    connectTiles(doorTile1, doorTile2);
 
+    //Third room Weapons and Items with effect
+    Wearable spear = createWearable(2, true);
+    //todo: solve field exception
+    //Armor mightyWristwatch = createArmor(2, 1, 3);
+
+    Wearable poison = createWearable(1, false);
+    modifyField(poison, true, "effect", new CharacterModifier(-2, 0, 0, 1));
+    Wearable SauerkrautSaft = createWearable(1, false);
+    modifyField(SauerkrautSaft, true, "effect", new CharacterModifier(+3, 0, 0, 1));
+
+    placeItemsInRoom(room3, 1, 2, spear);
+    //placeItemsInRoom(room3, 2, 2, mightyWristwatch);
+    placeItemsInRoom(room3, 1, 1, poison);
+    placeItemsInRoom(room3, 2, 1, SauerkrautSaft);
+
+
+
+
+    //Add Rooms to the world after modifications
+    modifyField(room1, false,"w", world);
+    mapElements.add(room1);
+    modifyField(room2, false,"w", world);
+    mapElements.add(room2);
+    modifyField(room3, false,"w", world);
+    mapElements.add(room3);
+    modifyField(room4, false,"w", world);
+    mapElements.add(room4);
+
+    //Add mapElements to the world though mapElements
+    modifyField(world, false,"mapElements", mapElements);
+
+    //Add game to the world and vice versa
+    modifyField(game, false, "world", world);
+    modifyField(world, false, "g", game);
     return game;
   }
 
