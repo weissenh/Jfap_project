@@ -23,6 +23,8 @@ public class MoveEffect implements Effect<Character, Boolean> {
    * tries to move the character into the given direction.
    * If the character's power == 0 only moves with direction (0,0) are possible,
    * i.e. the character is resting and its power increases by 5
+   * resting should only be allowed if power is 0 or below a threshold.
+   * Otherwise you could gain infinite power just by resting.
    * @param c the character to move
    * param dir the direction to move the character (max one tile: only adjacent tile)
    * e.g.  1  2  3     if you are on 2, then  can move to 1,2,3,4,5,6
@@ -48,7 +50,9 @@ public class MoveEffect implements Effect<Character, Boolean> {
       return false;
     }
 
-    //Verifies whether the character still has power left, returns false if not
+    // if
+
+    // Verifies whether the character still has power left, returns false if not
     if (c.getPower() == 0) {
       if (this.dir.x == 0 && this.dir.y == 0) {
         //does not need to move as c is already on correct tile
@@ -56,6 +60,12 @@ public class MoveEffect implements Effect<Character, Boolean> {
       }
       else return false;
     }
+
+    //todo: we could implement a threshold function that allows the character to rest
+    //even if its power is not 0 (given 0 0 direction of course) but only adds power
+    //until a power value of 5 is reached and never beyond that.
+    // e.g. resting with power level 3 will result in power level 5. But
+    // resting wil power level 5 will not add anything.
 
     c.move(desttile);
     return true;
