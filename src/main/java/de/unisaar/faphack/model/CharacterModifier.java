@@ -24,7 +24,7 @@ public class CharacterModifier implements Storable {
    * Apply the changes of this modifier to c, but only if howLong is not zero
    */
   public boolean applyTo(Character c) {
-    if (this.howLong() == 0) {
+    if (this.howLong() == 0 | c == null) {
       return false;}
     c.health += this.health;
     c.magic += this.magic;
