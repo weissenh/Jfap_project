@@ -105,6 +105,10 @@ implements Storable, TraitedTileOccupier {
    */
   public void move(Tile destination) {
     if (tile != null) {
+
+//      todo AK: can it be possible that the room of the tile is not defined?
+//      todo AK: test change of the room
+//      todo AK: test number of inhabitants
       Room current = tile.getRoom();
       if (destination.getRoom() != current) {
         current.getInhabitants().remove(this);
@@ -126,6 +130,12 @@ implements Storable, TraitedTileOccupier {
    * @return  boolean <code>true</code> if the action was successful, <code>false</code> otherwise
    */
   public boolean pickUp(Wearable what) {
+//    todo AK: what if it is an armor, why are we adding to the itelms list?
+//    todo AK: test current weight change
+
+    //    AK: added input check
+    if (what == null) {return false;} // todo AK: should return something else? Exception?
+
     if (this.getTile() == what.getTile()) { // todo: allow character to pick up items that are not on the same tile?
       if ((this.currentWeight + what.getWeight()) <= this.maxWeight) { //less or equal instead of less
         this.items.add(what);
@@ -189,7 +199,8 @@ implements Storable, TraitedTileOccupier {
 
   public int getWeight() {
     // TODO: implement
-    return 0;
+//    return 0;
+    return currentWeight; // AK
   }
 
   public int levelDown() {
@@ -213,6 +224,9 @@ implements Storable, TraitedTileOccupier {
      * stamina, quality of different armors, possibly even in the different
      * dimensions.
      */
+//    AK: added input check
+    if (eff == null) {return;}
+
     if (this.armor.isEmpty()) {
       eff.applyTo(this);
     }
@@ -230,6 +244,9 @@ implements Storable, TraitedTileOccupier {
    */
   public void applyItem(CharacterModifier eff) {
 
+    //    AK: added input check
+    if (eff == null) {return;}
+
     eff.applyTo(this);
 
   }
@@ -246,7 +263,7 @@ implements Storable, TraitedTileOccupier {
     }
     if (this.items.contains(item)){
         this.items.remove(item);
-        String tr = item.getTrait();
+        String tr = item.getTrait(); // AK: do we still need it?
         if (item instanceof Armor) {
           this.armor.remove(item);
         }
@@ -258,6 +275,7 @@ implements Storable, TraitedTileOccupier {
         }
         this.currentWeight -= item.getWeight();
         item.drop(this.getTile());
+        // todo AK: need to change character to null?
         return true;
     }
     return false;

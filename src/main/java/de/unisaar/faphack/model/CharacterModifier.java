@@ -24,6 +24,11 @@ public class CharacterModifier implements Storable {
    * Apply the changes of this modifier to c, but only if howLong is not zero
    */
   public boolean applyTo(Character c) {
+
+//    AK: added input check
+    if(c == null) {return false;} // todo AK: should return something else? Exception?
+
+//    todo AK:
     if (this.howLong() == 0) {
       return false;}
     c.health += this.health;
