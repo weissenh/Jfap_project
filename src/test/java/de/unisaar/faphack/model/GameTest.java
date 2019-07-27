@@ -205,7 +205,7 @@ class GameTest {
     // Move onto stairtile
     fullCharacterCoordinats(protagonist, rooms);
     //todo: Downleft returns 2 3 instead of 2 0
-    DOWN.apply(protagonist);
+    DOWNLEFT.apply(protagonist);
     System.out.println(protagonist.getTile().getTrait());
     //DOWN.apply(protagonist);
     fullCharacterCoordinats(protagonist, rooms);

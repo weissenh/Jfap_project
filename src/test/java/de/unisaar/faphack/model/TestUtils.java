@@ -148,7 +148,7 @@ public class TestUtils {
     modifyField(room1, false,"tiles", tiles_r1_door_mod);
     // room 3 [2][3]
     Tile[][] tiles_r3_stair_mod = room3.getTiles();
-    tiles_r3_stair_mod[2][3] = new StairTile(2, 3 , room1); //
+    tiles_r3_stair_mod[2][3] = new StairTile(2, 3 , room3); //
     modifyField(room3, false,"tiles", tiles_r3_stair_mod);
     // connect room 1 and room 3
     StairTile stairTile1 = (StairTile) room1.getTiles()[2][0];
