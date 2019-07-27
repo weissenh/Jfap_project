@@ -67,7 +67,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
     // e.g. resting with power level 3 will result in power level 5. But
     // resting wil power level 5 will not add anything.
 
-    c.move(desttile);
+    c.move(t);
     return true;
   }
 
