@@ -135,7 +135,7 @@ public class TestUtils {
 
     // Tile[3][1] contains a door, connects to second room
     Tile[][] tiles_r1_door_mod = room1.getTiles();
-    tiles_r1_door_mod[3][1] = new DoorTile(3, 1 , room1); //
+    tiles_r1_door_mod[3][1] = new DoorTile(3, 1 , room1, false, true); // locked door
     modifyField(room1, false,"tiles", tiles_r1_door_mod); //no door provided so room1 had to be modified
     DoorTile doorTile1 = (DoorTile) room1.getTiles()[3][1];
     DoorTile doorTile2 = (DoorTile) room2.getTiles()[0][2]; //door was already provided by simple room method
@@ -151,9 +151,9 @@ public class TestUtils {
     tiles_r3_stair_mod[2][3] = new StairTile(2, 3 , room3); //
     modifyField(room3, false,"tiles", tiles_r3_stair_mod);
     // connect room 1 and room 3
-    StairTile stairTile1 = (StairTile) room1.getTiles()[2][0];
-    StairTile stairTile2 = (StairTile) room3.getTiles()[2][3];
-    connectStairTiles(stairTile1, stairTile2,false);
+    StairTile stairTile2 = (StairTile) room1.getTiles()[2][0];
+    StairTile stairTile1 = (StairTile) room3.getTiles()[2][3];
+    connectStairTiles(stairTile2, stairTile1,false);
 
 
 
@@ -164,15 +164,57 @@ public class TestUtils {
 
     Wearable poison = createWearable(1, false);
     modifyField(poison, true, "effect", new CharacterModifier(-2, 0, 0, 1));
-    Wearable SauerkrautSaft = createWearable(1, false);
-    modifyField(SauerkrautSaft, true, "effect", new CharacterModifier(+3, 0, 0, 1));
+    Wearable sauerkrautSaft = createWearable(1, false);
+    modifyField(sauerkrautSaft, true, "effect", new CharacterModifier(+3, 0, 0, 1));
 
     placeItemsInRoom(room3, 1, 2, spear);
     //placeItemsInRoom(room3, 2, 2, mightyWristwatch);
     placeItemsInRoom(room3, 1, 1, poison);
-    placeItemsInRoom(room3, 2, 1, SauerkrautSaft);
+    placeItemsInRoom(room3, 2, 1, sauerkrautSaft);
 
 
+
+//    get tiles for rooms
+    Tile[][] tiles1 = room1.getTiles();
+    Tile[][] tiles2 = room2.getTiles();
+    Tile[][] tiles3 = room3.getTiles();
+    Tile[][] tiles4 = room4.getTiles();
+
+//    specify tile types (for all objects)
+    tiles3[3][2] = new StairTile(3, 2, room3); // one-way stair
+    tiles4[0][1] = new StairTile(0, 1, room4);
+
+    tiles4[0][2] = new StairTile(0, 2, room4); // stair without end
+    tiles4[3][2] = new DoorTile(3, 2, room4, true, false); // door without end
+
+    tiles4[1][3] = new DoorTile(1, 3, room4, true, false); // opened door
+    tiles2[1][0] = new DoorTile(1, 0, room2, false, false); // unlocked door
+
+
+
+
+//    update the room
+    modifyField(room1, false, "tiles", tiles1);
+    modifyField(room2, false, "tiles", tiles2);
+    modifyField(room3, false, "tiles", tiles3);
+    modifyField(room4, false, "tiles", tiles4);
+
+//    create objects
+    //    Connect Room3 and Room4 by a one-way stair
+    StairTile stairTile3 = (StairTile) room3.getTiles()[3][2];
+    StairTile stairTile4 = (StairTile) room4.getTiles()[0][1];
+    connectStairTiles(stairTile3, stairTile4, true);
+
+//    Stair without toTile
+    StairTile stairTile5 = (StairTile) room4.getTiles()[0][2];
+
+//    Door without toTile
+    DoorTile doorTile5 = (DoorTile) room4.getTiles()[3][2];
+
+    // Unlocked Door, one door opened, the other closed
+    DoorTile doorTile3 = (DoorTile) room3.getTiles()[3][2];
+    DoorTile doorTile4 = (DoorTile) room4.getTiles()[0][1];
+    connectTiles(doorTile3, doorTile4);
 
 
     //Add Rooms to the world after modifications
