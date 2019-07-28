@@ -17,7 +17,7 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
 
   private Hallway hallway;
 
-  private List<Observer<DoorTile>> observers; // todo: marshal???
+  private List<Observer<DoorTile>> observers; // don't marshall
 
   /**
    * To be opened by an item (key) the Effect of that item needs to create a m
