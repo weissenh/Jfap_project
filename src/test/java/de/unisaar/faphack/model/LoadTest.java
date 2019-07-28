@@ -12,10 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.unisaar.faphack.model.effects.AdditiveEffect;
-import de.unisaar.faphack.model.map.FloorTile;
-import de.unisaar.faphack.model.map.StairTile;
-import de.unisaar.faphack.model.map.Trap;
-import de.unisaar.faphack.model.map.World;
+import de.unisaar.faphack.model.map.*;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -145,6 +142,19 @@ class LoadTest {
     migrateIds(orig, saved);
     reader.close();
     assertEquals(orig, saved);
+  }
+
+  @Test
+  void saveObstacleTile() {
+    File f = getTestResourceFile("", "obstacle.json");
+    StorableFactory fact = new StorableFactory();
+    StorableRegistrator.registerStorables(fact);
+    MarshallingContext mc = new JsonMarshallingContext(f, fact);
+    ObstacleTile tile1 = new ObstacleTile();
+    mc.save(tile1);
+    assertTrue(f.canRead());
+    mc = new JsonMarshallingContext(f, fact);
+    ObstacleTile tile2 = (ObstacleTile) mc.read();
   }
 
   @Test
