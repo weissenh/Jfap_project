@@ -21,16 +21,22 @@ public class Trap extends Fixtures {
 
   // protected CharacterModifier modifier;
   // not needed, Items (Trap is subsubclass of Item) already have a charactermodifier
-
   public Trap(FloorTile where, StairTile trap, CharacterModifier effect) {
     super(where, FLOOR, effect);
     this.trapDoor = trap; // todo: stairtile ensure same room? ensure from of stair?
+    if (trap != null) {
+      trap.trap = this;
+      if (trap.stair != null && trap.stair.toTile != null) trap.stair.toTile.trap = this; // todo have a function for that
+    }
   }
 
   public Trap() {
     // trait = FLOOR; // all traps look like normal floor tiles? todo ok?
     this(null, null, null);
   }
+
+  /** @return trapdoor (stairtile, can be null) */
+  public StairTile getTrapDoor() { return trapDoor;}
 
   public void marshal(MarshallingContext c) {
     super.marshal(c);
