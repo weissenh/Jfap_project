@@ -86,6 +86,11 @@ public class WallTile extends Tile {
   }
 
   @Override
+  public String getTrait() {
+    return destructible == DESTROYED ? DESTROYED_WALL : WALL;
+  }
+
+  @Override
   public void marshal(MarshallingContext c) {
     super.marshal(c);
     c.write("destructible", this.destructible);

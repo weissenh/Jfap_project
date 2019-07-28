@@ -1,12 +1,11 @@
 package de.unisaar.faphack.model.map;
 
+import de.unisaar.faphack.model.*;
 import de.unisaar.faphack.model.Character;
-import de.unisaar.faphack.model.Item;
-import de.unisaar.faphack.model.MarshallingContext;
-import de.unisaar.faphack.model.Wearable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author
@@ -53,8 +52,16 @@ public class FloorTile extends Tile {
   }
 
   /** FloorTiles can have items on them */
+  @Override
   public List<Item> onTile() {
     return items;
+  }
+
+  public boolean addItem(Fixtures what) { return items.add(what); }
+
+  public List<Item> getFixtures() {
+    // todo: does this modify the original items list? if yes, make a copy first
+    return items.stream().filter(i -> i instanceof Fixtures).collect(Collectors.toList());
   }
 
   @Override
