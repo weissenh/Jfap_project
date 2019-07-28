@@ -13,16 +13,23 @@ import de.unisaar.faphack.model.map.FloorTile;
 public class Fixtures extends Item {
 
   public Fixtures() {
-    super(null, FOUNTAIN, null);
-    // super(null, CHEST, null);
-    // todo: what kind of effect?
-    // todo: what to do with trait? chest, fountain trait
+    this(null, FOUNTAIN, null);
+    // this(null, CHEST, null);
+    // todo: what to do with trait? chest, fountain trait as default?
   }
 
-  public Fixtures(FloorTile where, String trait, CharacterModifier effect) {
+  public Fixtures(FloorTile where, CharacterModifier effect) {
+    this(where, FOUNTAIN, effect);
+  }
+
+  private Fixtures(FloorTile where, String trait, CharacterModifier effect) {
     // assert (trait != null);   // todo: don't do input validation with assert
     // assert (FOUNTAIN.equals(trait) || CHEST.equals(trait));
     super(where, trait, effect);
+    if (where != null) {
+      // TODO ADD FIXTURE TO LIST OF ITEMS OF THE TILE!??
+      // onTile.addItem(this);  // todo doesn't work currently because only wearable allowed
+    }
   }
   // todo: do anything special with chests to allow interaction with them?
   // e.g. chest don't have character modifier but
