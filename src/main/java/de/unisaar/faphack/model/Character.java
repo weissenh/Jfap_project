@@ -7,9 +7,7 @@ import java.util.Set;
 
 import de.unisaar.faphack.model.effects.ModifyingEffect;
 import de.unisaar.faphack.model.effects.MultiplicativeEffect;
-import de.unisaar.faphack.model.map.FloorTile;
-import de.unisaar.faphack.model.map.Room;
-import de.unisaar.faphack.model.map.Tile;
+import de.unisaar.faphack.model.map.*;
 
 /**
  * @author
@@ -120,21 +118,39 @@ implements Storable, TraitedTileOccupier {
     }
     tile = destination;
     // Check if moving to the tile has consequences (fountains, stairs, traps, ...)
-    // todo: what if tile contains trap and fountain at the same time? what if it's a stair tile?
+    // todo: what if tile contains trap and fountain at the same time?
     // todo: can we use willTake()?
     // if floor tile getFixtures: for each get charatermodifier, apply it to the character
-    if (tile instanceof FloorTile) {
+    if (tile instanceof FloorTile) { // todo: traps can also be placed on floortiles...
       List<Item> fixtures = ((FloorTile) tile).getFixtures();
       for (Item fixture : fixtures) {
         assert (fixture instanceof Fixtures);
+        if (fixture instanceof Trap) {
+          Trap t = (Trap) fixture;
+          StairTile st = t.getTrapDoor();
+          if (st != null) {
+            Tile newdestination = st.willTake(this); // willTake will apply trap effect?
+            this.tile = newdestination == null ? this.tile : newdestination;
+            continue; // todo: ok? assume willTake will already apply trap effect?
+            // todo: use continue or break if trap found?
+          }
+        }
         CharacterModifier cm = fixture.getCharacterModifier();
         if (cm != null) {
           cm.applyTo(this);
         }
       }
+      // if has trap, move to...
     }
-    // if stair tile try will take...
-    // todo: do this...
+    // if stair tile try will take... todo: uncomment?
+//    else if (tile instanceof StairTile) { // don't use plain if here: tile already modified in previous if branch
+//      // todo: maybe we shouldn't do this in that way:
+//      //  MoveEffect also uses willtake and then character.move
+//      //  btw, willTake() looks like a non-modifying function, but it modifies the character:
+//      //  levelup/down, apply trap character modifier effect
+//      Tile newdestination = tile.willTake(this);
+//      tile = newdestination == null? tile : newdestination;
+//    }
   }
 
   /**
