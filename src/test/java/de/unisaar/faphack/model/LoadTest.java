@@ -159,7 +159,7 @@ class LoadTest {
 
   @Test
   void loadTrap() {
-    // todo: how to compare read in trap to other? (equals uses identiy, but need equality)
+    // todo: how to compare read in trap to other? (equals uses identity, but need equality)
     File f = getTestResourceFile("", "trap.json");
     StorableFactory fact = new StorableFactory();
     StorableRegistrator.registerStorables(fact);
@@ -176,7 +176,7 @@ class LoadTest {
     mc = new JsonMarshallingContext(f, fact);
     // load
     Trap t1read = (Trap) mc.read();
-//    assertEquals(t1.getTile(), t1read.getTile());
+//    assertEquals(t1.getTile(), t1read.getTile()); // need migrate IDs ?
 //    assertEquals(t1.getTrait(), t1read.getTrait());
 //    assertEquals(t1.getCharacterModifier(), t1read.getCharacterModifier());
     // save
