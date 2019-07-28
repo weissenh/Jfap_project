@@ -37,6 +37,7 @@ public abstract class Tile implements Storable, TraitOwner {
     this.room = room;
     this.x = x;
     this.y = y;
+    if (room != null) this.room.replaceTile(x, y, this);
   }
 
   public int getX() {
