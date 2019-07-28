@@ -7,6 +7,7 @@ import java.util.Set;
 
 import de.unisaar.faphack.model.effects.ModifyingEffect;
 import de.unisaar.faphack.model.effects.MultiplicativeEffect;
+import de.unisaar.faphack.model.map.FloorTile;
 import de.unisaar.faphack.model.map.Room;
 import de.unisaar.faphack.model.map.Tile;
 
@@ -105,7 +106,7 @@ implements Storable, TraitedTileOccupier {
    */
   public void move(Tile destination) {
     if (tile != null) {
-
+//      todo: check if destination is not null!
 //      todo AK: can it be possible that the room of the tile is not defined?
 //      todo AK: test change of the room
 //      todo AK: test number of inhabitants
@@ -118,6 +119,22 @@ implements Storable, TraitedTileOccupier {
       destination.getRoom().getInhabitants().add(this);
     }
     tile = destination;
+    // Check if moving to the tile has consequences (fountains, stairs, traps, ...)
+    // todo: what if tile contains trap and fountain at the same time? what if it's a stair tile?
+    // todo: can we use willTake()?
+    // if floor tile getFixtures: for each get charatermodifier, apply it to the character
+    if (tile instanceof FloorTile) {
+      List<Item> fixtures = ((FloorTile) tile).getFixtures();
+      for (Item fixture : fixtures) {
+        assert (fixture instanceof Fixtures);
+        CharacterModifier cm = fixture.getCharacterModifier();
+        if (cm != null) {
+          cm.applyTo(this);
+        }
+      }
+    }
+    // if stair tile try will take...
+    // todo: do this...
   }
 
   /**
