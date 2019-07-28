@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 
 import de.unisaar.faphack.model.effects.AdditiveEffect;
+import de.unisaar.faphack.model.map.FloorTile;
+import de.unisaar.faphack.model.map.StairTile;
+import de.unisaar.faphack.model.map.Trap;
 import de.unisaar.faphack.model.map.World;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
@@ -76,6 +79,10 @@ class LoadTest {
     MarshallingContext mc = new JsonMarshallingContext(f, fact);
     mc.save(ae);
     assertTrue(f.canRead());
+    mc = new JsonMarshallingContext(f, fact);
+    AdditiveEffect aeread = (AdditiveEffect) mc.read();
+    // assertEquals(ae.getHealth(), aeread.getHealth()); // todo do comparison
+    // assertEquals(all other pod instance variables of additive effect)
   }
 
   @Test
@@ -138,5 +145,38 @@ class LoadTest {
     migrateIds(orig, saved);
     reader.close();
     assertEquals(orig, saved);
+  }
+
+  @Test
+  void loadTrap() {
+    // todo: how to compare read in trap to other? (equals uses identiy, but need equality)
+    File f = getTestResourceFile("", "trap.json");
+    StorableFactory fact = new StorableFactory();
+    StorableRegistrator.registerStorables(fact);
+    MarshallingContext mc = new JsonMarshallingContext(f, fact);
+    // prepare objects
+    Trap t1 = new Trap();
+    FloorTile where = new FloorTile();
+    StairTile hiddenstairtile = new StairTile();
+    CharacterModifier cm = new CharacterModifier(-2, 0, -1, 2);
+    Trap t2 = new Trap(where, hiddenstairtile, cm);
+    // save
+    mc.save(t1);
+    assertTrue(f.canRead());
+    mc = new JsonMarshallingContext(f, fact);
+    // load
+    Trap t1read = (Trap) mc.read();
+//    assertEquals(t1.getTile(), t1read.getTile());
+//    assertEquals(t1.getTrait(), t1read.getTrait());
+//    assertEquals(t1.getCharacterModifier(), t1read.getCharacterModifier());
+    // save
+    mc.save(t2);
+    assertTrue(f.canRead());
+    mc = new JsonMarshallingContext(f, fact);
+    // load
+    Trap t2read = (Trap) mc.read();
+//    assertEquals(t2.getTile(), t2read.getTile());
+//    assertEquals(t2.getTrait(), t2read.getTrait());
+//    assertEquals(t2.getCharacterModifier(), t2read.getCharacterModifier());
   }
 }
