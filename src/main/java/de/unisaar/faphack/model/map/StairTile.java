@@ -21,13 +21,18 @@ public class StairTile extends Tile {
   }
 
   public StairTile(int x, int y, Room room){
-    this(x, y, room, null);
+    this(x, y, room, null, null);
   }
 
   public StairTile(int x, int y, Room room, Stair stair) {
+    this(x, y, room, stair, null);
+  }
+
+  public StairTile(int x, int y, Room room, Stair stair, Trap trap) {
     super(x, y, room);
-    trait = STAIR;
+    trait = (trap != null ? FLOOR : STAIR);
     this.stair = stair;
+    this.trap = trap;
   }
 
   /**
