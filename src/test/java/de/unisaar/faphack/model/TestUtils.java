@@ -125,6 +125,7 @@ public class TestUtils {
     Item mirrorOfHell = new Fixtures();
     List<Item> onTile = new ArrayList<>();
     onTile.add(mirrorOfHell);
+    modifyField(mirrorOfHell, true, "effect", new CharacterModifier(-10, 0, 0, 1));
     modifyField(mirrorOfHell, true, "onTile", room1.getTiles()[1][1]);
     modifyField(room1.getTiles()[1][1], false, "items", onTile);
 
@@ -156,19 +157,26 @@ public class TestUtils {
     connectStairTiles(stairTile2, stairTile1,false);
 
 
-
-    //Third room Weapons and Items with effect
+    // 2.Third room Weapons and Items with effect
     Wearable spear = createWearable(2, true);
-    //todo: fab zsolve field exception
-    //Armor mightyWristwatch = createArmor(2, 1, 3);
+    Armor shield = createArmor(20, 0, 0);
 
     Wearable poison = createWearable(1, false);
     modifyField(poison, true, "effect", new CharacterModifier(-2, 0, 0, 1));
     Wearable sauerkrautSaft = createWearable(1, false);
     modifyField(sauerkrautSaft, true, "effect", new CharacterModifier(+3, 0, 0, 1));
 
+    //remove the stair tile that was placed by createSimpleRoom
+    // Tile[2][2] contains no stair tile
+    Tile[][] tiles_r3_stair_del_mod = room3.getTiles();
+    tiles_r3_stair_del_mod[2][2] = new FloorTile(2, 2, room3);
+    modifyField(room3, false,"tiles", tiles_r3_stair_del_mod);
+
+    modifyField(room1, false,"tiles", tiles);
+
+    // Place wearables in the room
     placeItemsInRoom(room3, 1, 2, spear);
-    //placeItemsInRoom(room3, 2, 2, mightyWristwatch);
+    placeItemsInRoom(room3, 2, 2, shield);
     placeItemsInRoom(room3, 1, 1, poison);
     placeItemsInRoom(room3, 2, 1, sauerkrautSaft);
 
@@ -212,10 +220,19 @@ public class TestUtils {
     DoorTile doorTile5 = (DoorTile) room4.getTiles()[3][2];
 
     // Unlocked Door, one door opened, the other closed
-    DoorTile doorTile3 = (DoorTile) room3.getTiles()[3][2];
-    DoorTile doorTile4 = (DoorTile) room4.getTiles()[0][1];
+    DoorTile doorTile3 = (DoorTile) room4.getTiles()[1][3];
+    DoorTile doorTile4 = (DoorTile) room2.getTiles()[1][0];
     connectTiles(doorTile3, doorTile4);
 
+    //haracter c# = createBaseCharacter("#", #, #);
+    //    Character c# = createBaseCharacter("#", #, #);
+    //    addCharacter(room#, #,#, c#);
+    //    addCharacter(room#, #, #,c#);
+
+    Character m1 = createBaseCharacter("flyingSpaghettiMonster", 10, 2);
+    Character m2 = createBaseCharacter("evilHamster", 2, 1);
+    addCharacter(room4, 1, 2, m1);
+    addCharacter(room4, 2, 2, m2);
 
     //Add Rooms to the world after modifications
     modifyField(room1, false,"w", world);

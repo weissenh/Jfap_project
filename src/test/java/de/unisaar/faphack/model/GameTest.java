@@ -184,6 +184,7 @@ class GameTest {
       STAY.apply(protagonist);
       UP.apply(protagonist); //not possible as indestructible wall
       DOWN.apply(protagonist); //stays on same tile as fixture mirror, mirror does not block move
+//      protagonist.getTile().onTile().get(0);
 
       // Test if wall tile is destroyed (added a get-function in WallTile)
       WallTile testWall = (WallTile) protagonist.getRoom().getTiles()[2][1];
@@ -201,6 +202,12 @@ class GameTest {
       // Move onto stairtile and enter room3
       DOWNLEFT.apply(protagonist);
 
+      // Move onto tile with the shield
+      DOWN.apply(protagonist);
+
+      // Pick up the shield
+      Wearable foo = (Wearable) protagonist.getTile().onTile().get(0);
+      protagonist.pickUp(foo);
 
       // todo: 2. third room
       // todo: move into second room via a stairway to be build (pick up wearables and items)
