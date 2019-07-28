@@ -39,7 +39,13 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
   public DoorTile(int x, int y, Room room){
     this(x, y, room, 1);
     //super(x, y, room);
+  }
 
+  public DoorTile(int x, int y, Room room, boolean op, boolean lock){
+    this(x, y, room, 1);
+    this.open = op;
+    this.locked = lock;
+    //super(x, y, room);
   }
 
   @Override
@@ -59,7 +65,7 @@ public class DoorTile extends WallTile implements Storable, Observable<DoorTile>
     }
 
     // if the door is open, we can directly go to the goal tile
-    if (this.open || this.destructible == DESTROYED) {
+    if (this.open) {
       return goalTile;
     }
 

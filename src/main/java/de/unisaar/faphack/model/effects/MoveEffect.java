@@ -43,6 +43,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
     Room currentroom = cpos.getRoom();
     Tile desttile = currentroom.getNextTile(cpos, dir);  // maybe not full direction
 
+
     // ask the destination tile whether it will take the character (answer null if cannot be moved)
     Tile t = desttile.willTake(c);
 
@@ -67,7 +68,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
     // e.g. resting with power level 3 will result in power level 5. But
     // resting wil power level 5 will not add anything.
 
-    c.move(desttile);
+    c.move(t);
     return true;
   }
 

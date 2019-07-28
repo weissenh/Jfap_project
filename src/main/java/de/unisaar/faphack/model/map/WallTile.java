@@ -64,7 +64,7 @@ public class WallTile extends Tile {
       CharacterModifier characterModifier = new CharacterModifier(h, m, p, hl);
       c.applyItem(characterModifier);
 
-      this.destructible = 0;
+      this.destructible = DESTROYED;
       return this;
     }
 
@@ -77,7 +77,7 @@ public class WallTile extends Tile {
       return false;
     }
     //Wall Tile is indestructible
-    if (destructible == -1){
+    if (destructible == INDESTRUCTIBLE){
       return false;
     }
     //Character might be on tile
