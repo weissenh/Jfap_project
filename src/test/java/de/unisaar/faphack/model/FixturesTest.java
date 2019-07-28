@@ -22,10 +22,9 @@ class FixturesTest {
     assertEquals(fountain.getTrait(), TraitOwner.FOUNTAIN);
     assertEquals(fountain.getCharacterModifier(), effect);
     Character person = createBaseCharacter("person1", 2, 10);
-    assertEquals(person.getHealth(), 100); // todo value might change (100)
-    person.move(tile);
+    assertEquals(100, person.getHealth()); // todo value might change (100)
+    person.move(tile); // todo or use move effect?
     assertEquals(person.getTile(), tile);
-    // todo see effect of fountain?
-    assertEquals(person.getHealth(), 101);
+    assertEquals(101, person.getHealth());
   }
 }

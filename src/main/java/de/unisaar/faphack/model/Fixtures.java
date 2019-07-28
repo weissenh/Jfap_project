@@ -27,8 +27,7 @@ public class Fixtures extends Item {
     // assert (FOUNTAIN.equals(trait) || CHEST.equals(trait));
     super(where, trait, effect);
     if (where != null) {
-      // TODO ADD FIXTURE TO LIST OF ITEMS OF THE TILE!??
-      // onTile.addItem(this);  // todo doesn't work currently because only wearable allowed
+      where.addItem(this); // added special addItem(Fixtures) method to FloorTile
     }
   }
   // todo: do anything special with chests to allow interaction with them?
