@@ -22,7 +22,7 @@ public class Fixtures extends Item {
     this(where, FOUNTAIN, effect);
   }
 
-  private Fixtures(FloorTile where, String trait, CharacterModifier effect) {
+  protected Fixtures(FloorTile where, String trait, CharacterModifier effect) {
     // assert (trait != null);   // todo: don't do input validation with assert
     // assert (FOUNTAIN.equals(trait) || CHEST.equals(trait));
     super(where, trait, effect);
