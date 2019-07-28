@@ -21,8 +21,13 @@ class TrapTest {
     FloorTile tile2 = new FloorTile(2, 2, room);
     // StairTile from = new StairTile()
     // Stair stair = new Stair(null, null, false);
-    StairTile hiddenstairtile = new StairTile(1,1, room);
-    Trap trap1 = new Trap(tile1, hiddenstairtile, effect);
+    StairTile stair1from = new StairTile(1,1, room);
+    StairTile stair1to = new StairTile(1,2, room);
+    StairTile stair2from = new StairTile(2,1, room);
+    StairTile stair2to = new StairTile(2,2, room);
+    Stair stair1 = new Stair(stair1from, stair1to, false);
+    Stair stair2 = new Stair(stair2from, stair2to, false);
+    Trap trap1 = new Trap(tile1, stair1from, effect);
     Trap trap2 = new Trap(tile2, null, effect);
     // test proper initialization
     assertEquals(trap1.getTile(), tile1);
@@ -37,7 +42,8 @@ class TrapTest {
     assertEquals(person.getHealth(), 100); // todo value might change (100)
     assertEquals(50, person.getMagic()); // todo value might change (50)
     person.move(tile1);
-    assertEquals(person.getTile(), hiddenstairtile.stair.toTile); // todo what is the next tile?
+    assertEquals(person.getTile(), stair1from.stair.toTile); // todo what is the next tile?
+    assertEquals(person.getTile(), stair1to); // todo what is the next tile?
     assertEquals(98, person.getHealth());
     assertEquals(99, person.getPower());
     assertEquals(50, person.getMagic());

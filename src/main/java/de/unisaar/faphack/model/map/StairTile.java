@@ -1,15 +1,19 @@
 package de.unisaar.faphack.model.map;
 
 import de.unisaar.faphack.model.Character;
+import de.unisaar.faphack.model.CharacterModifier;
 import de.unisaar.faphack.model.MarshallingContext;
 
 /**
- * @author
+ * StairTiles are either the starting or ending point of a Stair.
  *
+ * @author weissenh
  */
 public class StairTile extends Tile {
+  /** this StairTile is either the from or */
   protected Stair stair;
 
+  /** If not null, StairTile has a trap (so this StairTile looks like a normal floor tile) */
   protected Trap trap;
 
   public StairTile() {
@@ -17,8 +21,13 @@ public class StairTile extends Tile {
   }
 
   public StairTile(int x, int y, Room room){
+    this(x, y, room, null);
+  }
+
+  public StairTile(int x, int y, Room room, Stair stair) {
     super(x, y, room);
     trait = STAIR;
+    this.stair = stair;
   }
 
   /**
@@ -31,10 +40,9 @@ public class StairTile extends Tile {
    */
   @Override
   public Tile willTake(Character c) {
-    // TODO: FILL THIS
     // check if we have a real character
     if (c == null) {return null;}
-
+    // todo: check if stair is null (not initialized!
     // define the default goal tile
     Tile goalTile = stair.toTile;
 
@@ -56,6 +64,11 @@ public class StairTile extends Tile {
       goalTile = stair.fromTile;
     } else if (this == stair.fromTile){
       c.levelDown();
+    }
+    if (hasTrap() != null) {
+      // if stair tile contains a trap, apply its effect onto the character
+      CharacterModifier cm = trap.getCharacterModifier();
+      cm.applyTo(c);
     }
     return goalTile;
   }

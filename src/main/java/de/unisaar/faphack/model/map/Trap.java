@@ -24,15 +24,13 @@ public class Trap extends Fixtures {
 
   public Trap(FloorTile where, StairTile trap, CharacterModifier effect) {
     super(where, FLOOR, effect);
-    this.trapDoor = trap; // todo: stairtile ensure same room?
+    this.trapDoor = trap; // todo: stairtile ensure same room? ensure from of stair?
   }
 
   public Trap() {
     // trait = FLOOR; // all traps look like normal floor tiles? todo ok?
     this(null, null, null);
   }
-
-  // todo: how to ensure that the trap effect is applied to character if he moves onto the tile?
 
   public void marshal(MarshallingContext c) {
     super.marshal(c);
