@@ -11,6 +11,15 @@ public abstract class Connector<T extends Tile> implements Storable {
   protected T fromTile;
   protected T toTile;
 
+  public Connector() {
+    this(null, null);
+  }
+
+  public Connector(T from, T to) {
+    this.fromTile = from;
+    this.toTile = to;
+  }
+
   public T from() {
     return fromTile;
   }
