@@ -38,6 +38,10 @@ public class StairTile extends Tile {
     // define the default goal tile
     Tile goalTile = stair.toTile;
 
+    // check if the stair is a trap
+    if (this.hasTrap() != null) {
+      return null;
+    }
     // check if the stair is one-way or two-ways
     if (this.stair.onlyDown()) {
       // only down: 'from' -> 'to'

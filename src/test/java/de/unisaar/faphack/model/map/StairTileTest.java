@@ -19,5 +19,13 @@ class StairTileTest {
     connectStairTiles(t1, t2, true);
     assertEquals(t2, t1.willTake(character));
     assertNull(t2.willTake(character));
+
+    // test t3 as trap
+    StairTile t3 = new StairTile();
+    connectStairTiles(t2,t3, false);
+    Trap trap = new Trap();
+    placeTrapOnTile(trap, t3);
+    assertNull(t3.willTake(character));
+
   }
 }
