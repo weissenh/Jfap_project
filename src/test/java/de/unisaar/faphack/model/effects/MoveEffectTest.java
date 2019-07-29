@@ -77,7 +77,8 @@ class MoveEffectTest {
     // moveEffect with null direction
     Character testObjectx = createBaseCharacter("Baz", 10, 2);
     addCharacter(room, 2,2, testObjectx);
-    moveEffect = new MoveEffect(null); // todo what to do here?
-    moveEffect.apply(testObjectx);
+    //moveEffect = new MoveEffect(null); // todo what to do here?
+    assertThrows(IllegalArgumentException.class, () ->  new MoveEffect(null));
+    //moveEffect.apply(testObjectx);
   }
 }
