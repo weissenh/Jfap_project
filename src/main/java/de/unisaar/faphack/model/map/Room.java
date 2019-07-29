@@ -56,12 +56,6 @@ public class Room implements Storable {
   }
 
   /**
-  * Take tile and return which you reach when you follow the direction
-   * @param t Tile starting point
-   * @param d where to move
-  * */
-  /**
-   /**
    * This method returns a tile determined by the specified tile <code> t </ code> and the <code> direction </ code> d.
    * If the path between the specified tile and the derived tile is blocked by a wall,
    * the wall tile is returned.
@@ -73,6 +67,7 @@ public class Room implements Storable {
    * @return
    */
   public Tile getNextTile(Tile t, Direction d) {
+    // TODO REIMPLEMENT THIS METHOD TO FOLLOW NEW REQUIREMENTS (SEE COMMENT ABOVE)
     int newx = max(t.x + d.x, 0);  // negative positions are not allowed
     int newy = max(t.y + d.y, 0);
     // todo: should we move somewhere if concrete direction not possible or just return old tile?
@@ -125,6 +120,25 @@ public class Room implements Storable {
 
   public List<Character> getInhabitants() {
     return inhabitants;
+  }
+
+  /**
+   * Replace the tile at (x,y) with newtile
+   *
+   * @param x x position of tile to be changed
+   * @param y y position of tile to be changed
+   * @param newtile new Tile, should be placed at (x,y) in room (old tile removed)
+   * @return <code>true</code> if successfully replaced, <code>false</code> otherwise
+   * */
+  public boolean replaceTile(int x, int y, Tile newtile) {
+    // added to also inform the room if a tile is added to it (before only changed in Tile)
+    if (tiles == null) return false;
+    if (!(0 <= x  && x < get_x_dimension_size()) || !(0 <= y  && y < get_y_dimension_size())) {
+      //throw new IllegalArgumentException(String.format("Position doesn't exist in this room! (%d , %d)", x, y));
+      return false;
+    }
+    tiles[y][x] = newtile;
+    return true;
   }
 
   @Override

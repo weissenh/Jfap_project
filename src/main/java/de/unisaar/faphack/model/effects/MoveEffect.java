@@ -12,7 +12,7 @@ public class MoveEffect implements Effect<Character, Boolean> {
 
   public MoveEffect(Direction d) {
     dir = d;
-
+    // todo: check if d is not null!!!!! exception or dir = new Direction(0,0) ?
     //Checks whether the move exceeds the distance limitations
     if (abs(this.dir.x)>1 || abs(this.dir.y)>1) {  //
       throw new IllegalArgumentException("Move exceeds distance limitations.");
@@ -58,6 +58,8 @@ public class MoveEffect implements Effect<Character, Boolean> {
       if (this.dir.x == 0 && this.dir.y == 0) {
         //does not need to move as c is already on correct tile
         c.rest(); //increases characters power by 5
+        // todo shall we allow the character to rest/move even when his power is zero (== dead?) -> ZOMBIE!
+        // todo return here? if move again maybe envoke entering effects (fountain?)
       }
       else return false;
     }
