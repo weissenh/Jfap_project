@@ -10,6 +10,11 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.*;
 
+/**
+ * A JSONMarshallingContext writes Storable data structures to JSON or read Storable data structures from JSON
+ *
+ * TODO allow to print formatted (instead of one line) JSON
+ * */
 public class JsonMarshallingContext implements MarshallingContext {
 
   private final File file;
@@ -80,18 +85,16 @@ public class JsonMarshallingContext implements MarshallingContext {
   @Override
   public void save(Storable s) {
     JSONObject jo = getJOforStorable(s);
-    try {
-      FileWriter fw = new FileWriter(this.file);
+    try (FileWriter fw = new FileWriter(this.file)) {
       // enhancement: how to write *formatted* JSON?
       // fw.write(jo.toJSONString());
       fw.write(jo.toString());
       fw.flush();
-      fw.close();
     }
     catch (java.io.IOException e) {
       System.err.println("Writing to file not possible: " + file.toString());
       e.printStackTrace();
-    } // todo: what's the best way to open a file? (always close?)
+    }
   }
 
   private Storable getStorableFromJsonObject(JSONObject jobj) {
@@ -124,8 +127,7 @@ public class JsonMarshallingContext implements MarshallingContext {
 
   public Storable read() {
     JSONParser parser = new JSONParser();
-    try {
-      FileReader reader = new FileReader(file);
+    try (FileReader reader = new FileReader(file)) {
       Object obj = parser.parse(reader);
       JSONObject jobj = (JSONObject) obj;
       Storable s = getStorableFromJsonObject(jobj);
