@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A room consists of several tiles, it has inhabitants and it is part of a world
+ *
  * @author
  *
  */
@@ -38,6 +40,7 @@ public class Room implements Storable {
    * @return size of room on the xaxis (length of tiles)
    */
   private int get_x_dimension_size() {
+    if (this.tiles == null) return 0;
     return this.tiles.length;
   }
 
