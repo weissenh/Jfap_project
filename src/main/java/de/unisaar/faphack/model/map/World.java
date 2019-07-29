@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author
+ * A world is part of a Game and contains a list of Rooms
  *
+ * @author
  */
 public class World implements Storable {
   public Game g;

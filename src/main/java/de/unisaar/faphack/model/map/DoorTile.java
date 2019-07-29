@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A DoorTile is a special wall tile which can not only be destroyed but also opened.
+ * Such a doortile is part of a Hallway
+ *
+ * TODO add Key to open door with and test it
  * @author
  *
  */

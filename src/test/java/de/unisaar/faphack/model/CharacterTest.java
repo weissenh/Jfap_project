@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CharacterTest {
 
+  // todo what if a character is dead? can he/she still do all the things below (move, equip, applyAttack...)?
+
   /**
    * Move a character which is placed on tile 1x1 in a square 4 x 4 room .
    * 1: Direction (0,1) to the right

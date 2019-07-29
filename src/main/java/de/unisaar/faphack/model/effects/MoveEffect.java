@@ -11,12 +11,10 @@ public class MoveEffect implements Effect<Character, Boolean> {
   private Direction dir;
 
   public MoveEffect(Direction d) {
-    dir = d;
-
-    // todo: check if d is not null!!!!! exception or dir = new Direction(0,0) ?
-    // lets go with the exception because then we catch a possible bug in the direction creation asap
-    if (d == null){
-      throw new IllegalArgumentException("Direction was null.");
+    this.dir = d;
+    if (d == null) { // todo what if d is null? have Direction(0,0) as default or throw exception?
+      // this.dir = new Direction(0, 0);
+      throw new IllegalArgumentException("Cannot initialize Move effect with null direction");
     }
     //Checks whether the move exceeds the distance limitations
     if (abs(this.dir.x)>1 || abs(this.dir.y)>1) {  //

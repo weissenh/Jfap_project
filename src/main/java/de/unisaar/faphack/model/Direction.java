@@ -1,5 +1,6 @@
 package de.unisaar.faphack.model;
 
+/** A direction is basically a two-dimensional vector describing a change on the x- and y-axis */
 public class Direction {
   public int x, y;
 

@@ -4,6 +4,8 @@ import de.unisaar.faphack.model.MarshallingContext;
 import de.unisaar.faphack.model.Storable;
 
 /**
+ * A connector connects to tiles
+ *
  * @author
  *
  */
