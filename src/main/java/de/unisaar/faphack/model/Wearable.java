@@ -39,6 +39,9 @@ public class Wearable extends Item {
       if (trait.equals(weapon)) this.isWeapon = true;
     } // todo: do this?
     this.weight = 1; // default weight
+    if (this.onTile != null) {
+      this.onTile.addItem(this);
+    }
   }
 
   public Wearable(Tile where, String trait, CharacterModifier effect, Character c, int weight) {
