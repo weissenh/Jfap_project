@@ -181,10 +181,31 @@ class GameTest {
 
       // 1. First room (obstacles), moves and first door interaction to second room
       DOWN.apply(protagonist); //not possible as rest is needed first
+//      S1 = {R1[1][2], level=1, h=100, m=0, p=0, currentWeight=0}
+      assertEquals(100, protagonist.health);
+      assertEquals(0, protagonist.magic);
+      assertEquals(0, protagonist.power);
+      assertEquals(0, protagonist.currentWeight);
+      assertEquals(protagonist.getRoom().getTiles()[1][2], protagonist.getTile());
+      assertEquals(1, protagonist.level);
+
+      // 2. Gain power
       STAY.apply(protagonist);
+//    S2 = {R1[1][2], level=1, h=100, m=0, p=5, currentWeight=0}
+
+      assertEquals(100, protagonist.health);
+      assertEquals(0, protagonist.magic);
+      assertEquals(5, protagonist.power);
+      assertEquals(0, protagonist.currentWeight);
+      assertEquals(protagonist.getRoom().getTiles()[1][2], protagonist.getTile());
+      assertEquals(1, protagonist.level);
+
       UP.apply(protagonist); //not possible as indestructible wall
+
+
       DOWN.apply(protagonist); //stays on same tile as fixture mirror, mirror does not block move
 //      protagonist.getTile().onTile().get(0);
+
 
       // Test if wall tile is destroyed (added a get-function in WallTile)
       WallTile testWall = (WallTile) protagonist.getRoom().getTiles()[2][1];
@@ -209,10 +230,9 @@ class GameTest {
       Wearable foo = (Wearable) protagonist.getTile().onTile().get(0);
       protagonist.pickUp(foo);
 
-      // todo: 2. third room
-      // todo: move into second room via a stairway to be build (pick up wearables and items)
-
-
+//    pick up shield when it's already picked up
+      protagonist.pickUp(foo);
+//    todo AK:  assert
     }
   }
 

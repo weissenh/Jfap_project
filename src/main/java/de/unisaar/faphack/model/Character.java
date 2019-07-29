@@ -16,10 +16,13 @@ import de.unisaar.faphack.model.map.*;
 public class Character extends AbstractObservable<TraitedTileOccupier>
 implements Storable, TraitedTileOccupier {
 
+  public int currentWeight = 0;
+  public Tile getTile;
+  public int level = 1;
   /**
    * I'm currently on this level
    */
-  private int level = 0;
+//  private int level = 0;
 
   /**
    * The position of the character.
@@ -69,7 +72,7 @@ implements Storable, TraitedTileOccupier {
   /**
    * The currentWeight is the combined weights of armor, weapon and inventory
    */
-  private int currentWeight = 0;
+//  private int currentWeight = 0;
 
   /**
    * All effects that currently apply on the character, for example damage or heal
