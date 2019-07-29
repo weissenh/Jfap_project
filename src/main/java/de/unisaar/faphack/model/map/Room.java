@@ -137,7 +137,7 @@ public class Room implements Storable {
       //throw new IllegalArgumentException(String.format("Position doesn't exist in this room! (%d , %d)", x, y));
       return false;
     }
-    tiles[y][x] = newtile;
+    tiles[x][y] = newtile;
     return true;
   }
 
