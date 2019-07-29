@@ -54,24 +54,17 @@ public class MoveEffect implements Effect<Character, Boolean> {
       return false;
     }
 
-    // if
-
-    // Verifies whether the character still has power left, returns false if not
-    if (c.getPower() == 0) {
-      if (this.dir.x == 0 && this.dir.y == 0) {
-        //does not need to move as c is already on correct tile
-        c.rest(); //increases characters power by 5
-        // todo shall we allow the character to rest/move even when his power is zero (== dead?) -> ZOMBIE!
-        // todo return here? if move again maybe envoke entering effects (fountain?)
-      }
-      else return false;
+    // If move direction is 0 0 then rest
+    if (this.dir.x == 0 && this.dir.y == 0) {
+      c.rest();
+    }
+    // If move direction is not 0 0 and power is zero
+    else if (c.getPower() == 0){
+      // todo shall we allow the character to rest/move even when his power is zero (== dead?) -> ZOMBIE!
+      // todo return here? if move again maybe envoke entering effects (fountain?)
+      return false;
     }
 
-    //todo: we could implement a threshold function that allows the character to rest
-    //even if its power is not 0 (given 0 0 direction of course) but only adds power
-    //until a power value of 5 is reached and never beyond that.
-    // e.g. resting with power level 3 will result in power level 5. But
-    // resting wil power level 5 will not add anything.
 
     c.move(t);
     return true;
