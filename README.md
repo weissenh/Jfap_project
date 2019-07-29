@@ -12,6 +12,7 @@ https://help.github.com/en/articles/syncing-a-fork
 ## To Do
 - [ ] Keys for Doors: already started implementing this  
 - [ ] dead character shouldn't be allowed to participate in the game anymore
+- [ ] test attack
 - [ ] integrate GUI  
 - [ ] more tests  
 - [ ] ...  
