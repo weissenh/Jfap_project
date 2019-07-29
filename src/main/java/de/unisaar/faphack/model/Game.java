@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author
+ * A Game consists of a world and a character who is the protagonist of this game.
  *
+ * @author
  */
 public class Game implements Storable {
   private World world;
