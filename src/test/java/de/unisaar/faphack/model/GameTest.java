@@ -1,10 +1,12 @@
 package de.unisaar.faphack.model;
 
 import com.jme3.math.Ring;
+import de.unisaar.faphack.dirtyhacks.StorableRegistrator;
 import de.unisaar.faphack.model.effects.MoveEffect;
 import de.unisaar.faphack.model.map.*;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -164,6 +166,14 @@ class GameTest {
       List<Character> inhabitants = first_room.getInhabitants();
       inhabitants.add(protagonist);
 
+      // marshal,
+      File f = getTestResourceFile("", "game2.json");
+      StorableFactory fact = new StorableFactory();
+      StorableRegistrator.registerStorables(fact);
+      MarshallingContext mc = new JsonMarshallingContext(f, fact);
+      mc.save(game);
+      assertTrue(f.canRead());
+
       // Create different move effects
       // horizontal and vertical moves
       MoveEffect UP = new MoveEffect(new Direction(0, 1));
@@ -201,7 +211,12 @@ class GameTest {
       // Move onto stairtile and enter room3
       DOWNLEFT.apply(protagonist);
 
+      // Move onto tile with the shield
+      DOWN.apply(protagonist);
 
+      // Pick up the shield
+      Wearable foo = (Wearable) protagonist.getTile().onTile().get(0);
+      protagonist.pickUp(foo);
       // todo: 2. third room
       // todo: move into second room via a stairway to be build (pick up wearables and items)
 
