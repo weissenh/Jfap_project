@@ -24,9 +24,10 @@ class MoveEffectTest {
    * 5. move actions are not allowed when the character's power is 0
    * 6. destructible wall move: test whether moving onto a destructible wall removes power
    * 7. try to move on obstacle tile - has to fail
+   * 8. try to initialize MoveEffect with null diretion
    *
    * Possible further tests:
-   * todo: if Direction initialized to null, moveeffect shouldn't throw plain nullpointer exception
+   * 7.2 move on destructible or destroyed obstacle tile
    */
   @Test
   void apply() {
@@ -74,10 +75,11 @@ class MoveEffectTest {
     assertEquals(room.getTiles()[2][3], testObject4.getTile());
     // todo: another test with destructible obstacle tile (similar to destructible wall?)
 
-    // moveEffect with null direction
+    // moveEffect with null direction todo throw exception or default (0,0) direction?
     Character testObjectx = createBaseCharacter("Baz", 10, 2);
     addCharacter(room, 2,2, testObjectx);
-    moveEffect = new MoveEffect(null); // todo what to do here?
-    moveEffect.apply(testObjectx);
+    assertThrows(IllegalArgumentException.class, () ->  new MoveEffect(null));
+    // moveEffect = new MoveEffect(null);
+    // moveEffect.apply(testObjectx);
   }
 }
